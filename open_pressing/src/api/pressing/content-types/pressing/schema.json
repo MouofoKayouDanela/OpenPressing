@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pressings",
+  "info": {
+    "singularName": "pressing",
+    "pluralName": "pressings",
+    "displayName": "Pressing",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "proprietaire": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::proprietaire.proprietaire",
+      "inversedBy": "pressings"
+    },
+    "agencies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agency.agency",
+      "mappedBy": "pressing"
+    }
+  }
+}

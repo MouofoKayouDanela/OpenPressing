@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "besoins",
+  "info": {
+    "singularName": "besoin",
+    "pluralName": "besoins",
+    "displayName": "Requirement",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "CreationDate": {
+      "type": "datetime"
+    },
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::client.client",
+      "inversedBy": "besoins"
+    }
+  }
+}

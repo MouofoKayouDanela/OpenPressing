@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quarters",
+  "info": {
+    "singularName": "quarter",
+    "pluralName": "quarters",
+    "displayName": "Quarter"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "quarters"
+    },
+    "agencies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agency.agency",
+      "mappedBy": "quarter"
+    }
+  }
+}

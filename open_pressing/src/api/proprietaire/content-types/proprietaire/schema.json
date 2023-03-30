@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "proprietaires",
+  "info": {
+    "singularName": "proprietaire",
+    "pluralName": "proprietaires",
+    "displayName": "Owner",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "pressings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pressing.pressing",
+      "mappedBy": "proprietaire"
+    }
+  }
+}

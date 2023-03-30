@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agents",
+  "info": {
+    "singularName": "agent",
+    "pluralName": "agents",
+    "displayName": "Agent"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "privileges": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::privilege.privilege",
+      "mappedBy": "agent"
+    },
+    "agency": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agency.agency",
+      "inversedBy": "agents"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clients",
+  "info": {
+    "singularName": "client",
+    "pluralName": "clients",
+    "displayName": "Client"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "besoins": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::besoin.besoin",
+      "mappedBy": "client"
+    }
+  }
+}

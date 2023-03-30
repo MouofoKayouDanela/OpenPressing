@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "administrateurs",
+  "info": {
+    "singularName": "administrateur",
+    "pluralName": "administrateurs",
+    "displayName": "Administrator",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
+    }
+  }
+}
