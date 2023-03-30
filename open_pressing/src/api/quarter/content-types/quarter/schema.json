@@ -25,6 +25,12 @@
       "relation": "oneToMany",
       "target": "api::agency.agency",
       "mappedBy": "quarter"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "delivery_adress"
     }
   }
 }

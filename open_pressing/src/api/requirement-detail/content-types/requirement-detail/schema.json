@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "requirement_details",
+  "info": {
+    "singularName": "requirement-detail",
+    "pluralName": "requirement-details",
+    "displayName": "Requirement_Detail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Quantity": {
+      "type": "integer"
+    },
+    "UnitPrice": {
+      "type": "decimal"
+    },
+    "laundry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::laundry.laundry",
+      "inversedBy": "requirement_details"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service"
+    },
+    "requirement": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::besoin.besoin",
+      "inversedBy": "requirement_details"
+    }
+  }
+}

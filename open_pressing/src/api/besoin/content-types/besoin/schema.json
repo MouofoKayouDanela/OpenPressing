@@ -20,6 +20,18 @@
       "relation": "manyToOne",
       "target": "api::client.client",
       "inversedBy": "besoins"
+    },
+    "messages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::message.message",
+      "mappedBy": "requirement"
+    },
+    "requirement_details": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::requirement-detail.requirement-detail",
+      "mappedBy": "requirement"
     }
   }
 }

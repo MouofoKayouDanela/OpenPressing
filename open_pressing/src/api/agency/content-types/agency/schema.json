@@ -28,6 +28,24 @@
       "relation": "oneToMany",
       "target": "api::agent.agent",
       "mappedBy": "agency"
+    },
+    "messages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::message.message",
+      "mappedBy": "agency"
+    },
+    "agency_services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agency-service.agency-service",
+      "mappedBy": "agency"
+    },
+    "agency_laundries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agency-laundry.agency-laundry",
+      "mappedBy": "agency"
     }
   }
 }
