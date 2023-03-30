@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agency_services",
+  "info": {
+    "singularName": "agency-service",
+    "pluralName": "agency-services",
+    "displayName": "Agency_Service",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "agency": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agency.agency",
+      "inversedBy": "agency_services"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "agency_services"
+    },
+    "AddingDate": {
+      "type": "datetime"
+    },
+    "RetireDate": {
+      "type": "datetime"
+    },
+    "Status": {
+      "type": "string"
+    },
+    "offers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::offer.offer",
+      "mappedBy": "agency_service"
+    }
+  }
+}

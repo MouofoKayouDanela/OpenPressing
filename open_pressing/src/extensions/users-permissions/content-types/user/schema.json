@@ -80,6 +80,9 @@
     },
     "NumeroTelephone": {
       "type": "string"
+    },
+    "PictureUrl": {
+      "type": "text"
     }
   }
 }

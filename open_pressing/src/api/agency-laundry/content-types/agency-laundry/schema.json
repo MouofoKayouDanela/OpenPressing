@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agency_laundries",
+  "info": {
+    "singularName": "agency-laundry",
+    "pluralName": "agency-laundries",
+    "displayName": "Agency_Laundry"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "laundry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::laundry.laundry",
+      "inversedBy": "agency_laundries"
+    },
+    "agency": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agency.agency",
+      "inversedBy": "agency_laundries"
+    },
+    "AddingDate": {
+      "type": "datetime"
+    },
+    "RetireDate": {
+      "type": "datetime"
+    },
+    "Status": {
+      "type": "string"
+    },
+    "offers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::offer.offer",
+      "mappedBy": "agency_laundry"
+    }
+  }
+}

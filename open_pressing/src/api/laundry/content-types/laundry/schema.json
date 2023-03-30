@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "laundries",
+  "info": {
+    "singularName": "laundry",
+    "pluralName": "laundries",
+    "displayName": "Laundry",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::laundry-category.laundry-category",
+      "inversedBy": "laundries"
+    },
+    "type": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::laundry-type.laundry-type",
+      "inversedBy": "laundries"
+    },
+    "agency_laundries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::agency-laundry.agency-laundry",
+      "mappedBy": "laundry"
+    },
+    "requirement_details": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::requirement-detail.requirement-detail",
+      "mappedBy": "laundry"
+    },
+    "PictureUrl": {
+      "type": "text"
+    }
+  }
+}

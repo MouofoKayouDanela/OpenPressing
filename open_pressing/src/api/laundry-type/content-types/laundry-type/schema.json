@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "laundry_types",
+  "info": {
+    "singularName": "laundry-type",
+    "pluralName": "laundry-types",
+    "displayName": "Laundry_Type"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "laundries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::laundry.laundry",
+      "mappedBy": "type"
+    }
+  }
+}

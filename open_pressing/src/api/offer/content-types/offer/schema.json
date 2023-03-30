@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "offers",
+  "info": {
+    "singularName": "offer",
+    "pluralName": "offers",
+    "displayName": "Offer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "UnitPrice": {
+      "type": "decimal"
+    },
+    "agency_laundry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agency-laundry.agency-laundry",
+      "inversedBy": "offers"
+    },
+    "agency_service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agency-service.agency-service",
+      "inversedBy": "offers"
+    },
+    "annonce": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::annonce.annonce",
+      "inversedBy": "offers"
+    },
+    "promotion": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::promotion.promotion",
+      "mappedBy": "offer"
+    }
+  }
+}
