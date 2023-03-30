@@ -7,7 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview
 @Composable
 fun LoginScreen(){
-    
+
     Text(text = "My first preview")
     
 }
