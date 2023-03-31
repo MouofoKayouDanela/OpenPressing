@@ -3,14 +3,15 @@ package com.android.openpressing
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.android.openpressing.ui.theme.OpenPressingTheme
+import com.android.openpressing.client_module.presentation.Besoin
+import com.android.openpressing.client_module.presentation.BesoinCard
+import com.android.openpressing.client_module.presentation.DefaultPreview
+import com.android.openpressing.client_module.presentation.Publication
+import com.android.openpressing.ui.theme.*
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,22 +23,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    DefaultPreview()
                 }
             }
         }
     }
 }
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    OpenPressingTheme {
-        Greeting("Android")
-    }
-}
+u
