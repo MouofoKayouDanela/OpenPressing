@@ -2,6 +2,11 @@ package com.android.openpressing.client_module.presentation.requirement.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+<<<<<<< HEAD
+=======
+import androidx.compose.foundation.layout.ColumnScopeInstance.align
+import androidx.compose.foundation.layout.RowScopeInstance.align
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -14,7 +19,13 @@ import androidx.compose.material.icons.rounded.NavigateNext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+<<<<<<< HEAD
 import androidx.compose.ui.draw.clip
+=======
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -210,7 +221,11 @@ fun RequirementDetailsScreen(){
             },
 
         bottomBar = {
+<<<<<<< HEAD
             ValidationArea()
+=======
+            ValidationArea(Modifier.shadow(0.dp))
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
         }
     )
 
@@ -226,6 +241,7 @@ private fun TopAppBar(){
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
+<<<<<<< HEAD
         Row (
             Modifier
                 .weight(0.5f),
@@ -261,17 +277,54 @@ private fun TopAppBar(){
             )
         }
 
+=======
+        IconButton(
+            onClick = { },
+            modifier = Modifier
+                .size(32.dp , 32.dp)
+                .weight(0.6f)
+                .align(
+
+                )
+        ) {
+            Icon(
+                Icons.Rounded.ArrowBack ,
+                contentDescription = stringResource(R.string.arrow_back) ,
+                modifier = Modifier
+                    .size(32.dp , 32.dp)
+            )
+        }
+
+        Text(
+            text = "Detail Order" ,
+            style = MaterialTheme.typography.h5.copy(
+                fontSize = 22.sp
+            ) ,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        )
+
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
     }
 }
 
 @Composable
+<<<<<<< HEAD
 private fun ValidationArea() {
+=======
+private fun ValidationArea(modifier: Modifier = Modifier) {
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
     Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
+<<<<<<< HEAD
                         topStart = 28.dp ,
+=======
+                        topStart = 28.dp,
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
                         topEnd = 28.dp ,
                         bottomEnd = 0.dp ,
                         bottomStart = 0.dp
