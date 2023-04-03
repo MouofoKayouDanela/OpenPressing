@@ -80,6 +80,102 @@ fun RequirementDetailsScreen(){
                             price = 10000.0 ,
                             imageVector = Icons.Rounded.LocalLaundryService ,
                             quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
+                        ),
+                        Service(
+                            laundryName = "Pants" ,
+                            price = 10000.0 ,
+                            imageVector = Icons.Rounded.LocalLaundryService ,
+                            quantity = 3
                         )
                     )
 
