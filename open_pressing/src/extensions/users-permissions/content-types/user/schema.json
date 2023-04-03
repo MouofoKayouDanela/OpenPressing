@@ -67,7 +67,8 @@
       "configurable": false
     },
     "Nom": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "Prenom": {
       "type": "string"
@@ -76,10 +77,14 @@
       "type": "date"
     },
     "Genre": {
-      "type": "string"
+      "type": "string",
+      "unique": false,
+      "required": true
     },
     "NumeroTelephone": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "minLength": 9
     },
     "PictureUrl": {
       "type": "text"

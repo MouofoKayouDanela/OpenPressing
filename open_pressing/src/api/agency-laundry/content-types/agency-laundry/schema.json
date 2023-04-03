@@ -4,7 +4,8 @@
   "info": {
     "singularName": "agency-laundry",
     "pluralName": "agency-laundries",
-    "displayName": "Agency_Laundry"
+    "displayName": "Agency_Laundry",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -29,14 +30,15 @@
     "RetireDate": {
       "type": "datetime"
     },
-    "Status": {
-      "type": "string"
-    },
     "offers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::offer.offer",
       "mappedBy": "agency_laundry"
+    },
+    "isValid": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
