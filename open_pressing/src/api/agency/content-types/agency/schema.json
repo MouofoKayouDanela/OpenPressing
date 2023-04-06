@@ -4,7 +4,8 @@
   "info": {
     "singularName": "agency",
     "pluralName": "agencies",
-    "displayName": "Agency"
+    "displayName": "Agency",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -46,6 +47,14 @@
       "relation": "oneToMany",
       "target": "api::agency-laundry.agency-laundry",
       "mappedBy": "agency"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

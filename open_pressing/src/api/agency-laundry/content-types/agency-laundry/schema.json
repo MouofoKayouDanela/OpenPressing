@@ -25,10 +25,10 @@
       "inversedBy": "agency_laundries"
     },
     "AddingDate": {
-      "type": "datetime"
+      "type": "date"
     },
     "RetireDate": {
-      "type": "datetime"
+      "type": "date"
     },
     "offers": {
       "type": "relation",
@@ -36,9 +36,13 @@
       "target": "api::offer.offer",
       "mappedBy": "agency_laundry"
     },
-    "isValid": {
+    "confirmed": {
       "type": "boolean",
       "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -32,6 +32,14 @@
       "relation": "oneToMany",
       "target": "api::requirement-detail.requirement-detail",
       "mappedBy": "requirement"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
