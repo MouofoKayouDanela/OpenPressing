@@ -4,5 +4,5 @@ data class Agent (
     var id: Int,
     val user: User,
     var agency: Agency,
-    var privilege: Privelege
+    var privilege: Privilege
 )
