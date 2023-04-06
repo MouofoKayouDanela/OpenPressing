@@ -26,6 +26,13 @@
       "relation": "oneToMany",
       "target": "api::agency.agency",
       "mappedBy": "pressing"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean"
     }
   }
 }

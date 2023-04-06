@@ -30,8 +30,21 @@
       "target": "api::agency-service.agency-service",
       "mappedBy": "service"
     },
-    "PictureUrl": {
-      "type": "text"
+    "serviceImage": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

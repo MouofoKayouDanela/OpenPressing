@@ -4,7 +4,8 @@
   "info": {
     "singularName": "service-category",
     "pluralName": "service-categories",
-    "displayName": "Service_Category"
+    "displayName": "Service_Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -19,6 +20,15 @@
       "relation": "oneToMany",
       "target": "api::service.service",
       "mappedBy": "category"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true,
+      "required": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

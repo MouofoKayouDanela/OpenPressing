@@ -18,11 +18,19 @@
     "Description": {
       "type": "text"
     },
-    "agent": {
+    "agents": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::agent.agent",
-      "inversedBy": "privileges"
+      "mappedBy": "privilege"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

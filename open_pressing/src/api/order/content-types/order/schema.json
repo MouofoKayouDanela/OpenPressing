@@ -24,17 +24,25 @@
       "target": "api::message.message",
       "inversedBy": "order"
     },
-    "pickup_adress": {
+    "pickup_address": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::quarter.quarter",
       "inversedBy": "orders"
     },
-    "delivery_adress": {
+    "delivery_address": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::quarter.quarter",
       "inversedBy": "orders"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

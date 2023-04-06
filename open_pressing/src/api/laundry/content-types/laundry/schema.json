@@ -36,8 +36,22 @@
       "target": "api::requirement-detail.requirement-detail",
       "mappedBy": "laundry"
     },
-    "PictureUrl": {
-      "type": "text"
+    "laundryImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "required": false
     }
   }
 }
