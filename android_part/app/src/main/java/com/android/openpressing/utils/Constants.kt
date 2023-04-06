@@ -1,0 +1,32 @@
+package com.android.openpressing.utils
+
+import com.android.openpressing.data.models.Requirement
+
+const val BASE_URL = "http://localhost:1337/api"
+
+const val ADMINISTRATOR_FEATURES = "/administrators"
+const val AGENCY_FEATURES = "/agencies"
+const val AGENCY_LAUNDRY_FEATURES = "/agency-laundries"
+const val AGENCY_SERVICE_FEATURES = "/agency-services"
+const val AGENT_FEATURES = "/agent"
+const val ANNONCE_FEATURES = "/annonces"
+const val CITY_FEATURES = "/cities"
+const val CLIENT_FEATURES = "/clients"
+const val COUNTRY_FEATURES = "/countries"
+const val LAUNDRY_FEATURES = "/laundries"
+const val LAUNDRY_CATEGORIE_FEATURES = "/laundry-categories"
+const val LAUNDRY_TYPE_FEATURES = "/laundry-types"
+const val MESSAGE_FEATURES = "/messages"
+const val OFFER_FEATURES = "/offers"
+const val ORDER_FEATURES = "/orders"
+const val OWNER_FEATURES = "/owners"
+const val PRESSING_FEATURES = "/pressings"
+const val PRIVILEGE_FEATURES = "/priveleges"
+const val PROMOTION_FEATURES = "/promotions"
+const val QUARTER_FEATURES = "/quarters"
+const val REQUIREMENT_FEATURES = "/requirements"
+const val REQUIREMENT_DETAIL_FEATURES = "/requirement-details"
+const val SERVICE_FEATURES = "/services"
+const val SERVICE_CATEGORY_FEATURES = "/service-categories"
+const val SERVICE_TYPE_FEATURES = "/service-types"
+const val USER_FEATURES = "/users"
