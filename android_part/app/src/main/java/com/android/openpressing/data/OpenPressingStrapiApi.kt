@@ -1,9 +1,13 @@
 package com.android.openpressing.data
 
+import com.android.openpressing.data.models.City
+import retrofit2.http.GET
+
 sealed interface OpenPressingStrapiApi{
 
     interface CityApi: OpenPressingStrapiApi {
-
+        @GET
+        suspend fun getAllCities() : List<City>
     }
 
     interface CountryApi: OpenPressingStrapiApi {
