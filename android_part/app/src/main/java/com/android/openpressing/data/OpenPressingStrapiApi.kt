@@ -191,22 +191,22 @@ sealed interface OpenPressingStrapiApi{
         suspend fun delete(laundry: Laundry)
     }
 
-    interface LaundryCategorieApi: OpenPressingStrapiApi {
+    interface LaundryCategoryApi: OpenPressingStrapiApi {
 
         @GET(LAUNDRY_CATEGORIE_FEATURES)
-        suspend fun getAll() : List<Laundry_Categorie>
+        suspend fun getAll() : List<Laundry_Category>
 
         @GET(LAUNDRY_CATEGORIE_FEATURES)
-        suspend fun getById(@Query("q") id: Int) : Laundry_Categorie
+        suspend fun getById(@Query("q") id: Int) : Laundry_Category
 
         @POST(LAUNDRY_CATEGORIE_FEATURES)
-        suspend fun save(laundryCategorie: Laundry_Categorie)
+        suspend fun save(laundryCategorie: Laundry_Category)
 
         @PUT(LAUNDRY_CATEGORIE_FEATURES)
-        suspend fun update(laundryCategorie: Laundry_Categorie)
+        suspend fun update(laundryCategorie: Laundry_Category)
 
         @DELETE(LAUNDRY_CATEGORIE_FEATURES)
-        suspend fun delete(laundryCategorie: Laundry_Categorie)
+        suspend fun delete(laundryCategorie: Laundry_Category)
     }
 
     interface LaundryTypeApi: OpenPressingStrapiApi {
