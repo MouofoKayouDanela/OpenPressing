@@ -4,7 +4,7 @@ import com.android.openpressing.data.models.Requirement
 
 const val BASE_URL = "http://192.168.43.23:1337"
 
-const val ADMINISTRATOR_FEATURES = "/api/administrators"
+const val ADMINISTRATOR_FEATURES = "/api/administrateurs"
 const val AGENCY_FEATURES = "/api/agencies"
 const val AGENCY_LAUNDRY_FEATURES = "/api/agency-laundries"
 const val AGENCY_SERVICE_FEATURES = "/api/agency-services"
@@ -19,7 +19,7 @@ const val LAUNDRY_TYPE_FEATURES = "/api/laundry-types"
 const val MESSAGE_FEATURES = "/api/messages"
 const val OFFER_FEATURES = "/api/offers"
 const val ORDER_FEATURES = "/api/orders"
-const val OWNER_FEATURES = "/api/owners"
+const val OWNER_FEATURES = "/api/proprietaires"
 const val PRESSING_FEATURES = "/api/pressings"
 const val PRIVILEGE_FEATURES = "/api/priveleges"
 const val PROMOTION_FEATURES = "/api/promotions"
