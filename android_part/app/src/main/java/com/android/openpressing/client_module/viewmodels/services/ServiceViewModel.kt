@@ -18,6 +18,7 @@ class ServiceViewModel @Inject constructor(
 
             viewModelScope.launch(Dispatchers.IO) {
                 val services = serviceRepository.getAll()
+                Log.i("", "$services")
             }
 
         }
@@ -25,6 +26,7 @@ class ServiceViewModel @Inject constructor(
         fun getById(id: Int) {
             viewModelScope.launch(Dispatchers.IO) {
                 val service = serviceRepository.getById(id)
+                Log.i("", "$service")
             }
         }
 }
