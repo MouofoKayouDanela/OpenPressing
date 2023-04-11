@@ -7,4 +7,6 @@
     <string name="nextPage">nextPage</string>
     <string name="list">liste</string>
     <string name="liste">liste de commande</string>
+    <string name="editer">Editer</string>
+    <string name="message">Message</string>
 </resources>

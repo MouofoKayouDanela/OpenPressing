@@ -14,4 +14,6 @@ val Orange = Color(0xFFF46F30)
 val Gris = Color(0xFFF2F7F7)
 val Grey = Color(0xFFD3D3D3)
 val Purple = Color(0xFF720f8d)
+val Violet = Color(0xFF9644ac)
+val VioletPal = Color(0xFFe6b7f3)
 
