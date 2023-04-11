@@ -10,10 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.android.openpressing.client_module.presentation.Default
-import com.android.openpressing.client_module.presentation.FormScreen
-import com.android.openpressing.client_module.presentation.PageScreen
-import com.android.openpressing.client_module.presentation.form
+import com.android.openpressing.client_module.presentation.*
 
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    DefaultPreview()
+                    ScaffoldSample()
 
                         //PageScreen()
                 }
