@@ -13,4 +13,8 @@ class ServiceRepository @Inject constructor(
 
     suspend fun getById(id: Int) : Service = serviceApi.getById(id)
 
+    suspend fun save(service: Service) = serviceApi.save(service)
+
+    suspend fun update(id: Int, service: Service) : Service = serviceApi.update(id, service)
+
 }
