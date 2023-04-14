@@ -53,11 +53,9 @@ import com.android.openpressing.data.models.service_type.ServiceType
 import com.android.openpressing.data.models.service_type.ServiceTypes
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.utils.*
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
+import retrofit2.http.*
 
 sealed interface OpenPressingStrapiApi{
 
@@ -67,16 +65,25 @@ sealed interface OpenPressingStrapiApi{
         suspend fun getAll() : Administrators
 
         @GET("$ADMINISTRATOR_FEATURES/{id}$INCLUSION_FEATURES")
-        suspend fun getById(@Path("id") id: Int) : Administrator
+        suspend fun getById(
+            @Path("id") id: Int
+        ) : Administrator
 
-        @POST(ADMINISTRATOR_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(administrator: Administrator)
+        @POST(ADMINISTRATOR_FEATURES)
+        suspend fun save(
+            @Body administrator: Administrator
+        )
 
-        @PUT(ADMINISTRATOR_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(administrator: Administrator)
+        @PUT("$ADMINISTRATOR_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body administrator: Administrator
+        ) : Administrator
 
-        @DELETE(ADMINISTRATOR_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(administrator: Administrator)
+//        @DELETE("$ADMINISTRATOR_FEATURES/{id}")
+//        suspend fun delete(
+//            administrator: Administrator
+//        )
     }
 
     interface AgencyApi: OpenPressingStrapiApi {
@@ -87,14 +94,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$AGENCY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Agency
 
-        @POST(AGENCY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(agency: Agency)
+        @POST(AGENCY_FEATURES)
+        suspend fun save(
+            @Body agency: Agency
+        )
 
-        @PUT(AGENCY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(agency: Agency)
+        @PUT("$AGENCY_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body agency: Agency
+        ) : Agency
 
-        @DELETE(AGENCY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(agency: Agency)
+//        @DELETE(AGENCY_FEATURES+ INCLUSION_FEATURES)
+//        suspend fun delete(agency: Agency)
     }
 
     interface AgencyLaundryApi: OpenPressingStrapiApi {
@@ -105,14 +117,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$AGENCY_LAUNDRY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : AgencyLaundry
 
-        @POST(AGENCY_LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(agencyLaundry: AgencyLaundry)
+        @POST(AGENCY_LAUNDRY_FEATURES)
+        suspend fun save(
+            @Body agencyLaundry: AgencyLaundry
+        )
 
-        @PUT(AGENCY_LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(agencyLaundry: AgencyLaundry)
+        @PUT("$AGENCY_LAUNDRY_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body agencyLaundry: AgencyLaundry
+        ) : AgencyLaundry
 
-        @DELETE(AGENCY_LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(agencyLaundry: AgencyLaundry)
+//        @DELETE(AGENCY_LAUNDRY_FEATURES)
+//        suspend fun delete(agencyLaundry: AgencyLaundry)
     }
 
     interface AgencyServiceApi: OpenPressingStrapiApi {
@@ -123,14 +140,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$AGENCY_SERVICE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : AgencyService
 
-        @POST(AGENCY_SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(agencyService: AgencyService)
+        @POST(AGENCY_SERVICE_FEATURES)
+        suspend fun save(
+            @Body agencyService: AgencyService
+        )
 
-        @PUT(AGENCY_SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(agencyService: AgencyService)
+        @PUT("$AGENCY_SERVICE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body agencyService: AgencyService
+        ) : AgencyService
 
-        @DELETE(AGENCY_SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(agencyService: AgencyService)
+//        @DELETE(AGENCY_SERVICE_FEATURES)
+//        suspend fun delete(agencyService: AgencyService)
     }
 
     interface AgentApi: OpenPressingStrapiApi {
@@ -141,14 +163,17 @@ sealed interface OpenPressingStrapiApi{
         @GET("$AGENT_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Agent
 
-        @POST(AGENT_FEATURES+ INCLUSION_FEATURES)
+        @POST(AGENT_FEATURES)
         suspend fun save(agent: Agent)
 
-        @PUT(AGENT_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(agent: Agent)
+        @PUT("$AGENT_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body agent: Agent
+        ) : Agent
 
-        @DELETE(AGENT_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(agent: Agent)
+//        @DELETE(AGENT_FEATURES)
+//        suspend fun delete(agent: Agent)
     }
 
     interface AnnonceApi: OpenPressingStrapiApi {
@@ -159,14 +184,17 @@ sealed interface OpenPressingStrapiApi{
         @GET("$ANNONCE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Announce
 
-        @POST(ANNONCE_FEATURES+ INCLUSION_FEATURES)
+        @POST(ANNONCE_FEATURES)
         suspend fun save(announce: Announce)
 
-        @PUT(ANNONCE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(announce: Announce)
+        @PUT("$ANNONCE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body announce: Announce
+        ) : Announce
 
-        @DELETE(ANNONCE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(announce: Announce)
+//        @DELETE(ANNONCE_FEATURES)
+//        suspend fun delete(announce: Announce)
     }
 
     interface CityApi: OpenPressingStrapiApi {
@@ -177,14 +205,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$CITY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : City
 
-        @POST(CITY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(city: City)
+        @POST(CITY_FEATURES)
+        suspend fun save(
+            @Body city: City
+        )
 
-        @PUT(CITY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(city: City)
+        @PUT("$CITY_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body city: City
+        ) : City
 
-        @DELETE(CITY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(city: City)
+//        @DELETE(CITY_FEATURES)
+//        suspend fun delete(city: City)
 
     }
 
@@ -196,14 +229,17 @@ sealed interface OpenPressingStrapiApi{
         @GET("$COUNTRY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Country
 
-        @POST(COUNTRY_FEATURES+ INCLUSION_FEATURES)
+        @POST(COUNTRY_FEATURES)
         suspend fun  save(country: Country)
 
-        @PUT(COUNTRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(country: Country)
+        @PUT("$COUNTRY_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body country: Country
+        ) : Country
 
-        @DELETE(COUNTRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(country: Country)
+//        @DELETE(COUNTRY_FEATURES)
+//        suspend fun delete(country: Country)
     }
 
     interface ClientApi: OpenPressingStrapiApi {
@@ -214,14 +250,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$CLIENT_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Client
 
-        @POST(CLIENT_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(client: Client)
+        @POST(CLIENT_FEATURES)
+        suspend fun  save(
+            @Body client: Client
+        )
 
-        @PUT(CLIENT_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(client: Client)
+        @PUT("$CLIENT_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body client: Client
+        ) : Client
 
-        @DELETE(CLIENT_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(client: Client)
+//        @DELETE(CLIENT_FEATURES)
+//        suspend fun delete(client: Client)
     }
 
     interface LaundryApi: OpenPressingStrapiApi {
@@ -232,14 +273,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$LAUNDRY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Laundry
 
-        @POST(LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(laundry: Laundry)
+        @POST(LAUNDRY_FEATURES)
+        suspend fun  save(
+            @Body laundry: Laundry
+        )
 
-        @PUT(LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(laundry: Laundry)
+        @PUT("$LAUNDRY_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body laundry: Laundry
+        ) : Laundry
 
-        @DELETE(LAUNDRY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(laundry: Laundry)
+//        @DELETE(LAUNDRY_FEATURES)
+//        suspend fun delete(laundry: Laundry)
     }
 
     interface LaundryCategoryApi: OpenPressingStrapiApi {
@@ -250,14 +296,17 @@ sealed interface OpenPressingStrapiApi{
         @GET("$LAUNDRY_CATEGORIE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : LaundryCategory
 
-        @POST(LAUNDRY_CATEGORIE_FEATURES+ INCLUSION_FEATURES)
+        @POST(LAUNDRY_CATEGORIE_FEATURES)
         suspend fun save(laundryCategory: LaundryCategory)
 
-        @PUT(LAUNDRY_CATEGORIE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(laundryCategory: LaundryCategory)
+        @PUT("$LAUNDRY_CATEGORIE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body laundryCategory: LaundryCategory
+        ) : LaundryCategory
 
-        @DELETE(LAUNDRY_CATEGORIE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(laundryCategory: LaundryCategory)
+//        @DELETE(LAUNDRY_CATEGORIE_FEATURES)
+//        suspend fun delete(laundryCategory: LaundryCategory)
     }
 
     interface LaundryTypeApi: OpenPressingStrapiApi {
@@ -268,14 +317,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$LAUNDRY_TYPE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : LaundryType
 
-        @POST(LAUNDRY_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(laundryType: LaundryType)
+        @POST(LAUNDRY_TYPE_FEATURES)
+        suspend fun save(
+            @Body laundryType: LaundryType
+        )
 
-        @PUT(LAUNDRY_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(laundryType: LaundryType)
+        @PUT("$LAUNDRY_TYPE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body laundryType: LaundryType
+        ) : LaundryType
 
-        @DELETE(LAUNDRY_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(laundryType: LaundryType)
+//        @DELETE(LAUNDRY_TYPE_FEATURES)
+//        suspend fun delete(laundryType: LaundryType)
     }
 
     interface MessageApi: OpenPressingStrapiApi {
@@ -286,14 +340,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$MESSAGE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Message
 
-        @POST(MESSAGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(message: Message)
+        @POST(MESSAGE_FEATURES)
+        suspend fun save(
+            @Body message: Message
+        )
 
-        @PUT(MESSAGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(message: Message)
+        @PUT("$MESSAGE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body message: Message
+        ) : Message
 
-        @DELETE(MESSAGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(message: Message)
+//        @DELETE(MESSAGE_FEATURES)
+//        suspend fun delete(message: Message)
     }
 
     interface OfferApi: OpenPressingStrapiApi {
@@ -304,14 +363,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$OFFER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Offer
 
-        @POST(OFFER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(offer: Offer)
+        @POST(OFFER_FEATURES)
+        suspend fun  save(
+            @Body offer: Offer
+        )
 
-        @PUT(OFFER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(offer: Offer)
+        @PUT("$OFFER_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body offer: Offer
+        ) : Offer
 
-        @DELETE(OFFER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(offer: Offer)
+//        @DELETE(OFFER_FEATURES)
+//        suspend fun delete(offer: Offer)
     }
 
     interface  OrderApi: OpenPressingStrapiApi {
@@ -322,14 +386,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$ORDER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Order
 
-        @POST(ORDER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(order: Order)
+        @POST(ORDER_FEATURES)
+        suspend fun  save(
+            @Body order: Order
+        )
 
-        @PUT(ORDER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(order: Order)
+        @PUT("$ORDER_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body order: Order
+        ) : Order
 
-        @DELETE(ORDER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(order: Order)
+//        @DELETE(ORDER_FEATURES)
+//        suspend fun delete(order: Order)
     }
 
     interface OwnerApi: OpenPressingStrapiApi {
@@ -340,14 +409,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$OWNER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Owner
 
-        @POST(OWNER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(owner: Owner)
+        @POST(OWNER_FEATURES)
+        suspend fun save(
+            @Body owner: Owner
+        )
 
-        @PUT(OWNER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(owner: Owner)
+        @PUT("$OWNER_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body owner: Owner
+        ) : Owner
 
-        @DELETE(OWNER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(owner: Owner)
+//        @DELETE(OWNER_FEATURES)
+//        suspend fun delete(owner: Owner)
     }
 
     interface PressingApi: OpenPressingStrapiApi {
@@ -358,14 +432,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$PRESSING_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Pressing
 
-        @POST(PRESSING_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(pressing: Pressing)
+        @POST(PRESSING_FEATURES)
+        suspend fun save(
+            @Body pressing: Pressing
+        )
 
-        @PUT(PRESSING_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(pressing: Pressing)
+        @PUT("$PRESSING_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body pressing: Pressing
+        ) : Pressing
 
-        @DELETE(PRESSING_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(pressing: Pressing)
+//        @DELETE(PRESSING_FEATURES)
+//        suspend fun delete(pressing: Pressing)
     }
 
     interface PrivilegeApi: OpenPressingStrapiApi {
@@ -376,14 +455,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$PRIVILEGE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Privilege
 
-        @POST(PRIVILEGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(privilege: Privilege)
+        @POST(PRIVILEGE_FEATURES)
+        suspend fun save(
+            @Body privilege: Privilege
+        )
 
-        @PUT(PRIVILEGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(privilege: Privilege)
+        @PUT("$PRIVILEGE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body privilege: Privilege
+        ) : Privilege
 
-        @DELETE(PRIVILEGE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(privilege: Privilege)
+//        @DELETE(PRIVILEGE_FEATURES)
+//        suspend fun delete(privilege: Privilege)
     }
 
     interface PromotionApi: OpenPressingStrapiApi {
@@ -394,14 +478,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$PROMOTION_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Promotion
 
-        @POST(PROMOTION_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(promotion: Promotion)
+        @POST(PROMOTION_FEATURES)
+        suspend fun save(
+            @Body promotion: Promotion
+        )
 
-        @PUT(PROMOTION_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(promotion: Promotion)
+        @PUT("$PROMOTION_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body promotion: Promotion
+        ) : Promotion
 
-        @DELETE(PROMOTION_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(promotion: Promotion)
+//        @DELETE(PROMOTION_FEATURES)
+//        suspend fun delete(promotion: Promotion)
     }
 
     interface QuarterApi: OpenPressingStrapiApi {
@@ -412,14 +501,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$QUARTER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Quarter
 
-        @POST(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(quarter: Quarter)
+        @POST(QUARTER_FEATURES)
+        suspend fun  save(
+            @Body quarter: Quarter
+        )
 
-        @PUT(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(quarter: Quarter)
+        @PUT("$QUARTER_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body quarter: Quarter
+        ) : Quarter
 
-        @DELETE(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(quarter: Quarter)
+//        @DELETE(QUARTER_FEATURES)
+//        suspend fun delete(quarter: Quarter)
     }
 
     interface RequirementApi: OpenPressingStrapiApi {
@@ -430,14 +524,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$QUARTER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Requirement
 
-        @POST(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(requirement: Requirement)
+        @POST(QUARTER_FEATURES)
+        suspend fun  save(
+            @Body requirement: Requirement
+        )
 
-        @PUT(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(requirement: Requirement)
+        @PUT("$QUARTER_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body requirement: Requirement
+        ) : Requirement
 
-        @DELETE(QUARTER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(requirement: Requirement)
+//        @DELETE(QUARTER_FEATURES)
+//        suspend fun delete(requirement: Requirement)
     }
 
     interface RequirementDetailsApi: OpenPressingStrapiApi {
@@ -448,14 +547,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$REQUIREMENT_DETAIL_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : RequirementDetail
 
-        @POST(REQUIREMENT_DETAIL_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(requirementDetail: RequirementDetail)
+        @POST(REQUIREMENT_DETAIL_FEATURES)
+        suspend fun  save(
+            @Body requirementDetail: RequirementDetail
+        )
 
-        @PUT(REQUIREMENT_DETAIL_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(requirementDetail: RequirementDetail)
+        @PUT("$REQUIREMENT_DETAIL_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body requirementDetail: RequirementDetail
+        ) : RequirementDetail
 
-        @DELETE(REQUIREMENT_DETAIL_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(requirementDetail: RequirementDetail)
+//        @DELETE(REQUIREMENT_DETAIL_FEATURES)
+//        suspend fun delete(requirementDetail: RequirementDetail)
     }
 
     interface ServiceApi: OpenPressingStrapiApi {
@@ -466,14 +570,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$SERVICE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Service
 
-        @POST(SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  save(service: Service)
+        @POST(SERVICE_FEATURES)
+        suspend fun  save(
+            @Body service: Service
+        )
 
-        @PUT(SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun  update(service: Service)
+        @PUT("$SERVICE_FEATURES/{id}")
+        suspend fun  update(
+            @Path("id") id: Int,
+            @Body service: Service
+        ) : Service
 
-        @DELETE(SERVICE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(service: Service)
+//        @DELETE(SERVICE_FEATURES)
+//        suspend fun delete(service: Service)
     }
 
     interface ServiceCategoryApi: OpenPressingStrapiApi {
@@ -484,14 +593,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$SERVICE_CATEGORY_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : ServiceCategory
 
-        @POST(SERVICE_CATEGORY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(serviceCategory: ServiceCategory)
+        @POST(SERVICE_CATEGORY_FEATURES)
+        suspend fun save(
+            @Body serviceCategory: ServiceCategory
+        )
 
-        @PUT(SERVICE_CATEGORY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(serviceCategory: ServiceCategory)
+        @PUT("$SERVICE_CATEGORY_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body serviceCategory: ServiceCategory
+        ) : ServiceCategory
 
-        @DELETE(SERVICE_CATEGORY_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(serviceCategory: ServiceCategory)
+//        @DELETE(SERVICE_CATEGORY_FEATURES)
+//        suspend fun delete(serviceCategory: ServiceCategory)
     }
 
     interface ServiceTypeApi: OpenPressingStrapiApi {
@@ -502,14 +616,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$SERVICE_TYPE_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : ServiceType
 
-        @POST(SERVICE_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(serviceType: ServiceType)
+        @POST(SERVICE_TYPE_FEATURES)
+        suspend fun save(
+            @Body serviceType: ServiceType
+        )
 
-        @PUT(SERVICE_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(serviceType: ServiceType)
+        @PUT("$SERVICE_TYPE_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body serviceType: ServiceType
+        ) : ServiceType
 
-        @DELETE(SERVICE_TYPE_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(serviceType: ServiceType)
+//        @DELETE(SERVICE_TYPE_FEATURES)
+//        suspend fun delete(serviceType: ServiceType)
     }
 
     interface UserApi: OpenPressingStrapiApi {
@@ -520,14 +639,19 @@ sealed interface OpenPressingStrapiApi{
         @GET("$USER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : User
 
-        @POST(USER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun save(user: User)
+        @POST(USER_FEATURES)
+        suspend fun save(
+            @Body user: User
+        )
 
-        @PUT(USER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun update(user: User)
+        @PUT("$USER_FEATURES/{id}")
+        suspend fun update(
+            @Path("id") id: Int,
+            @Body user: User
+        ) : User
 
-        @DELETE(USER_FEATURES+ INCLUSION_FEATURES)
-        suspend fun delete(user: User)
+//        @DELETE(USER_FEATURES)
+//        suspend fun delete(user: User)
     }
 
 }
