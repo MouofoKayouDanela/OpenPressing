@@ -49,6 +49,25 @@ fun ScaffoldSample() {
 }
 
 @Composable
+fun CardWithContentColor() {
+    val paddingModifier = Modifier.padding(10.dp)
+    Card(
+        elevation = 10.dp,
+        contentColor = black,
+        modifier = paddingModifier
+    ) {
+        Column() {
+            Text(text = "Text with card content color (Blue)",
+                modifier = paddingModifier)
+            Text(text = "Text with card custom color",
+                color = blanc,
+                modifier = paddingModifier)
+
+        }
+    }
+}
+
+@Composable
 fun SectionBleue() {
     Box(
         modifier = Modifier
@@ -276,6 +295,6 @@ fun SearchField() {
 @Composable
 fun Preview() {
     OpenPressingTheme {
-        ScaffoldSample()
+        CardWithContentColor()
     }
 }
