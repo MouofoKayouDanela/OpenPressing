@@ -22,4 +22,9 @@ val VioletPal = Color(0xFFe6b7f3)
 //val gris = Color(0xFF5D6D6D)
 val black = Color(0xFF0C0C0C)
 val blanc = Color(0xFFFCFBFB)
+<<<<<<< HEAD
 
+=======
+val bla = Color(0xFFE6DCDC)
+val Orange= Color(0xFFFF5722)
+>>>>>>> origin/Besoin
