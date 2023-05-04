@@ -1,4 +1,4 @@
-package com.android.openpressing.client_module.repositories.services
+package com.android.openpressing.repositories.services
 
 import com.android.openpressing.data.OpenPressingStrapiApi
 import com.android.openpressing.data.models.service.Service
@@ -16,5 +16,13 @@ class ServiceRepository @Inject constructor(
     suspend fun save(service: Service) = serviceApi.save(service)
 
     suspend fun update(id: Int, service: Service) : Service = serviceApi.update(id, service)
+
+    suspend fun delete(id: Int) {
+
+        val deletingService = getById(id)
+        deletingService.data.attributes.confirmed = false
+
+        update(id, deletingService)
+    }
 
 }

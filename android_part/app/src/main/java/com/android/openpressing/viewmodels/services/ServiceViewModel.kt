@@ -1,9 +1,9 @@
-package com.android.openpressing.client_module.viewmodels.services
+package com.android.openpressing.viewmodels.services
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.openpressing.client_module.repositories.services.ServiceRepository
+import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
