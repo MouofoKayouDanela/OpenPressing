@@ -4,7 +4,8 @@
   "info": {
     "singularName": "offer",
     "pluralName": "offers",
-    "displayName": "Offer"
+    "displayName": "Offer",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -26,7 +27,7 @@
       "target": "api::agency-service.agency-service",
       "inversedBy": "offers"
     },
-    "annonce": {
+    "announce": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::annonce.annonce",
@@ -37,6 +38,14 @@
       "relation": "oneToOne",
       "target": "api::promotion.promotion",
       "mappedBy": "offer"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -66,23 +66,36 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "Nom": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "surname": {
       "type": "string"
     },
-    "Prenom": {
-      "type": "string"
-    },
-    "DateNaissance": {
+    "birthday": {
       "type": "date"
     },
-    "Genre": {
-      "type": "string"
+    "gender": {
+      "type": "string",
+      "unique": false,
+      "required": true
     },
-    "NumeroTelephone": {
-      "type": "string"
+    "phoneNumber": {
+      "type": "string",
+      "required": true,
+      "minLength": 9
     },
-    "PictureUrl": {
-      "type": "text"
+    "registerDate": {
+      "type": "date"
+    },
+    "profilePicture": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
     }
   }
 }

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "service-type",
     "pluralName": "service-types",
-    "displayName": "Service_Type"
+    "displayName": "Service_Type",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -19,6 +20,14 @@
       "relation": "oneToMany",
       "target": "api::service.service",
       "mappedBy": "type"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -12,3 +12,4 @@ val SurfaceColor = Color(0xABE8EDEC)
 val HardGray = Color(0xABA1A1A1)
 
 val SoftYellow = Color(0xFCD8D194)
+val mainColor = Color(0xFF96F1CA)

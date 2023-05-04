@@ -4,7 +4,8 @@
   "info": {
     "singularName": "agent",
     "pluralName": "agents",
-    "displayName": "Agent"
+    "displayName": "Agent",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,11 +17,11 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "privileges": {
+    "privilege": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::privilege.privilege",
-      "mappedBy": "agent"
+      "inversedBy": "agents"
     },
     "agency": {
       "type": "relation",

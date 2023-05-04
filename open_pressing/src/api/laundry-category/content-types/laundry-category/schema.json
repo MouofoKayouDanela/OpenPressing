@@ -4,7 +4,8 @@
   "info": {
     "singularName": "laundry-category",
     "pluralName": "laundry-categories",
-    "displayName": "Laundry_Category"
+    "displayName": "Laundry_Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -19,6 +20,14 @@
       "relation": "oneToMany",
       "target": "api::laundry.laundry",
       "mappedBy": "category"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
