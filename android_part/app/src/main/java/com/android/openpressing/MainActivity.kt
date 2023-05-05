@@ -23,9 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ScaffoldSample()
 
-                        //PageScreen()
                 }
             }
         }
@@ -37,9 +35,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     OpenPressingTheme {
-        //PageScreen()
-        //FormScreen()
-        form()
-        //Default()
+
+
     }
 }
