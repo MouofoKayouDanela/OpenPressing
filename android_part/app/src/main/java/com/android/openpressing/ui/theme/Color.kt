@@ -1,6 +1,8 @@
 package com.android.openpressing.ui.theme
 
 import androidx.compose.ui.graphics.Color
+
+val VerySoftPurple200 = Color(0xFFEEE2FC)
 val SoftPurple200 = Color(0xFFDEC7FA)
 val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)
