@@ -21,7 +21,6 @@ import com.android.openpressing.client_module.presentation.module.ForgotPassword
 import com.android.openpressing.client_module.presentation.module.LoginScreen
 import com.android.openpressing.client_module.presentation.module.RegisterScreen
 import com.android.openpressing.client_module.presentation.module.ResetPasswordScreen
-import dagger.hilt.android.AndroidEntryPoint
 
 //@AndroidEntryPoint
 const val LOGIN_ROUTE = "/login"
