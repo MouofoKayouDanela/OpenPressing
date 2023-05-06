@@ -26,7 +26,7 @@ fun FormScreen(){
 
         Column(modifier = Modifier.padding(16.dp)) {
             Image(
-                painter = painterResource(R.drawable.imges),
+                painter = painterResource(R.drawable.image3),
                 contentDescription = null,
                 modifier = Modifier.size(400.dp)
 
