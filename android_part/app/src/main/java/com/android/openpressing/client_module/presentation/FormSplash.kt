@@ -1,6 +1,6 @@
 package com.android.openpressing.client_module.presentation
 
-/*import android.graphics.Color
+import android.graphics.Color
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -17,12 +17,12 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.unit.dp
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.gris
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import coil.compose.AsyncImage
+import com.google.android.gms.common.util.CollectionUtils.listOf
 
 data class HorizontalPagerContent(
     val title: String,
@@ -142,7 +142,7 @@ fun IntroScreen() {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    scope.launch {
+                    scope.launch{
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
@@ -155,4 +155,4 @@ fun IntroScreen() {
 
     }
 }
-*/
+
