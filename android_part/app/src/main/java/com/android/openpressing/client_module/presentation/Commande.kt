@@ -36,11 +36,10 @@ fun commandeBox(Commande : Commande) {
 
     Card(
         elevation = 3.dp,
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(1.dp),
-
+            .padding(3.dp),
         )
     {
         Row(
@@ -64,7 +63,7 @@ fun commandeBox(Commande : Commande) {
                 }
                 Column(
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(12.dp)
                         .fillMaxWidth()
                         .weight(0.8f),
                     ) {
@@ -76,43 +75,37 @@ fun commandeBox(Commande : Commande) {
                             fontSize = 15.sp
                         )
                     )
-
                     Text(
-
+                        modifier=Modifier.padding(3.dp),
                         text = "Date: ${Commande.dateCmd}",
                         color = black,
                         style = MaterialTheme.typography.body1.copy(
-                            fontSize = 10.sp
+                            fontSize = 12.sp
                         )
                     )
-
-
                     Text(
-
+                        modifier=Modifier.padding(3.dp),
                         text = "Prix:${Commande.prix}",
                         color = black,
                         style = MaterialTheme.typography.subtitle2.copy(
                             fontWeight = FontWeight.Normal,
-                            fontSize = 11.sp
+                            fontSize = 12.sp
                         )
-
                     )
-
-
                 }
                 Row(
                     modifier = Modifier
                         //.weight(0.2f)
-                        .size(100.dp)
-                    ,
+                        .size(100.dp),
                         verticalAlignment=Alignment.CenterVertically
                 ) {
                     Button(
                         onClick = { /*TODO*/ },
                         modifier=Modifier.width(170.dp)
+                            .padding(horizontal = 12.dp)
                     ) {
                         Text(
-                            "Voir details",
+                            "Details",
                             style = MaterialTheme.typography.subtitle1.copy(
                                 fontSize = 12.sp,
                                 color = Color.White,
@@ -157,7 +150,7 @@ fun TopBarCmd(modifier: Modifier = Modifier){
             Modifier
                 .fillMaxWidth()
                 .background(blanc)
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+                .padding(horizontal = 4.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
 
             ) {
@@ -171,7 +164,7 @@ fun TopBarCmd(modifier: Modifier = Modifier){
             // Spacer(Modifier.weight(1f))
             Row(
                 modifier = Modifier
-                    .padding(5.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -197,28 +190,34 @@ fun View() {
     OpenPressingTheme {
         CommandeCard(Commande = listOf(
             Commande(
-                imageVector = painterResource(R.drawable.ele3),
+                imageVector = painterResource(R.drawable.ele4),
                 nomAgence = "Elegance Pressing",
                 dateCmd = "12/02/2020",
                 prix = 1500.0
             ),
             Commande(
-                imageVector = painterResource(R.drawable.ele3),
+                imageVector = painterResource(R.drawable.ele2),
                 nomAgence = "Eco Pressing",
                 dateCmd = "11/02/2020",
                 prix = 4500.0
             ),
             Commande(
-                imageVector = painterResource(R.drawable.ele3),
+                imageVector = painterResource(R.drawable.ele1),
                 nomAgence = "Blinding Pressing",
                 dateCmd = "12/02/2023",
                 prix = 15500.0
             ),
             Commande(
-                imageVector = painterResource(R.drawable.ele3),
+                imageVector = painterResource(R.drawable.ele4),
                 nomAgence = "Saka Pressing",
                 dateCmd = "12/08/2020",
                 prix = 1800.0
+            ),
+            Commande(
+                imageVector = painterResource(R.drawable.ele4),
+                nomAgence = "Blood Pressing",
+                dateCmd = "12/02/2019",
+                prix = 3500.0
             ),
             Commande(
                 imageVector = painterResource(R.drawable.ele3),
@@ -226,7 +225,30 @@ fun View() {
                 dateCmd = "12/02/2019",
                 prix = 3500.0
             ),
-
+            Commande(
+                imageVector = painterResource(R.drawable.ele3),
+                nomAgence = "Blood Pressing",
+                dateCmd = "12/02/2019",
+                prix = 3500.0
+            ),
+            Commande(
+                imageVector = painterResource(R.drawable.ele3),
+                nomAgence = "Blood Pressing",
+                dateCmd = "12/02/2019",
+                prix = 3500.0
+            ),
+            Commande(
+                imageVector = painterResource(R.drawable.ele3),
+                nomAgence = "Blood Pressing",
+                dateCmd = "12/02/2019",
+                prix = 3500.0
+            ),
+            Commande(
+                imageVector = painterResource(R.drawable.ele3),
+                nomAgence = "Blood Pressing",
+                dateCmd = "12/02/2019",
+                prix = 3500.0
+            ),
 
         )
         )

@@ -92,6 +92,10 @@ fun ScaffoldSample() {
     )
 }
 
+@Composable
+fun SectionBleue(){
+
+}
 
 @Composable
 fun CardWithContent(pressing: pressing) {
