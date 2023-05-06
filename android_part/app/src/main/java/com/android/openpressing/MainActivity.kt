@@ -1,5 +1,6 @@
 package com.android.openpressing
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,7 @@ import com.android.openpressing.client_module.presentation.Default
 //import com.android.openpressing.client_module.presentation.form
 
 import com.android.openpressing.client_module.presentation.*
+//import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 
@@ -30,9 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ScaffoldSample()
 
-                        //PageScreen()
                 }
             }
         }
@@ -44,9 +44,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     OpenPressingTheme {
+<<<<<<< HEAD
         //PageScreen()
         //FormScreen()
         //form()
         //Default()
+=======
+
+
+>>>>>>> origin/Besoin
     }
 }
