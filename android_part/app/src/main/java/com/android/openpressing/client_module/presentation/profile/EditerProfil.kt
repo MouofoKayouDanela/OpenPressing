@@ -1,6 +1,5 @@
 package com.android.openpressing.client_module.presentation.profile
 
-import android.widget.ImageButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,19 +20,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.ListeSoustitre
-import com.android.openpressing.client_module.presentation.SectionBleue
 import com.android.openpressing.ui.theme.*
 
 
 @Preview
 @Composable
-fun EditerProfil(){
+fun EditerProfil() {
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(color = mainColor)
 
     ){
         Column() {

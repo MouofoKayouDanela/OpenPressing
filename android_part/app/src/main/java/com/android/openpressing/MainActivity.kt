@@ -10,14 +10,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-<<<<<<< HEAD
+
 import com.android.openpressing.client_module.presentation.Default
 //import com.android.openpressing.client_module.presentation.FormScreen
 //import com.android.openpressing.client_module.presentation.PageScreen
 //import com.android.openpressing.client_module.presentation.form
-=======
+
 import com.android.openpressing.client_module.presentation.*
->>>>>>> origin/Besoin
+
 
 
 class MainActivity : ComponentActivity() {

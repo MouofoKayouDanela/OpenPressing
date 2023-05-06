@@ -1,7 +1,8 @@
 package com.android.openpressing.client_module.presentation
 
 
-import android.graphics.Color
+
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,16 +17,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.rounded.AttachMoney
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.NavigateBefore
-import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -35,14 +36,14 @@ import androidx.compose.ui.unit.sp
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 
-
+@Preview
 @Composable
 fun ScaffoldSample() {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { SectionBleue()  },
-        drawerContent = { Text(text = "Drawer Menu 1") },
+        topBar = {SectionBleu()},
+        //drawerContent = { Text(text = "Drawer Menu 1") },
         content = { SearchField() },
         bottomBar = { BottomBar()}
     )
@@ -68,11 +69,11 @@ fun CardWithContentColor() {
 }
 
 @Composable
-fun SectionBleue() {
+fun SectionBleu() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .size(230.dp) /////taille du box bleue/////
+            .size(height = 160.dp, width = 300.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
@@ -93,11 +94,38 @@ fun SectionBleue() {
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                Icon(
-                    Icons.Rounded.NavigateBefore,
-                    contentDescription = "previewPage",
-                    tint = blanc
-                )
+
+                Row(
+
+                    modifier = Modifier
+                        .padding( horizontal = 15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Image(
+                        painter = painterResource(R.drawable.baseline_person_outline_24),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(35.dp)
+                            .border(1.dp, color = blanc, CircleShape)
+
+                    )
+                    Spacer(Modifier.width(1.dp))
+                    //////description du la photo////
+                    Text(
+                        "  Hello,",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = blanc,
+                    )
+                        Text(
+                            "Emmanuel Zipar",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = blanc,
+                        )
+                }
+                /////////////////////////icone de notification
                 Icon(
                     Icons.Rounded.Notifications,
                     contentDescription ="notifications",
@@ -107,81 +135,42 @@ fun SectionBleue() {
             }
 
             Spacer(Modifier.height(5.dp))
-            ////////////Image +nom//////////////
+            
+            ////////text de titre///////
             Row(
-
-                modifier = Modifier
-                    .padding( horizontal = 25.dp),
-                //verticalAlignment = Alignment.CenterVertically
+                Modifier
+                    .padding(horizontal = 25.dp),
+                verticalAlignment = Alignment.CenterVertically
             ){
-                Image(
-                    painter = painterResource(R.drawable.baseline_person_outline_24),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(55.dp)
-                        .border(1.dp, color = blanc, CircleShape)
-
+                Text(
+                "Find your favorite Laundry place",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = blanc,
                 )
-                Spacer(Modifier.width(2.dp))
-                //////description du la photo////
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .padding(vertical = 15.dp, horizontal = 20.dp)
-                ) {
-                    Text(
-                        "Emmanuel Zipar",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = blanc,
-                    )
-                    Spacer(Modifier.height(5.dp))
-                    ////logo de location/////
-                    Row() {
-                        Icon(
-                            Icons.Rounded.LocationOn,
-                            contentDescription = "location",
-                            tint = blanc
-                        )
-                        Text(
-                            "Douala,Nyalla Rue 225",
-                            fontWeight = FontWeight.Normal,
-                            color = blanc,
-                        )
-                    }
-                }
             }
-            Spacer(Modifier.height(18.dp))
+
+
+            Spacer(Modifier.height(15.dp))
 
             ////////////Les 3 icones du bas//////////////
             Row(
                 Modifier
-                    .padding(horizontal = 25.dp)
+                    .padding(horizontal = 25.dp),
+                verticalAlignment = Alignment.CenterVertically
             ){
-                Column() {
-                    Row{
-                        Icon(
-                            Icons.Rounded.AttachMoney, /////icone du solde////////////
-                            contentDescription = "money",
-                            tint = Orange
-                        )
-                        Text(
-                            "Solde",
-                            fontWeight = FontWeight.Normal,
-                            color = blanc
-                        )
-                    }
-                    Spacer(Modifier.height(1.dp))
-                    Text(
-                        "25.000Fcfa",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = blanc
-                    )
-                }
 
-                //////*****Icone de gauche*******///////////
+                Icon(
+                    Icons.Rounded.LocationOn,
+                    contentDescription = "location",
+                    tint = Orange
+                )
+                Text(
+                    "Douala,Nyalla Rue 225",
+                    fontWeight = FontWeight.Normal,
+                    color = blanc,
+                )
+
             }
 
         }
@@ -234,57 +223,87 @@ fun BottomBar() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchField() {
+fun SearchField() {  ////onSearch: (String) -> Unit
     var value by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
-    TextField(
-        modifier = Modifier
-            //.fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 10.dp),
-        value = value,
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = bla,
-            cursorColor = black,
-            disabledLabelColor = gris,
-            focusedIndicatorColor = blanc,
-            unfocusedIndicatorColor = blanc
-        ),
-        onValueChange = {
-            value = it
-        },
-        placeholder = {
-            Text(
-                text = "Search your laundry",
-                style = TextStyle(
-                  //  color = placeholderColor,
-                    fontSize = 14.sp,
-                   // fontFamily = metropolisFontFamily
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = value,
+            onValueChange = {
+                value = it
+                //onSearch(it)
+            },
+            modifier = Modifier
+                .background(Color.Transparent)
+                .padding(horizontal = 15.dp, vertical =   10.dp)
+                .size(height = 50.dp, width = 220.dp)
+                .border(
+                    BorderStroke(1.dp, color = Violet),
+                    shape = RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp)
+                ),
+            //maxLines = 1,
+            shape = RoundedCornerShape(8.dp),
+            placeholder = {
+                Text(
+                    text = "Search your laundry",
+                    style = TextStyle(
+                        fontSize = 12.sp
+                    )
                 )
-            )
-        },
-        shape = RoundedCornerShape(15.dp),
+            },
 
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(
-            onSearch = {
 
-                keyboardController?.hide()
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+
+                    keyboardController?.hide()
+                }
+            ),
+            singleLine = true,
+            textStyle = TextStyle(
+                // color = primary,
+                fontSize = 15.sp,
+
+                ),
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = "search icon",
+                    modifier = Modifier.padding(start = 14.dp)
+                )
             }
-        ),
-        singleLine = true,
-        textStyle = TextStyle(
-           // color = primary,
-            fontSize = 15.sp,
+        )
 
-        ),
-        leadingIcon = {
+            //////icone de filtre/////
+        Spacer(Modifier.width(10.dp))
+
+        IconButton(
+            onClick = { /*TODO*/ },
+        ) {
             Icon(
-                painter = painterResource(id = R.drawable.baseline_search_24),
-                contentDescription = "search icon",
-                modifier = Modifier.padding(start = 14.dp)
+                Icons.Rounded.Sort,
+                contentDescription = stringResource(R.string.editer),
+                tint = Purple,
+                modifier = Modifier
+                    .size(height = 40.dp, width = 40.dp )
+                    /*.clip(
+                        shape = RoundedCornerShape(
+                            topStart = 5.dp,
+                            topEnd = 5.dp,
+                            bottomEnd = 5.dp,
+                            bottomStart = 5.dp
+                        )
+                    )*/
+                    //.background(bla)
+
             )
         }
-    )
+    }
+
 }
 
 

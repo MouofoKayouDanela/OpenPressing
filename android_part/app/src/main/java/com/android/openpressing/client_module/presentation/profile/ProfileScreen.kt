@@ -20,19 +20,32 @@ import androidx.compose.ui.unit.dp
 import com.android.openpressing.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.ui.theme.*
+
 
 @Preview
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen() {
+
+    // navController: NavHostController
+    //val navController = rememberNavController()
+
+    /*NavHost(navController, startDestination = "ProfileScreen") {
+        composable("ProfileScreen") { ProfileScreen(navController) }
+        composable("page2") { EditerProfil(navController) }
+    }*/
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(color = mainColor)
+        //.background(color = mainColor)
 
     ){
         Column() {
@@ -53,7 +66,7 @@ fun SectionBleue() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .size(230.dp) /////taille du box bleue/////
+            .size(height = 180.dp, width = 230.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
@@ -70,7 +83,7 @@ fun SectionBleue() {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                    .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
@@ -89,69 +102,67 @@ fun SectionBleue() {
                         tint = Color.White
                     )
                 }
-
-
             }
 
-            Spacer(Modifier.height(5.dp))
             ////////////Image +nom//////////////
             Row(
-
                 modifier = Modifier
                     .padding( horizontal = 25.dp),
-                //verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ){
                 Image(
                     painter = painterResource(id = R.drawable.homme),
                     contentDescription = null,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .size(55.dp)
+                        .size(50.dp)
                         .border(1.dp, color = Color.White, CircleShape)
 
                 )
-                Spacer(Modifier.width(2.dp))
+                //Spacer(Modifier.width(1.dp))
                 //////description du la photo////
                 Column(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .padding(vertical = 15.dp, horizontal = 20.dp)
+                        .padding( horizontal = 25.dp)
                 ) {
                     Text(
                         "Emmanuel Zipar",
-                        fontSize = 18.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                     )
                     Spacer(Modifier.height(5.dp))
                     ////logo de location/////
-                    Row() {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             Icons.Rounded.LocationOn,
                             contentDescription = stringResource(R.string.location),
-                            tint = Color.White
+                            tint = Orange
                         )
                         Text(
                             "Douala,Nyalla Rue 225",
                             fontWeight = FontWeight.Normal,
+                            fontSize = 11.sp,
                             color = Color.White,
                         )
                     }
                 }
             }
-            Spacer(Modifier.height(18.dp))
+
 
             ////////////Les 3 icones du bas//////////////
-            Row(
-                Modifier
-                    .padding(horizontal = 25.dp)
-            ){
-                Column() {
+                Column(
+                    Modifier
+                        .padding(horizontal = 50.dp, vertical = 15.dp)
+                ) {
                     Row{
                         Icon(
                             Icons.Rounded.AttachMoney, /////icone du solde////////////
                             contentDescription = stringResource(R.string.money),
-                            tint = Orange
+                            tint = Vert
                         )
                         Text(
                             "Solde",
@@ -170,7 +181,7 @@ fun SectionBleue() {
                 }
 
                 //////*****Icone de gauche*******///////////
-            }
+
 
         }
     }
@@ -180,9 +191,9 @@ fun SectionBleue() {
 fun ListeSoustitre() {
     Box(
         modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 65.dp)
+            .padding(horizontal = 20.dp, vertical = 35.dp)
             .width(300.dp)
-            .height(200.dp)
+            .height(600.dp)
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 15.dp,
@@ -229,7 +240,9 @@ fun ListeSoustitre() {
                     )
                 }
                 Spacer(Modifier.width(10.dp))
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                   // navController.navigate("EditerProfil")
+                }) {
                     Icon(
                         Icons.Rounded.NavigateNext,
                         contentDescription = stringResource(R.string.nextPage),
@@ -269,6 +282,84 @@ fun ListeSoustitre() {
                     )
                 }
                 Spacer(Modifier.width(10.dp))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Rounded.NavigateNext,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Color.Blue
+                    )
+                }
+            }
+
+
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 1.dp) ,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Rounded.FastRewind,
+                    contentDescription = stringResource(R.string.liste),
+                    tint = Teal200
+                )
+                Spacer(Modifier.width(10.dp))
+                Column(
+
+                ) {
+                    Text(
+                        "Show",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                    )
+                    Text(
+                        "A propos de cette application",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Grey,
+                    )
+                }
+                Spacer(Modifier.width(24.dp))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Rounded.NavigateNext,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Color.Blue
+                    )
+                }
+            }
+
+
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 1.dp) ,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Rounded.Favorite,
+                    contentDescription = stringResource(R.string.liste),
+                    tint = Rouge
+                )
+                Spacer(Modifier.width(10.dp))
+                Column(
+
+                ) {
+                    Text(
+                        "Mes favoris",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                    )
+                    Text(
+                        "Vos meilleurs hbnmbv hbvh  ",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Grey,
+                    )
+                }
+                Spacer(Modifier.width(24.dp))
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Rounded.NavigateNext,
