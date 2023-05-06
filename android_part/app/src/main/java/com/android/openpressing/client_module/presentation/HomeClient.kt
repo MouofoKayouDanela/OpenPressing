@@ -49,7 +49,7 @@ fun ScaffoldSample() {
         content = {
                 innerPadding->  CardContent(pressing = listOf(
             pressing(
-                imageVector = painterResource(R.drawable.lavage),
+                imageVector = painterResource(R.drawable.lavage4),
                 nom = "Elegance Pressing",
                 position= "Bonamoussadi",
                 nomLivraison = "Free Delivery"
@@ -73,7 +73,7 @@ fun ScaffoldSample() {
                 nomLivraison = "Free Delivery"
             ),
             pressing(
-                imageVector = painterResource(R.drawable.lavage4),
+                imageVector = painterResource(R.drawable.lavage),
                 nom = "Saka Pressing",
                 position= "Logbessou",
                 nomLivraison = "Free Delivery"

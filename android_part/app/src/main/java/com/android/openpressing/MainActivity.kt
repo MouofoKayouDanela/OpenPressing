@@ -9,10 +9,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.android.openpressing.client_module.presentation.*
-//import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 class MainActivity : ComponentActivity() {
@@ -21,12 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             OpenPressingTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    ScaffoldSample()
-                }
+
+                    val systemUi = rememberSystemUiController()
+                    systemUi.setStatusBarColor(Color.Transparent)
+                    IntroScreen()
+
             }
         }
     }
@@ -37,7 +35,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     OpenPressingTheme {
-        ScaffoldSample()
+        IntroScreen()
 
     }
 }
