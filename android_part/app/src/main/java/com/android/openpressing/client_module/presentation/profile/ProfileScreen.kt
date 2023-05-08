@@ -24,24 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.Screen
 
 
-@Preview
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavHostController) {
 
-    // navController: NavHostController
-    //val navController = rememberNavController()
-
-    /*NavHost(navController, startDestination = "ProfileScreen") {
-        composable("ProfileScreen") { ProfileScreen(navController) }
-        composable("page2") { EditerProfil(navController) }
-    }*/
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -52,7 +41,7 @@ fun ProfileScreen() {
             SectionBleue()
             ///////**********PARTIES BLANCHE DES DETAILS DU PROFILE*******//////////////
 
-            ListeSoustitre()
+            ListeSoustitre(navController)
 
         }
     }
@@ -188,7 +177,7 @@ fun SectionBleue() {
 }
 
 @Composable
-fun ListeSoustitre() {
+fun ListeSoustitre(navController: NavHostController) {
     Box(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 35.dp)
@@ -241,7 +230,7 @@ fun ListeSoustitre() {
                 }
                 Spacer(Modifier.width(10.dp))
                 IconButton(onClick = {
-                   // navController.navigate("EditerProfil")
+                    navController.navigate(Screen.EditScreen.road)
                 }) {
                     Icon(
                         Icons.Rounded.NavigateNext,

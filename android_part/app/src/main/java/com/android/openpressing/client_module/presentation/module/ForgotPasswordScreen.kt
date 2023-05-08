@@ -22,8 +22,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.RESET_PASSWORD_ROUTE
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -95,7 +95,7 @@ fun ForgotPasswordScreen(navController: NavHostController) {
                 )
                 Button(
                     onClick = {
-                        navController.navigate(RESET_PASSWORD_ROUTE)
+                        navController.navigate(Screen.ResetPassword.road)
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier

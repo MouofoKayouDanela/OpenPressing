@@ -23,10 +23,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.android.openpressing.FORGOT_PASSWORD_ROUTE
+
 import com.android.openpressing.R
-import com.android.openpressing.REGISTER_ROUTE
+
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -113,14 +114,14 @@ fun LoginScreen(navController: NavHostController) {
                 )
                 TextButton(
                     onClick = {
-                        navController.navigate(FORGOT_PASSWORD_ROUTE)
+                        navController.navigate(Screen.ForgotPassword.road)
                     },
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Text("Forgot Password ?")
                 }
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(Screen.Home.road)},
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(48.dp)
@@ -184,7 +185,7 @@ fun LoginScreen(navController: NavHostController) {
                             color = Blue,
                         ),
                         modifier = Modifier.clickable {
-                            navController.navigate(REGISTER_ROUTE)
+                            navController.navigate(Screen.Register.road)
                         }
                     )
                 }

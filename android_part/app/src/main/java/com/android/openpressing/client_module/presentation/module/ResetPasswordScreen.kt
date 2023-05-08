@@ -22,9 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.android.openpressing.LOGIN_ROUTE
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -132,7 +132,7 @@ fun ResetPasswordScreen(navController: NavHostController) {
                 )
                 Box(modifier = Modifier.height(24.dp))
                 Button(
-                    onClick = { navController.navigate(LOGIN_ROUTE) },
+                    onClick = { navController.navigate(Screen.Login.road) },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(48.dp)

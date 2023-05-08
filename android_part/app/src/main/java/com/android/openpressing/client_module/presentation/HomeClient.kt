@@ -3,7 +3,6 @@ package com.android.openpressing.client_module.presentation
 
 
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,17 +28,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.Screen
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
 data class pressing(
@@ -54,9 +53,9 @@ data class user(
     val localisation: String
 )
 
-@Preview
+
 @Composable
-fun ScaffoldSample() {
+fun ScaffoldSample(navController: NavHostController) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     Scaffold(
         scaffoldState = scaffoldState,
@@ -104,7 +103,7 @@ fun ScaffoldSample() {
             innerPadding = innerPadding
         )
                   },
-        bottomBar = { BottomBar()}
+        bottomBar = { BottomBar(navController)}
     )
 }
 
@@ -404,7 +403,7 @@ fun SectionBleu() {
 
     //////////////BOTTOM BARRE/////////////////
     @Composable
-    fun BottomBar() {
+    fun BottomBar(navController: NavHostController) {
         val selectedIndex = remember { mutableStateOf(0) }
         BottomNavigation(
             elevation = 2.dp,
@@ -417,6 +416,7 @@ fun SectionBleu() {
                 label = { Text(text = "Laundry") },
                 selected = (selectedIndex.value == 0),
                 onClick = {
+                    navController.navigate(Screen.Home.road)
                     selectedIndex.value = 0
                 })
             BottomNavigationItem(icon = {
@@ -443,15 +443,16 @@ fun SectionBleu() {
                 label = { Text(text = "Profile") },
                 selected = (selectedIndex.value == 3),
                 onClick = {
+                    navController.navigate(Screen.Profile.road)
                     selectedIndex.value = 3
                 })
         }
     }
 
     //@Preview(showBackground = true)
-    @Composable
+   /* @Composable
     fun Preview() {
         OpenPressingTheme {
-            ScaffoldSample()
+            ScaffoldSample(navController)
         }
-    }
+    }*/

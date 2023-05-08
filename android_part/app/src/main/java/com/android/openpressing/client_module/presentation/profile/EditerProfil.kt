@@ -2,7 +2,6 @@ package com.android.openpressing.client_module.presentation.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -22,19 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.Screen
 
 
-@Preview
 @Composable
-fun EditerProfil() {
+fun EditerProfil(navController: NavHostController) {
 
     Box(modifier = Modifier
         .fillMaxSize()
 
     ){
         Column() {
-            FixBare()
+            FixBare(navController)
 
             ListBox()
 
@@ -61,7 +59,7 @@ fun EditerProfil() {
 
 
 @Composable
-fun FixBare() {
+fun FixBare(navController: NavHostController) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(60.dp)
@@ -74,7 +72,7 @@ fun FixBare() {
             verticalAlignment = Alignment.CenterVertically
 
         ){
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate(Screen.Profile.road) }) {
                 Icon(
                     Icons.Rounded.NavigateBefore,
                     contentDescription = stringResource(R.string.previewPage),

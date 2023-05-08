@@ -69,7 +69,7 @@ fun MainScreen(scaffoldState: LazyListState) {
 @Composable
 fun RequirementContent(scaffoldState: LazyListState) {
 
-    RequirementCard(R.drawable.arrow_back, "jacket")
+    //RequirementCard(R.drawable.arrow_back, "jacket")
 
 
 

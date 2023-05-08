@@ -24,9 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.android.openpressing.FINITION_ROUTE
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -156,7 +156,7 @@ fun RegisterScreen(navController: NavHostController) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { /* Gérer l'événement du bouton précédent */ },
+                        onClick = { navController.navigate(Screen.Login.road) },
                         enabled = false // Griser le bouton précédent,
 
                     ) {
@@ -167,7 +167,7 @@ fun RegisterScreen(navController: NavHostController) {
                     ) {
                         Text(text = "Continuer", style = MaterialTheme.typography.body1,
                             modifier = Modifier.clickable {
-                                navController.navigate(FINITION_ROUTE)
+                                navController.navigate(Screen.Finition.road)
                             })
                     }
                 }
