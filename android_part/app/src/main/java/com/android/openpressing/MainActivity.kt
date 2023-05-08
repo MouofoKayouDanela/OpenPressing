@@ -44,14 +44,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     OpenPressingTheme {
-<<<<<<< HEAD
+
         //PageScreen()
         //FormScreen()
         //form()
         //Default()
-=======
 
-
->>>>>>> origin/Besoin
     }
 }

@@ -52,6 +52,8 @@ fun EditerProfil() {
                 )
             }
 
+
+
         }
     }
 }
@@ -110,7 +112,6 @@ fun ListBox() {
             )//////forme arrondie de la box/////
             .background(color = Color.White),
 
-
         ) {
         Column(
             modifier = Modifier.padding(vertical = 15.dp),
@@ -123,24 +124,22 @@ fun ListBox() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Rounded.Person,
-                    contentDescription = stringResource(R.string.nextPage),
-                    tint = Purple
-                )
-                Spacer(Modifier.width(10.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+
                     Text(
-                        "Emmanuel Zipar",
+                        "FullName : ",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black,
                     )
-                }
-                Spacer(Modifier.width(65.dp))
-                IconButton(onClick = { /*TODO*/ }) {
+                    Text(
+                        " Emmanuel Zipar",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                    )
+
+                //Spacer(Modifier.width(65.dp))
+                /*IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.editer),
@@ -150,159 +149,93 @@ fun ListBox() {
                             .background(VioletPal)
                             .padding(5.dp)
                     )
-                }
+                }*/
             }
 
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 20.dp) ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Rounded.Mail,
-                    contentDescription = stringResource(R.string.message),
-                    tint = Color.Green
+
+                Text(
+                    "Email : ",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
                 )
-                Spacer(Modifier.width(10.dp))
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "emanuelzipar@gmail.com",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-                }
-                Spacer(Modifier.width(10.dp))
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }
+                Text(
+                    " Emanuelzipar@gmail.com",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                )
             }
 
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 20.dp) ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Rounded.Phone,
-                    contentDescription = stringResource(R.string.liste),
-                    tint = Color.Blue
+
+                Text(
+                    "Contact : ",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
                 )
-                Spacer(Modifier.width(10.dp))
-                Column(
-
-                ) {
-                    Text(
-                        "+237 657 290 643",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-
-                }
-                Spacer(Modifier.width(50.dp))
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }
-
+                Text(
+                    " +237 657 290 643",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                )
             }
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 20.dp) ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Rounded.CalendarMonth,
-                    contentDescription = stringResource(R.string.liste),
-                    tint = Orange
+
+                Text(
+                    "Date & lieu de naissance : ",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
                 )
-                Spacer(Modifier.width(10.dp))
-                Column(
-
-                ) {
-                    Text(
-                        "Banfang, 23/08/1998",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-
-                }
-                Spacer(Modifier.width(30.dp))
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }
-
+                Text(
+                    " Banfang, 23/08/1998",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                )
             }
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 20.dp) ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    Icons.Rounded.LocationOn,
-                    contentDescription = stringResource(R.string.liste),
-                    tint = Grey
+
+                Text(
+                    "Adresse de residence : ",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
                 )
-                Spacer(Modifier.width(10.dp))
-                Column(
-
-                ) {
-                    Text(
-                        "Douala,Nyalla Rue210",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-
-                }
-                Spacer(Modifier.width(30.dp))
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }
-
+                Text(
+                    " Douala, Nyalla Rue210",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                )
             }
         }
 
