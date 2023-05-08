@@ -26,6 +26,14 @@
       "relation": "manyToOne",
       "target": "api::country.country",
       "inversedBy": "cities"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
