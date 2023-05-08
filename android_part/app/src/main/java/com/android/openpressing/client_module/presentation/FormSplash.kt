@@ -37,22 +37,22 @@ fun getList(): List<HorizontalPagerContent> {
         HorizontalPagerContent(
             "Open Pressing",
             R.drawable.image1,
-            "Verification is an extra or final bit of proof that establishes something is true"
+            "Lavages des pressings à Bling Pressing"
+        ),
+        HorizontalPagerContent(
+            "Open Pressing",
+            R.drawable.images2,
+            "laver vos vetements"
         ),
         HorizontalPagerContent(
             "Open Pressing",
             R.drawable.image3,
-            "We pay attention to all of your payments and find way for saving your money"
+            "livraison des vetements"
         ),
         HorizontalPagerContent(
             "Open Pressing",
-            R.drawable.images2,
-            "Free Advisory service,mobile banking application,visa"
-        ),
-        HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.images2,
-            "Bank your life,We create something new you have never seen before"
+            R.drawable.image3,
+            "livraison des vetements"
         )
     )
 }
@@ -119,20 +119,20 @@ fun IntroScreen() {
                 .padding(vertical = 26.dp)
         )
 
-
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth()
+        ) {
             if (isPrevVisible.value) {
                 Button(onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 }) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Rounded.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp, 32.dp)
-                        )
-                    }
+                    Text(text = "Prev")
                 }
             }
             if (isPrevVisible.value && isNextVisible.value) {
@@ -141,22 +141,15 @@ fun IntroScreen() {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    scope.launch{
+                    scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Rounded.ArrowRight,
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp, 32.dp)
-                        )
-                    }
+                    Text(text = "Next")
                 }
-
+            }
 
         }
-
 
     }
 }
