@@ -38,7 +38,7 @@ fun ProfileScreen(navController: NavHostController) {
 
     ){
         Column() {
-            SectionBleue()
+            BlueSection()
             ///////**********PARTIES BLANCHE DES DETAILS DU PROFILE*******//////////////
 
             ListeSoustitre(navController)
@@ -51,7 +51,7 @@ fun ProfileScreen(navController: NavHostController) {
 
 
 @Composable
-fun SectionBleue() {
+fun BlueSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()

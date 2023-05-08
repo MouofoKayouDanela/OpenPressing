@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.client_module.presentation.IntroScreen
 import com.android.openpressing.client_module.presentation.ProfileScreen
 import com.android.openpressing.client_module.presentation.ScaffoldSample
 import com.android.openpressing.ui.theme.OpenPressingTheme
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Login.road){
+                NavHost(navController = navController, startDestination = Screen.Splash.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Home.road){ ScaffoldSample(navController) }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
+                    composable(Screen.Splash.road){ IntroScreen(navController) }
                 }
             }
         }

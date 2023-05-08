@@ -10,4 +10,6 @@ sealed class Screen(val road: String){
     object Home: Screen("/home_Screen")
     object Profile: Screen("/profile_Screen")
     object EditScreen: Screen("/edit_screen")
+    object Splash: Screen("/splash_screen")
+
 }

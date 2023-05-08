@@ -59,12 +59,12 @@ fun ScaffoldSample(navController: NavHostController) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {SectionBleu()},
+        topBar = {SectionBleue()},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(pressing = listOf(
             pressing(
-                imageVector = painterResource(R.drawable.lavage),
+                imageVector = painterResource(R.drawable.lavage4),
                 nom = "Elegance Pressing",
                 position= "Bonamoussadi",
                 nomLivraison = "Free Delivery"
@@ -88,7 +88,7 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
             pressing(
-                imageVector = painterResource(R.drawable.lavage4),
+                imageVector = painterResource(R.drawable.lavage),
                 nom = "Saka Pressing",
                 position= "Logbessou",
                 nomLivraison = "Free Delivery"
@@ -107,6 +107,10 @@ fun ScaffoldSample(navController: NavHostController) {
     )
 }
 
+@Composable
+fun SectionBleue(){
+
+}
 
 @Composable
 fun CardWithContent(pressing: pressing) {

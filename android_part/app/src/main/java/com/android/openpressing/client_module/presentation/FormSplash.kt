@@ -1,11 +1,11 @@
 package com.android.openpressing.client_module.presentation
 
-/*import android.graphics.Color
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -14,15 +14,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.android.openpressing.R
-import com.android.openpressing.ui.theme.gris
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.android.gms.common.util.CollectionUtils.listOf
 import kotlinx.coroutines.launch
-import coil.compose.AsyncImage
+
 
 data class HorizontalPagerContent(
     val title: String,
@@ -33,22 +35,22 @@ data class HorizontalPagerContent(
 fun getList(): List<HorizontalPagerContent> {
     return listOf(
         HorizontalPagerContent(
-            "Verified",
+            "Open Pressing",
             R.drawable.image1,
             "Verification is an extra or final bit of proof that establishes something is true"
         ),
         HorizontalPagerContent(
-            "Make it simple",
+            "Open Pressing",
             R.drawable.image3,
             "We pay attention to all of your payments and find way for saving your money"
         ),
         HorizontalPagerContent(
-            "New Banking",
+            "Open Pressing",
             R.drawable.images2,
             "Free Advisory service,mobile banking application,visa"
         ),
         HorizontalPagerContent(
-            "Zero Fees",
+            "Open Pressing",
             R.drawable.images2,
             "Bank your life,We create something new you have never seen before"
         )
@@ -56,7 +58,7 @@ fun getList(): List<HorizontalPagerContent> {
 }
 
 @Composable
-fun IntroScreen() {
+fun IntroScreen(navController: NavHostController) {
     val pagerState = rememberPagerState()
     val list = getList()
 
@@ -69,8 +71,6 @@ fun IntroScreen() {
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,13 +103,12 @@ fun IntroScreen() {
                     Text(
                         text = list[currentPage].description,
                         style = MaterialTheme.typography.body1,
-                        color = gris,
+                        color = Black,
+                        fontWeight=Bold,
                         modifier = Modifier
                             .padding(horizontal = 12.dp)
                             .fillMaxWidth(.6f)
-                            .align(
-                                CenterHorizontally
-                            )
+
                     )
 
                 }
@@ -120,20 +119,20 @@ fun IntroScreen() {
                 .padding(vertical = 26.dp)
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .fillMaxWidth()
-        ) {
+
             if (isPrevVisible.value) {
                 Button(onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 }) {
-                    Text(text = "Prev")
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            Icons.Rounded.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp, 32.dp)
+                        )
+                    }
                 }
             }
             if (isPrevVisible.value && isNextVisible.value) {
@@ -142,17 +141,23 @@ fun IntroScreen() {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    scope.launch {
+                    scope.launch{
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
-                    Text(text = "Next")
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            Icons.Rounded.ArrowRight,
+                            contentDescription = null,
+                            modifier = Modifier.size(32.dp, 32.dp)
+                        )
+                    }
                 }
-            }
+
 
         }
 
 
     }
 }
-*/
+
