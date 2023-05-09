@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,7 +60,8 @@ fun ScaffoldSample(navController: NavHostController) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {SectionBleue()},
+        //LazyColumn(content = LazyListScope.item()->unit ),
+        topBar = {},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(pressing = listOf(
@@ -109,7 +111,109 @@ fun ScaffoldSample(navController: NavHostController) {
 
 @Composable
 fun SectionBleue(){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .size(height = 160.dp, width = 300.dp) /////taille du box bleue/////
+            .clip(
+                shape = RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomEnd = 40.dp,
+                    bottomStart = 40.dp
+                )
+            )//////forme arrondie de la box/////
+            .background(color = Purple500)
+        //shape=RoundedCornerShape(32.dp)
+    ) {Column() {
+        /////Ligne de l'icone de notification/////
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
 
+        ){ /////LIGNE DE L'IMAGE//////////
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.homme),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(40.dp)
+                        .border(1.dp, color = Color.White, CircleShape)
+
+                )
+                Spacer(Modifier.width(1.dp))
+                //////description du la photo////
+
+                Text(
+                    " Hello, ",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.White,
+                )
+                Text(
+                    "Emmanuel Zipar",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+                //Spacer(Modifier.height(5.dp))
+            }
+
+            ////logo de location/////
+
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    Icons.Rounded.Notifications,
+                    contentDescription = stringResource(R.string.notifications),
+                    tint = Color.White
+                )
+            }
+        }
+
+        //Spacer(Modifier.height(5.dp))
+
+        ////////text de titre///////
+        Row(
+            Modifier
+                .padding(horizontal = 25.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Find your favorite Laundry place",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = blanc,
+            )
+        }
+
+        Spacer(Modifier.height(10.dp))
+
+        ////logo de location/////
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(horizontal = 35.dp)
+        ) {
+            Icon(
+                Icons.Rounded.LocationOn,
+                contentDescription = stringResource(R.string.location),
+                tint = Orange
+            )
+            Text(
+                "Douala,Nyalla Rue225",
+                fontWeight = FontWeight.Normal,
+                fontSize = 11.sp,
+                color = Color.White,
+            )
+        }
+    }
+    }
 }
 
 @Composable
@@ -213,115 +317,6 @@ fun CardWithContent(pressing: pressing) {
     }
 }
 
-
-@Composable
-fun SectionBleu() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .size(height = 160.dp, width = 300.dp) /////taille du box bleue/////
-            .clip(
-                shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
-                    bottomEnd = 40.dp,
-                    bottomStart = 40.dp
-                )
-            )//////forme arrondie de la box/////
-            .background(color = Purple500)
-        //shape=RoundedCornerShape(32.dp)
-    ) {
-
-        Column() {
-            /////Ligne de l'icone de notification/////
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 15.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-
-            ){ /////LIGNE DE L'IMAGE//////////
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.homme),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(40.dp)
-                            .border(1.dp, color = Color.White, CircleShape)
-
-                    )
-                    Spacer(Modifier.width(1.dp))
-                    //////description du la photo////
-
-                    Text(
-                        " Hello, ",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.White,
-                    )
-                    Text(
-                        "Emmanuel Zipar",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                    )
-                    //Spacer(Modifier.height(5.dp))
-                }
-
-                ////logo de location/////
-
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Notifications,
-                        contentDescription = stringResource(R.string.notifications),
-                        tint = Color.White
-                    )
-                }
-            }
-
-            //Spacer(Modifier.height(5.dp))
-
-            ////////text de titre///////
-            Row(
-                Modifier
-                    .padding(horizontal = 25.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Find your favorite Laundry place",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = blanc,
-                )
-            }
-
-            Spacer(Modifier.height(10.dp))
-
-            ////logo de location/////
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(horizontal = 35.dp)
-            ) {
-                Icon(
-                    Icons.Rounded.LocationOn,
-                    contentDescription = stringResource(R.string.location),
-                    tint = Orange
-                )
-                Text(
-                    "Douala,Nyalla Rue225",
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 11.sp,
-                    color = Color.White,
-                )
-            }
-        }
-    }
-}
 
     /////////BARRE DE RECHERCHE//////////////////
     @OptIn(ExperimentalComposeUiApi::class)

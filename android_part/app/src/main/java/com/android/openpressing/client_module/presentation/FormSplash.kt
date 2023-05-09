@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
+import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
@@ -119,20 +120,20 @@ fun IntroScreen(navController: NavHostController) {
                 .padding(vertical = 26.dp)
         )
 
-
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth()
+        ) {
             if (isPrevVisible.value) {
                 Button(onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 }) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Rounded.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp, 32.dp)
-                        )
-                    }
+                    Text(text = "Prev")
                 }
             }
             if (isPrevVisible.value && isNextVisible.value) {
@@ -141,23 +142,20 @@ fun IntroScreen(navController: NavHostController) {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    scope.launch{
+                    navController.navigate(Screen.Login.road)
+                    scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Rounded.ArrowRight,
-                            contentDescription = null,
-                            modifier = Modifier.size(32.dp, 32.dp)
-                        )
-                    }
+                    Text(text = "Next")
                 }
-
+            }
 
         }
 
-
     }
 }
+
+
+
 

@@ -38,7 +38,7 @@ fun ProfileScreen(navController: NavHostController) {
 
     ){
         Column() {
-            BlueSection()
+            BlueSection(navController)
             ///////**********PARTIES BLANCHE DES DETAILS DU PROFILE*******//////////////
 
             ListeSoustitre(navController)
@@ -51,7 +51,7 @@ fun ProfileScreen(navController: NavHostController) {
 
 
 @Composable
-fun BlueSection() {
+fun BlueSection(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,7 +76,12 @@ fun BlueSection() {
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = {
+
+                        navController.navigate(Screen.EditScreen.road)
+                    }
+                ) {
                     Icon(
                         Icons.Rounded.NavigateBefore,
                         contentDescription = stringResource(R.string.previewPage),

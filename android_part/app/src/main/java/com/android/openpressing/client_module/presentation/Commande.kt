@@ -24,15 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.OpenPressingTheme
-import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.ui.theme.black
 import com.android.openpressing.ui.theme.blanc
 
 
 @Composable
-fun commandeBox(Commande : Commande) {
+fun commandeBox( Commande: Commande) {
 
     Card(
         elevation = 3.dp,
@@ -128,6 +128,7 @@ fun commandeBox(Commande : Commande) {
         val dateCmd: String
     )
 
+
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun CommandeCard(
@@ -143,6 +144,8 @@ fun commandeBox(Commande : Commande) {
 
         }
     }
+
+
 @Composable
 fun TopBarCmd(modifier: Modifier = Modifier){
     Box{
@@ -168,7 +171,7 @@ fun TopBarCmd(modifier: Modifier = Modifier){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Consulter Les Commandes",
+                    text = "Mes Commandes",
                     style = MaterialTheme.typography.body1.copy(
                         color = black,
                         textAlign = TextAlign.Center,
@@ -188,7 +191,7 @@ fun TopBarCmd(modifier: Modifier = Modifier){
 @Composable
 fun View() {
     OpenPressingTheme {
-        CommandeCard(Commande = listOf(
+        CommandeCard( Commande = listOf(
             Commande(
                 imageVector = painterResource(R.drawable.ele4),
                 nomAgence = "Elegance Pressing",
