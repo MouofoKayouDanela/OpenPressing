@@ -1,18 +1,22 @@
 package com.android.openpressing
 
+import androidx.compose.ui.tooling.preview.Preview
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.android.openpressing.viewmodels.services.ServiceViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.ui.theme.OpenPressingTheme
+import com.android.openpressing.client_module.presentation.module.FinitionScreen
+import com.android.openpressing.client_module.presentation.module.ForgotPasswordScreen
+import com.android.openpressing.client_module.presentation.module.LoginScreen
+import com.android.openpressing.client_module.presentation.module.RegisterScreen
+import com.android.openpressing.client_module.presentation.module.ResetPasswordScreen
+import com.android.openpressing.client_module.presentation.profile.EditerProfil
+import com.android.openpressing.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,28 +24,36 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            OpenPressingTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
+            val navController = rememberNavController()
+
+            OpenPressingTheme{
+                NavHost(navController = navController, startDestination = Screen.Splash.road){
+                    composable(Screen.Login.road){ LoginScreen(navController) }
+                    composable(Screen.Register.road){ RegisterScreen(navController) }
+                    composable(Screen.Finition.road) { FinitionScreen(navController)}
+                    composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
+                    composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
+                    composable(Screen.Home.road){ ScaffoldSample(navController) }
+                    composable(Screen.Profile.road){ ProfileScreen(navController) }
+                    composable(Screen.EditScreen.road){ EditerProfil(navController) }
+                    composable(Screen.Splash.road){ IntroScreen(navController) }
+                    //composable(Screen.Commande.road){ CommandeCard(navController) }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     OpenPressingTheme {
-        Greeting("Android")
+
+        //PageScreen()
+        //FormScreen()
+        //form()
+        //Default()
+
     }
 }
