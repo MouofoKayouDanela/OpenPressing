@@ -13,13 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.android.openpressing.R
+import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
-import coil.compose.AsyncImage
 import com.google.android.gms.common.util.CollectionUtils.listOf
+import kotlinx.coroutines.launch
 
 
 data class HorizontalPagerContent(
@@ -54,7 +56,7 @@ fun getList(): List<HorizontalPagerContent> {
 }
 
 @Composable
-fun IntroScreen() {
+fun IntroScreen(navController: NavHostController) {
     val pagerState = rememberPagerState()
     val list = getList()
 
@@ -137,7 +139,7 @@ fun IntroScreen() {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    scope.launch {
+                    scope.launch{
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
@@ -149,4 +151,7 @@ fun IntroScreen() {
 
     }
 }
+
+
+
 

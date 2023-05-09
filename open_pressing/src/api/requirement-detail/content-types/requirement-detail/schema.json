@@ -34,6 +34,14 @@
       "relation": "manyToOne",
       "target": "api::besoin.besoin",
       "inversedBy": "requirement_details"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

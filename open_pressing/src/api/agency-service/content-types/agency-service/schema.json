@@ -25,10 +25,10 @@
       "inversedBy": "agency_services"
     },
     "AddingDate": {
-      "type": "datetime"
+      "type": "date"
     },
     "RetireDate": {
-      "type": "datetime"
+      "type": "date"
     },
     "Status": {
       "type": "string"
@@ -38,6 +38,14 @@
       "relation": "oneToMany",
       "target": "api::offer.offer",
       "mappedBy": "agency_service"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

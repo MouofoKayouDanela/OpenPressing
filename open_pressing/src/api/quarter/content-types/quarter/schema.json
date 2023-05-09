@@ -30,7 +30,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::order.order",
-      "mappedBy": "delivery_adress"
+      "mappedBy": "delivery_address"
     }
   }
 }
