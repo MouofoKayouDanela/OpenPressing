@@ -3,10 +3,7 @@ package com.android.openpressing.client_module.presentation
 
 
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
@@ -37,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
@@ -61,7 +59,7 @@ fun ScaffoldSample(navController: NavHostController) {
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {},
+        topBar = {SectionBleue()},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(pressing = listOf(
@@ -102,7 +100,8 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
         ),
-            innerPadding = innerPadding
+            innerPadding = innerPadding,
+            navController
         )
                   },
         bottomBar = { BottomBar(navController)}
@@ -217,13 +216,16 @@ fun SectionBleue(){
 }
 
 @Composable
-fun CardWithContent(pressing: pressing) {
+fun CardWithContent(pressing: pressing, navController: NavHostController) { //navController: NavHostController
     val paddingModifier = Modifier.padding(15.dp)
     Card(
         elevation = 10.dp,
         contentColor = black,
         shape = RoundedCornerShape(15.dp),
-        modifier = paddingModifier
+        modifier = Modifier
+            .padding(15.dp)
+            .clickable { navController.navigate(Screen.AddService.road) },
+
     ) {
         Column(
             modifier = Modifier
@@ -384,7 +386,8 @@ fun CardWithContent(pressing: pressing) {
     fun CardContent(
 
         pressing: List<pressing>,
-        innerPadding: PaddingValues
+        innerPadding: PaddingValues,
+        navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
         LazyColumn(contentPadding = innerPadding) {
@@ -395,7 +398,7 @@ fun CardWithContent(pressing: pressing) {
                 })
             }
             items(pressing) {
-                CardWithContent(it)
+                CardWithContent(it, navController) //navController = NavHostController
             }
         }
     }

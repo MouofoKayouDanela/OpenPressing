@@ -2,14 +2,18 @@ package com.android.openpressing.client_module.presentation.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.LocalLaundryService
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
@@ -33,6 +39,26 @@ fun EditerProfil(navController: NavHostController) {
     ){
         Column() {
             FixBare(navController)
+
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 11.dp, horizontal = 10.dp),
+               // horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.editer),
+                        tint = Violet,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(VioletPal)
+                            .padding(5.dp)
+                    )
+
+                }
+            }
+
 
             ListBox()
 
@@ -50,10 +76,12 @@ fun EditerProfil(navController: NavHostController) {
                 )
             }
 
-
-
+            BottomBar(navController)
         }
+
     }
+
+
 }
 
 
@@ -68,8 +96,9 @@ fun FixBare(navController: NavHostController) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 15.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 8.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
 
         ){
             IconButton(onClick = { navController.navigate(Screen.Profile.road) }) {
@@ -79,26 +108,25 @@ fun FixBare(navController: NavHostController) {
                     tint = Color.Black
                 )
             }
-            Spacer(Modifier.width(25.dp))
+            //Spacer(Modifier.width(15.dp))
             Text(
                 "Informations Personnelles",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
             )
-
-        }
+            Spacer(Modifier.width(15.dp))
 
     }
 }
-
+}
 
 
 @Composable
 fun ListBox() {
     Box(
         modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 50.dp)
+            .padding(horizontal = 10.dp)
             .size(300.dp)
             .clip(
                 shape = RoundedCornerShape(
@@ -113,47 +141,35 @@ fun ListBox() {
         ) {
         Column(
             modifier = Modifier.padding(vertical = 15.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+            //horizontalArrangement = Arrangement.SpaceBetween,
+            //verticalArrangement = Arrangement.SpaceBetween
         ) {
             ///////*******LIGNE DE SOUS PAGE*********//////
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp) ,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                    .padding(horizontal = 20.dp),
+
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                    Text(
-                        "FullName : ",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-                    Text(
-                        " Emmanuel Zipar",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-
-                //Spacer(Modifier.width(65.dp))
-                /*IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }*/
+                Text(
+                    "FullName : ",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
+                )
+                Text(
+                    " Emmanuel Zipar",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black,
+                )
             }
 
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp) ,
+                    .padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -175,7 +191,7 @@ fun ListBox() {
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp) ,
+                    .padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -196,7 +212,7 @@ fun ListBox() {
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp) ,
+                    .padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -217,7 +233,7 @@ fun ListBox() {
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp) ,
+                    .padding(horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -236,7 +252,52 @@ fun ListBox() {
                 )
             }
         }
+    }
+}
 
+@Composable
+fun BottomBar(navController: NavHostController) {
+    val selectedIndex = remember { mutableStateOf(0) }
+    BottomNavigation(
+        elevation = 2.dp,
+        backgroundColor = blanc
+    ) {
 
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+        },
+            label = { Text(text = "Laundry") },
+            selected = (selectedIndex.value == 0),
+            onClick = {
+                navController.navigate(Screen.Home.road)
+                selectedIndex.value = 0
+            })
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Reorder, "")
+        },
+            label = { Text(text = "Order") },
+            selected = (selectedIndex.value == 1),
+            onClick = {
+                selectedIndex.value = 1
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Chat, "")
+        },
+            label = { Text(text = "Chat") },
+            selected = (selectedIndex.value == 2),
+            onClick = {
+                selectedIndex.value = 2
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Person, "")
+        },
+            label = { Text(text = "Profile") },
+            selected = (selectedIndex.value == 3),
+            onClick = {
+                navController.navigate(Screen.Profile.road)
+                selectedIndex.value = 3
+            })
     }
 }

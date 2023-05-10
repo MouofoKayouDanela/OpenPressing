@@ -17,12 +17,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 
@@ -30,7 +32,8 @@ import com.android.openpressing.ui.theme.*
 
 @Composable
 fun Besoin(
-    publier:Publication
+    publier:Publication,
+    //navController: NavHostController
 ){
     Box{
         Column(
@@ -178,7 +181,8 @@ fun TopBar(modifier: Modifier = Modifier){
                 Icon(
                     Icons.Rounded.ArrowBack,
                     contentDescription = null,
-                    modifier = Modifier.size(32.dp, 32.dp)
+                    modifier = Modifier.size(32.dp, 32.dp),
+                    tint = Color.White
                 )
             }
                 // Spacer(Modifier.weight(1f))
@@ -188,7 +192,7 @@ fun TopBar(modifier: Modifier = Modifier){
                 //horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Consulter Besoin",
+                    text = "Mes Besoins",
                     style = MaterialTheme.typography.body1.copy(
                         color = black,
                         textAlign = TextAlign.Center,
