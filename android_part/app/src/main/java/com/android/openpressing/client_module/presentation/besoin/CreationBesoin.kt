@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -87,16 +88,21 @@ data class linge(
 fun AddRequirementScreen(){
 
     val scrollState = rememberLazyListState()
-    Column  {
-       TopBar()
-       Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant )
-        Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant)
-        Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant)
-        Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant)
-        Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant)
-        Content(laundryService ="Netoyage" , serviceImage = R.drawable.pant)
+    Column {
+        TopBar()
+    }
+        LazyColumn(contentPadding = PaddingValues(start=80.dp), state = scrollState  ) {
+
+            item {
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
+                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
 
 
+        }
 
 
     }
