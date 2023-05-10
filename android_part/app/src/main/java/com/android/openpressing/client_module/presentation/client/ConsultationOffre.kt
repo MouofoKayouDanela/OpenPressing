@@ -31,11 +31,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.Orange
 import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.ui.theme.Vert
 import com.android.openpressing.ui.theme.black
+import com.android.openpressing.utils.Screen
 
 data class pressing(
     val imageVector: Painter,
@@ -66,17 +68,17 @@ data class linge(
 )
 
 @Composable
-fun AppTopBar(useer: user, scrollState: LazyListState) {
+fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(height = 180.dp, width = 230.dp) /////taille du box bleue/////
+                .size(height = 110.dp, width = 230.dp) /////taille du box bleue/////
                 .clip(
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
                         topEnd = 0.dp,
-                        bottomEnd = 40.dp,
-                        bottomStart = 40.dp
+                        bottomEnd = 20.dp,
+                        bottomStart = 20.dp
                     )
                 )//////forme arrondie de la box/////
                 .background(color = Purple500)
@@ -91,7 +93,7 @@ fun AppTopBar(useer: user, scrollState: LazyListState) {
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ){
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { navController.navigate(Screen.Home.road) }) {
                         Icon(
                             Icons.Rounded.NavigateBefore,
                             contentDescription = "stringResource(R.string.previewPage)",
@@ -155,39 +157,6 @@ fun AppTopBar(useer: user, scrollState: LazyListState) {
                         }
                     }
                 }
-
-
-                ////////////Les 3 icones du bas//////////////
-                Column(
-                    Modifier
-                        .padding(horizontal = 50.dp, vertical = 15.dp)
-                ) {
-                    Row{
-                        Icon(
-                            Icons.Rounded.AttachMoney, /////icone du solde////////////
-                            contentDescription = "stringResource(R.string.money)",
-                            tint = Vert
-                        )
-                        Text(
-                            "Solde",
-                            fontWeight = FontWeight.Normal,
-                            color = Color.White,
-
-
-                        )
-                    }
-                    Spacer(Modifier.height(1.dp))
-                    Text(
-                        "25.000Fcfa",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                    )
-                }
-
-
-
-
             }
         }
     }
@@ -197,9 +166,9 @@ fun AppTopBar(useer: user, scrollState: LazyListState) {
 
 
 @Composable
-fun ContentCard(Offers: List<offer>,scrollState: LazyListState){
+fun ContentCard(Offers: List<offer>,scrollState: LazyListState,navController: NavHostController, innerPadding: PaddingValues){
     
-    LazyColumn(contentPadding = PaddingValues(top=200.dp), state = scrollState){
+    LazyColumn(contentPadding = innerPadding, state = scrollState){
 
         items(Offers){
             OfferCard(it)
@@ -331,7 +300,8 @@ fun OfferCard(offer: offer) {
 fun Laundryline(offer: offer) {
 
     Row(
-        modifier = Modifier.padding(start=15.dp,end = 15.dp)
+        modifier = Modifier
+            .padding(start = 15.dp, end = 15.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -368,73 +338,79 @@ fun Laundryline(offer: offer) {
 }
 
 
-@Preview
+
 @Composable
-fun OfferScreen(){
+fun OfferScreen(navController: NavHostController){
 
     val scrollState = rememberLazyListState()
-    Box{
-        AppTopBar(useer = user(name = "dany", localisation = "NDogbon"), scrollState)
-        ContentCard(Offers= listOf (
-            offer(
-                servicee = service(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "nettoyage a eau"
-                ),
-                lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "chaussure en soie"
-                      ),
-                unitPrice = 1000
-            ),
-            offer(
-                servicee = service(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "nettoyage a sec"
-                ),
-                lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "veste en soie"
-                ),
-                unitPrice = 700
-            ),
-            offer(
-                servicee = service(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "nettoyage a sec"
-                ),
-                lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "robe en soie"
-                ),
-                unitPrice = 1000
-            ),
-            offer(
-                servicee = service(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "nettoyage a sec"
-                ),
-                lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "blouson en soie"
-                ),
-                unitPrice = 1700
-            ),
-            offer(
-                servicee = service(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "retouche simple"
-                ),
-                lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
-                    nom = "pantalon jean"
-                ),
-                unitPrice = 500
-            )
+     Scaffold(
+         topBar = {AppTopBar(useer = user(name = "dany", localisation = "NDogbon"), scrollState, navController)},
 
-        ),
-            scrollState)
+         content = { innerPadding ->
+             ContentCard(Offers= listOf (
+             offer(
+                 servicee = service(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "nettoyage a eau"
+                 ),
+                 lingee = linge(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "chaussure en soie"
+                 ),
+                 unitPrice = 1000
+             ),
+             offer(
+                 servicee = service(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "nettoyage a sec"
+                 ),
+                 lingee = linge(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "veste en soie"
+                 ),
+                 unitPrice = 700
+             ),
+             offer(
+                 servicee = service(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "nettoyage a sec"
+                 ),
+                 lingee = linge(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "robe en soie"
+                 ),
+                 unitPrice = 1000
+             ),
+             offer(
+                 servicee = service(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "nettoyage a sec"
+                 ),
+                 lingee = linge(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "blouson en soie"
+                 ),
+                 unitPrice = 1700
+             ),
+             offer(
+                 servicee = service(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "retouche simple"
+                 ),
+                 lingee = linge(
+                     imageVector = painterResource(R.drawable.pant),
+                     nom = "pantalon jean"
+                 ),
+                 unitPrice = 500
+             )
 
-    }
+         ),
+             scrollState,navController, innerPadding = innerPadding )
+         }
+     )
+
+
+
+
 
 }

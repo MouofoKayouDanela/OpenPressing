@@ -26,6 +26,7 @@ import com.android.openpressing.client_module.presentation.agence.utils.Data
 import com.android.openpressing.client_module.presentation.agence.utils.Laundry
 import com.android.openpressing.client_module.presentation.agence.utils.Service
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.Screen
 
 
 @Composable
@@ -62,7 +63,7 @@ fun ServicesNLaundriesManager(navController: NavHostController) {
 
     Scaffold(
             topBar = {
-                 TopNavBar()
+                 TopNavBar(navController)
             },
             content = { innerPadding ->
                       BodyList(
@@ -157,7 +158,7 @@ fun ServicesNLaundriesManager(navController: NavHostController) {
 }*/
 
 @Composable
-fun TopNavBar() {
+fun TopNavBar(navController: NavHostController) {
 
     Row(
             modifier = Modifier
@@ -169,7 +170,7 @@ fun TopNavBar() {
     ) {
 
         IconButton(
-                onClick = {  },
+                onClick = { navController.navigate(Screen.Home.road) },
                 modifier = Modifier
                     .weight(0.2f)
         ) {

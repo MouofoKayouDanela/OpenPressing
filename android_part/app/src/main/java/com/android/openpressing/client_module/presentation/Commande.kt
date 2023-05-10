@@ -140,7 +140,7 @@ fun commandeBox( Commande: Commande, navController: NavHostController) {
     ) {
         LazyColumn(contentPadding = PaddingValues(vertical=8.dp)){
             stickyHeader {
-                TopBarCmd()
+                TopBarCmd(Modifier,navController)
             }
             items(Commande) {
                 commandeBox(it, navController)
@@ -151,7 +151,7 @@ fun commandeBox( Commande: Commande, navController: NavHostController) {
 
 
 @Composable
-fun TopBarCmd(modifier: Modifier = Modifier){
+fun TopBarCmd(modifier: Modifier = Modifier, navController: NavHostController){
     Box{
         Row(
             Modifier
@@ -161,7 +161,7 @@ fun TopBarCmd(modifier: Modifier = Modifier){
             horizontalArrangement = Arrangement.spacedBy(2.dp),
 
             ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate(Screen.Home.road) }) {
                 Icon(
                     Icons.Rounded.ArrowBack,
                     contentDescription = null,

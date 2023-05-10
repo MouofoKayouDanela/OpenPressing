@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import kotlinx.coroutines.launch
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
 data class pressing(
@@ -59,7 +61,7 @@ fun ScaffoldSample(navController: NavHostController) {
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {SectionBleue()},
+        topBar = {SectionBleue(navController)},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(pressing = listOf(
@@ -109,7 +111,7 @@ fun ScaffoldSample(navController: NavHostController) {
 }
 
 @Composable
-fun SectionBleue(){
+fun SectionBleue(navController: NavHostController){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -210,6 +212,23 @@ fun SectionBleue(){
                 fontSize = 11.sp,
                 color = Color.White,
             )
+
+            Spacer(Modifier.width(20.dp))
+            Button(modifier = Modifier
+                .background(color = VioletPal),
+                onClick = {
+                navController.navigate(Screen.ListBesoin.road)
+            },
+            ) {
+                Text(
+                    text = "Mes Besoins",
+                    style = MaterialTheme.typography.body1.copy(
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontSize = 12.sp,
+
+                    ))
+            }
         }
     }
     }
@@ -224,7 +243,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
             .padding(15.dp)
-            .clickable { navController.navigate(Screen.AddService.road) },
+            .clickable { navController.navigate(Screen.ListOffer.road) },
 
     ) {
         Column(
@@ -352,7 +371,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                     cursorColor = Color.Black,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = Color.Black
+                    textColor = black
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search
@@ -434,9 +453,10 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Chat, "")
             },
-                label = { Text(text = "Chat") },
+                label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
+                    navController.navigate(Screen.AddService.road)
                     selectedIndex.value = 2
                 })
 

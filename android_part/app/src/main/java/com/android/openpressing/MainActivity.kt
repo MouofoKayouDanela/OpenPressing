@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
+import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
+import com.android.openpressing.client_module.presentation.client.OfferScreen
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.client_module.presentation.module.FinitionScreen
 import com.android.openpressing.client_module.presentation.module.ForgotPasswordScreen
@@ -40,9 +42,11 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
                     composable(Screen.AddService.road){ ServicesNLaundriesManager(navController) }
-                    //composable(Screen.ListBesoin.road){ Besoin(navController) }
+                    composable(Screen.ListBesoin.road){ Default(navController) }
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
+                    composable(Screen.ListOffer.road){ OfferScreen(navController) }
+                    composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
                 }
             }
         }

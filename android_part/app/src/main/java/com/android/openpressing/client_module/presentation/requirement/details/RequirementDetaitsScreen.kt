@@ -26,7 +26,7 @@ import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.client_module.presentation.requirement.details.components.*
-
+import com.android.openpressing.utils.Screen
 
 
 data class Service(
@@ -38,7 +38,7 @@ data class Service(
 
 
 @OptIn(ExperimentalMaterialApi::class)
-@Preview
+
 @Composable
 fun RequirementDetailsScreen(navController: NavHostController) {
 
@@ -47,7 +47,7 @@ fun RequirementDetailsScreen(navController: NavHostController) {
             .background(SurfaceColor),
 
         topBar = {
-                TopAppBar()
+                TopAppBar(navController)
             } ,
 
         content = { innerPadding ->
@@ -314,7 +314,7 @@ fun RequirementDetailsScreen(navController: NavHostController) {
 }
 
 @Composable
-private fun TopAppBar(){
+private fun TopAppBar(navController: NavHostController){
     Row(
         Modifier
             .padding(vertical = 4.dp)
@@ -330,7 +330,7 @@ private fun TopAppBar(){
         )
         {
             IconButton(
-                onClick = { } ,
+                onClick = { navController.navigate(Screen.ListCommande.road)} ,
                 modifier = Modifier
                     .size(32.dp , 32.dp)
             ) {

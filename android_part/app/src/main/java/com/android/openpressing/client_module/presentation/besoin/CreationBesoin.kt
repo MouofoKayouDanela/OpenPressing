@@ -32,14 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.data.models.client.Client
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.message.Messages
-import com.android.openpressing.data.models.requirement_detail.RequirementDetails
-import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.ui.theme.*
-import com.google.gson.annotations.SerializedName
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
@@ -82,9 +77,9 @@ data class linge(
     val nom:String
 )
 
-@Preview
+
 @Composable
-fun AddRequirementScreen(){
+fun AddRequirementScreen(navController: NavHostController) {
 
     val scrollState = rememberLazyListState()
     Column  {
@@ -135,15 +130,9 @@ fun  TopBar()
                    color = Color.DarkGray,
                    style= MaterialTheme.typography.h5,
                    modifier = Modifier.fillMaxWidth()
-
-
                )
            }
-
-
        }
-
-
   }
 
 @OptIn(ExperimentalMaterialApi::class)

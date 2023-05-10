@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
-
+import com.android.openpressing.utils.Screen
 
 
 @Composable
@@ -154,10 +154,11 @@ data class Publication(
 fun BesoinCard(
     publications: List<Publication>,
     modifier : Modifier = Modifier
+    //navController: NavHostController
 ){
     LazyColumn{
         stickyHeader{
-            TopBar()
+            TopBar(/*navController, modifier*/)
         }
         items(publications){
                 publication -> Besoin(publication)
@@ -167,7 +168,7 @@ fun BesoinCard(
 }
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier){
+fun TopBar(modifier: Modifier = Modifier, /*navController: NavHostController*/){
     Box{
         Row(
             Modifier
@@ -177,7 +178,7 @@ fun TopBar(modifier: Modifier = Modifier){
             horizontalArrangement = Arrangement.spacedBy(50.dp),
 
             ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { /*navController.navigate(Screen.ListBesoin.road)*/ }) {
                 Icon(
                     Icons.Rounded.ArrowBack,
                     contentDescription = null,
@@ -194,7 +195,7 @@ fun TopBar(modifier: Modifier = Modifier){
                 Text(
                     text = "Mes Besoins",
                     style = MaterialTheme.typography.body1.copy(
-                        color = black,
+                        color = Color.White,
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp
                     )
@@ -208,9 +209,9 @@ fun TopBar(modifier: Modifier = Modifier){
 
 
 
-@Preview(showBackground = true)
+
 @Composable
-fun Default() {
+fun Default(navController: NavHostController) {
     OpenPressingTheme {
         //TopBar()
         //Besoin(publier = Publication("publier le: 04/04/2023"))
@@ -243,11 +244,9 @@ fun Default() {
            Publication(prix = 19.5,
                publier = "15/08/2022"),
            Publication(prix = 19.5,
-               publier = "15/08/2022")
+               publier = "15/08/2022")),
 
-
-
-        ))
+       )
 
     }
 }
