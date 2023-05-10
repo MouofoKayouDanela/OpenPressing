@@ -17,6 +17,7 @@ import com.android.openpressing.client_module.presentation.module.LoginScreen
 import com.android.openpressing.client_module.presentation.module.RegisterScreen
 import com.android.openpressing.client_module.presentation.module.ResetPasswordScreen
 import com.android.openpressing.client_module.presentation.profile.EditerProfil
+import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.utils.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,8 +40,9 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
                     composable(Screen.AddService.road){ ServicesNLaundriesManager(navController) }
-                    //composable(Screen.BesoinClient.road){ Besoin(navController) }
-                    //composable(Screen.Commande.road){ CommandeCard(navController) }
+                    //composable(Screen.ListBesoin.road){ Besoin(navController) }
+                    composable(Screen.ListCommande.road){ View(navController) }
+                    composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
                 }
             }
         }

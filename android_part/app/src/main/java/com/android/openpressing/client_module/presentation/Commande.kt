@@ -29,10 +29,11 @@ import com.android.openpressing.R
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.ui.theme.black
 import com.android.openpressing.ui.theme.blanc
+import com.android.openpressing.utils.Screen
 
 
 @Composable
-fun commandeBox( Commande: Commande) {
+fun commandeBox( Commande: Commande, navController: NavHostController) {
 
     Card(
         elevation = 3.dp,
@@ -100,7 +101,9 @@ fun commandeBox( Commande: Commande) {
                         verticalAlignment=Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            navController.navigate(Screen.DetailCommande.road)
+                                  },
                         modifier=Modifier.width(170.dp)
                             .padding(horizontal = 12.dp)
                     ) {
@@ -133,13 +136,14 @@ fun commandeBox( Commande: Commande) {
     @Composable
     fun CommandeCard(
         Commande: List<Commande>,
+        navController: NavHostController
     ) {
         LazyColumn(contentPadding = PaddingValues(vertical=8.dp)){
             stickyHeader {
                 TopBarCmd()
             }
             items(Commande) {
-                commandeBox(it)
+                commandeBox(it, navController)
             }
 
         }
@@ -187,11 +191,11 @@ fun TopBarCmd(modifier: Modifier = Modifier){
 
 
 
-@Preview(showBackground = true)
+
 @Composable
-fun View() {
+fun View(navController: NavHostController) {
     OpenPressingTheme {
-        CommandeCard( Commande = listOf(
+        CommandeCard(Commande = listOf(
             Commande(
                 imageVector = painterResource(R.drawable.ele4),
                 nomAgence = "Elegance Pressing",
@@ -253,7 +257,8 @@ fun View() {
                 prix = 3500.0
             ),
 
-        )
+        ),
+            navController
         )
     }
 }

@@ -427,6 +427,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                 label = { Text(text = "Order") },
                 selected = (selectedIndex.value == 1),
                 onClick = {
+                    navController.navigate(Screen.ListCommande.road)
                     selectedIndex.value = 1
                 })
 

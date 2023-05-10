@@ -11,8 +11,9 @@ sealed class Screen(val road: String){
     object Profile: Screen("/profile_Screen")
     object EditScreen: Screen("/edit_screen")
     object Splash: Screen("/splash_screen")
-    object Commande: Screen("/list_commande")
-    object BesoinClient: Screen("/list_besoin")
+    object ListCommande: Screen("/list_commande")
+    object DetailCommande: Screen("/detail_commande")
+    object ListBesoin: Screen("/list_besoin")
     object AddService: Screen("/add_service")
 
 }

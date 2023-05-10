@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.client_module.presentation.requirement.details.components.*
@@ -39,7 +40,7 @@ data class Service(
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
-fun RequirementDetailsScreen(){
+fun RequirementDetailsScreen(navController: NavHostController) {
 
     Scaffold(
         modifier = Modifier
