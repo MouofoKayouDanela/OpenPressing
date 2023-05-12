@@ -1,6 +1,8 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,6 +30,8 @@ import com.android.openpressing.R
 
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -36,6 +40,7 @@ fun LoginScreen(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordObscure by remember { mutableStateOf(true) }
+    var showMessage by remember { mutableStateOf(false) }
 
     Scaffold {
         Column(
@@ -121,7 +126,20 @@ fun LoginScreen(navController: NavHostController) {
                     Text("Forgot Password ?")
                 }
                 Button(
-                    onClick = {navController.navigate(Screen.Home.road)},
+                    onClick = {
+                        val auth=Firebase.auth
+                        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                            task -> showMessage = if(task.isSuccessful){
+                            Log.d(ContentValues.TAG, "signInWithEmail:success")
+                            navController.navigate(Screen.Home.road)
+                            false
+                            }
+                            else{
+                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                            true
+                        }
+                        }
+                       },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(48.dp)
@@ -129,6 +147,24 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     Text(
                         text = "Se connecter", style = MaterialTheme.typography.body1
+                    )
+                }
+                if(showMessage){
+                    AlertDialog(onDismissRequest = { showMessage = false },
+                    title = {Text("Authentification invalide")},
+                    text = {
+                        Text("Email ou mot de passe incorrect")
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { showMessage=false },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Blue
+                            )
+                        ) {
+                            Text("OK")
+                        }
+                    }
                     )
                 }
                 Row(

@@ -200,8 +200,3 @@ fun RegisterScreen(navController: NavHostController) {
         }
     }
 }
-private lateinit var auth: FirebaseAuth
-
-// ...
-// Initialize Firebase Auth
-

@@ -1,11 +1,12 @@
 package com.android.openpressing.repositories.service_category
 
 import com.android.openpressing.data.OpenPressingStrapiApi
+import com.android.openpressing.data.models.service_category.ServiceCategory
 import com.android.openpressing.data.models.service_category.ServiceCategoryData
 
 import javax.inject.Inject
 
-class ServiceCategory @Inject constructor(
+class ServiceCategoryRepository @Inject constructor(
     private val serviceCategoryApi : OpenPressingStrapiApi.ServiceCategoryApi
 ) {
     suspend fun getAll() : MutableList<ServiceCategoryData> = serviceCategoryApi.getAll().data
@@ -19,7 +20,7 @@ class ServiceCategory @Inject constructor(
     suspend fun delete(id: Int) {
 
         val deletingServiceCategory = getById(id)
-        deletingServiceCategory.data.att
+        deletingServiceCategory.data.attributes.confirmed=false
 
         update(id, deletingServiceCategory)
     }
