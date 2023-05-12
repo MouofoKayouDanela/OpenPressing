@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +57,16 @@ fun MySMS(){
                     }
                 }
             )},
+        floatingActionButton = {
+                               FloatingActionButton(onClick = { /*TODO*/ },
+                               modifier = Modifier.size(72.dp)) {
+                                   Icon(imageVector = Icons.Rounded.Delete, contentDescription = "Add")
+
+                               }
+        },
         content= {
+            Column(modifier = Modifier.padding(16.dp)){
+            }
             Discussion()
         },
     bottomBar= {BottomBar()}
