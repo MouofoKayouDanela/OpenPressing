@@ -4,10 +4,10 @@ import com.android.openpressing.data.models.service.ServiceData
 
 sealed class ServicesStates{
 
-    object Empty: PromotionState()
-    object  Loading: PromotionState()
-    class  Success(val data: MutableList<ServiceData>): PromotionState()
-    class Error(val message: String): PromotionState()
+    object Empty:ServicesStates ()
+    object  Loading: ServicesStates ()
+    class  Success(val data: MutableList<ServiceData>): ServicesStates ()
+    class Error(val message: String): ServicesStates ()
 }
 
 

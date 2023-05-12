@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.viewmodels.services.state.PromotionState
+import com.android.openpressing.viewmodels.services.state.RequirementState
+import com.android.openpressing.viewmodels.services.state.ServicesStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,12 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ServiceViewModel @Inject constructor(
+
     private val serviceRepository: ServiceRepository)
     :ViewModel()
      {
 
-private  val _availableservices = MutableStateFlow<PromotionState>(PromotionState.Empty)
-var avilableservice: StateFlow<PromotionState> = _availableservices
+private  val _availableservices = MutableStateFlow<ServicesStates>(ServicesStates.Empty)
+private var availableservice: StateFlow<ServicesStates> = _availableservices
 
 init {
     getAll()
@@ -29,19 +31,19 @@ init {
 }
 
         fun getAll() {
-            _availableservices.value = PromotionState.Loading
+            _availableservices.value = ServicesStates.Loading
 
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val services = serviceRepository.getAll()
-                    _availableservices.value= PromotionState.Success(services)
+                    _availableservices.value= ServicesStates.Success(services)
 
                 } catch (exception: HttpException ) {
-                    _availableservices.value= PromotionState.Error("No internet connection")
+                    _availableservices.value= ServicesStates.Error("No internet connection")
 
                 }
                 catch (exception: InvalidDisplayException ) {
-                _availableservices.value= PromotionState.Error("something went wong")
+                _availableservices.value= ServicesStates.Error("something went wong")
 
             }
             }
