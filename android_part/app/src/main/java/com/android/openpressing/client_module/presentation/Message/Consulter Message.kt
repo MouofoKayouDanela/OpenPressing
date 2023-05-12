@@ -2,6 +2,7 @@ package com.android.openpressing.client_module.presentation.Message
 
 import android.annotation.SuppressLint
 import android.app.Notification.MessagingStyle.Message
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
@@ -22,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.Purple500
+import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
@@ -38,6 +43,8 @@ fun MySMS(){
         topBar = {
             TopAppBar(
                 elevation = 10.dp,
+                modifier = Modifier
+                    .fillMaxWidth(),
                 title = {
                     Text("Chat")
                 },
@@ -58,36 +65,144 @@ fun MySMS(){
                 }
             )},
         content= {
+            innerPadding-> stock(Msg= listOf(
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            ),
+            Msg(
+                imageVector = painterResource(R.drawable.ep),
+                NomAgence = "Elegance Pressing",
+                titre = "Avez-vous besoin d'un pressing",
+                date = "15:21",
+                img = Icons.Rounded.Delete
+            )
+            ),
+        innerPadding = innerPadding
+        )
             Column(modifier = Modifier.padding(16.dp)){
             }
-            Discussion()
+
         },
     bottomBar= {BottomBar()}
     )}
 
+
+
+
+data class Msg(
+    val imageVector: Painter,
+    val NomAgence: String,
+    val titre: String,
+    val date: String,
+    val img:  ImageVector
+    )
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Discussion() {
-    LazyColumn {
-        item {
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
-            Message()
+fun stock(Msg: List<Msg>,
+    innerPadding: PaddingValues){
+    LazyColumn(contentPadding = innerPadding) {
+        items(Msg) {
+            Message(it)
         }
     }
-}
 
+}
 @Composable
 fun BottomBar() {
     val selectedIndex = remember { mutableStateOf(0) }
@@ -134,10 +249,17 @@ fun BottomBar() {
 }
 
 @Composable
-fun Message() {
+fun Message(Msg: Msg) {
+    Card(
+        elevation = 3.dp,
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(3.dp)
+        ){
     Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
-            painter = painterResource(R.drawable.ep),
+            painter = Msg.imageVector,
             contentDescription = null,
             modifier = Modifier
                 .size(60.dp)
@@ -147,12 +269,12 @@ fun Message() {
         Spacer(modifier = Modifier.width(16.dp))
         Column {
             Text(
-                text = "Elegance Pressing",
+                text = Msg.NomAgence,
                 color = Color.Black,
                 fontSize = 16.sp
             )
             Text(
-                text = "Avez-vous besoin d'un Service?",
+                text = Msg.titre,
                 color = Color.Gray,
                 fontSize = 16.sp
             )
@@ -163,18 +285,18 @@ fun Message() {
                 .padding(start = 24.dp)
         ) {
             Text(
-                text = "15:21",
+                text = Msg.date,
                 color = Color.Gray,
                 fontSize = 16.sp
             )
             IconButton(
                 onClick = { },
-                content = { Icon(imageVector = Icons.Rounded.Delete, contentDescription = "Delete")}
+                content = { Icon(imageVector = Msg.img, contentDescription = "Delete")}
             )
         }
 
 
     }
-
+    }
 }
 
