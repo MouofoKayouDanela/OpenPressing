@@ -78,8 +78,7 @@ fun BlueSection(navController: NavHostController) {
             ){
                 IconButton(
                     onClick = {
-
-                        navController.navigate(Screen.EditScreen.road)
+                        navController.navigate(Screen.Home.road)
                     }
                 ) {
                     Icon(
@@ -89,7 +88,9 @@ fun BlueSection(navController: NavHostController) {
                     )
                 }
 
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
                     Icon(
                         Icons.Rounded.Notifications,
                         contentDescription = stringResource(R.string.notifications),

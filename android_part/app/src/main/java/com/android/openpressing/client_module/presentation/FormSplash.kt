@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 
 
 data class HorizontalPagerContent(
-    val title: String,
     @DrawableRes val res: Int,
     val description: String
 )
@@ -33,24 +32,20 @@ data class HorizontalPagerContent(
 fun getList(): List<HorizontalPagerContent> {
     return listOf(
         HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.image1,
-            "Lavages des pressings à Bling Pressing"
+            R.drawable.logo,
+            "Verification is an extra or final bit of proof that establishes something is true"
         ),
         HorizontalPagerContent(
-            "Open Pressing",
+            R.drawable.image3,
+            "We pay attention to all of your payments and find way for saving your money"
+        ),
+        HorizontalPagerContent(
             R.drawable.images2,
-            "laver vos vetements"
+            "Free Advisory service,mobile banking application,visa"
         ),
         HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.image3,
-            "livraison des vetements"
-        ),
-        HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.image3,
-            "livraison des vetements"
+            R.drawable.images2,
+            "Bank your life,We create something new you have never seen before"
         )
     )
 }
