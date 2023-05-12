@@ -57,13 +57,6 @@ fun MySMS(){
                     }
                 }
             )},
-        floatingActionButton = {
-                               FloatingActionButton(onClick = { /*TODO*/ },
-                               modifier = Modifier.size(72.dp)) {
-                                   Icon(imageVector = Icons.Rounded.Delete, contentDescription = "Add")
-
-                               }
-        },
         content= {
             Column(modifier = Modifier.padding(16.dp)){
             }
@@ -174,8 +167,13 @@ fun Message() {
                 color = Color.Gray,
                 fontSize = 16.sp
             )
-
+            IconButton(
+                onClick = { },
+                content = { Icon(imageVector = Icons.Rounded.Delete, contentDescription = "Delete")}
+            )
         }
+
+
     }
 
 }
