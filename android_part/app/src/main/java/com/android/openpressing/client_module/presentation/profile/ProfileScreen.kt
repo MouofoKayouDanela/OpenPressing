@@ -277,7 +277,7 @@ fun ListeSoustitre(navController: NavHostController) {
                     )
                 }
                 Spacer(Modifier.width(10.dp))
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screen.ListCommande.road)}) {
                     Icon(
                         Icons.Rounded.NavigateNext,
                         contentDescription = stringResource(R.string.nextPage),
@@ -316,7 +316,9 @@ fun ListeSoustitre(navController: NavHostController) {
                     )
                 }
                 Spacer(Modifier.width(24.dp))
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    navController.navigate(Screen.ParamProfile.road)
+                }) {
                     Icon(
                         Icons.Rounded.NavigateNext,
                         contentDescription = stringResource(R.string.nextPage),
@@ -394,7 +396,9 @@ fun ListeSoustitre(navController: NavHostController) {
                     )
                 }
                 Spacer(Modifier.width(24.dp))
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    navController.navigate(Screen.ParamProfile.road)
+                }) {
                     Icon(
                         Icons.Rounded.NavigateNext,
                         contentDescription = stringResource(R.string.nextPage),

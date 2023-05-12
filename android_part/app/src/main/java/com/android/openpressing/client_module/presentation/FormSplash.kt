@@ -3,6 +3,8 @@ package com.android.openpressing.client_module.presentation
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -10,12 +12,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
+import com.android.openpressing.ui.theme.Purple
 import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -114,12 +118,17 @@ fun IntroScreen(navController: NavHostController) {
                 .fillMaxWidth()
         ) {
             if (isPrevVisible.value) {
-                Button(onClick = {
+                IconButton(onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     }
                 }) {
-                    Text(text = "Prev")
+                    Icon(
+                        Icons.Rounded.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier.size(32.dp, 32.dp),
+                        tint = Purple
+                    )
                 }
             }
             if (isPrevVisible.value && isNextVisible.value) {
@@ -127,13 +136,18 @@ fun IntroScreen(navController: NavHostController) {
             }
 
             if (isNextVisible.value) {
-                Button(onClick = {
+                IconButton(onClick = {
                     navController.navigate(Screen.Login.road)
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
-                    Text(text = "Next")
+                    Icon(
+                        Icons.Rounded.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(32.dp, 32.dp),
+                        tint = Purple
+                    )
                 }
             }
 
