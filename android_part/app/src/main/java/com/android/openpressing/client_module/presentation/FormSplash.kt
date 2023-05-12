@@ -3,9 +3,6 @@ package com.android.openpressing.client_module.presentation
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -28,7 +25,6 @@ import kotlinx.coroutines.launch
 
 
 data class HorizontalPagerContent(
-    val title: String,
     @DrawableRes val res: Int,
     val description: String
 )
@@ -36,24 +32,20 @@ data class HorizontalPagerContent(
 fun getList(): List<HorizontalPagerContent> {
     return listOf(
         HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.image1,
-            "Verification is an extra or final bit of proof that establishes something is true"
+            R.drawable.logoi3,
+            ""
         ),
         HorizontalPagerContent(
-            "Open Pressing",
             R.drawable.image3,
-            "We pay attention to all of your payments and find way for saving your money"
+            ""
         ),
         HorizontalPagerContent(
-            "Open Pressing",
             R.drawable.images2,
-            "Free Advisory service,mobile banking application,visa"
+            ""
         ),
         HorizontalPagerContent(
-            "Open Pressing",
             R.drawable.images2,
-            "Bank your life,We create something new you have never seen before"
+            ""
         )
     )
 }
@@ -87,12 +79,6 @@ fun IntroScreen(navController: NavHostController) {
                         .fillMaxWidth(), horizontalAlignment = CenterHorizontally
                 ) {
 
-                    Text(
-                        text = list[currentPage].title,
-                        style = MaterialTheme.typography.h4,
-                        color = Black,
-                        modifier = Modifier.padding(horizontal = 12.dp)
-                    )
                     AsyncImage(
                         model = list[currentPage].res,
                         contentDescription = null,

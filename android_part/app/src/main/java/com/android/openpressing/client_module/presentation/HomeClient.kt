@@ -3,10 +3,7 @@ package com.android.openpressing.client_module.presentation
 
 
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
@@ -33,13 +30,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import kotlinx.coroutines.launch
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
 data class pressing(
@@ -61,7 +61,7 @@ fun ScaffoldSample(navController: NavHostController) {
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {},
+        topBar = {SectionBleue(navController)},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(pressing = listOf(
@@ -90,7 +90,7 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
             pressing(
-                imageVector = painterResource(R.drawable.lavage),
+                imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
                 position= "Logbessou",
                 nomLivraison = "Free Delivery"
@@ -102,7 +102,8 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
         ),
-            innerPadding = innerPadding
+            innerPadding = innerPadding,
+            navController
         )
                   },
         bottomBar = { BottomBar(navController)}
@@ -110,7 +111,7 @@ fun ScaffoldSample(navController: NavHostController) {
 }
 
 @Composable
-fun SectionBleue(){
+fun SectionBleue(navController: NavHostController){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -211,19 +212,39 @@ fun SectionBleue(){
                 fontSize = 11.sp,
                 color = Color.White,
             )
+
+            Spacer(Modifier.width(20.dp))
+            Button(modifier = Modifier
+                .background(color = VioletPal),
+                onClick = {
+                navController.navigate(Screen.ListBesoin.road)
+            },
+            ) {
+                Text(
+                    text = "Mes Besoins",
+                    style = MaterialTheme.typography.body1.copy(
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontSize = 12.sp,
+
+                    ))
+            }
         }
     }
     }
 }
 
 @Composable
-fun CardWithContent(pressing: pressing) {
+fun CardWithContent(pressing: pressing, navController: NavHostController) { //navController: NavHostController
     val paddingModifier = Modifier.padding(15.dp)
     Card(
         elevation = 10.dp,
         contentColor = black,
         shape = RoundedCornerShape(15.dp),
-        modifier = paddingModifier
+        modifier = Modifier
+            .padding(15.dp)
+            .clickable { navController.navigate(Screen.ListOffer.road) },
+
     ) {
         Column(
             modifier = Modifier
@@ -350,7 +371,7 @@ fun CardWithContent(pressing: pressing) {
                     cursorColor = Color.Black,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = Color.Black
+                    textColor = black
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search
@@ -384,7 +405,8 @@ fun CardWithContent(pressing: pressing) {
     fun CardContent(
 
         pressing: List<pressing>,
-        innerPadding: PaddingValues
+        innerPadding: PaddingValues,
+        navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
         LazyColumn(contentPadding = innerPadding) {
@@ -395,7 +417,7 @@ fun CardWithContent(pressing: pressing) {
                 })
             }
             items(pressing) {
-                CardWithContent(it)
+                CardWithContent(it, navController) //navController = NavHostController
             }
         }
     }
@@ -424,15 +446,17 @@ fun CardWithContent(pressing: pressing) {
                 label = { Text(text = "Order") },
                 selected = (selectedIndex.value == 1),
                 onClick = {
+                    navController.navigate(Screen.ListCommande.road)
                     selectedIndex.value = 1
                 })
 
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Chat, "")
             },
-                label = { Text(text = "Chat") },
+                label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
+                    navController.navigate(Screen.AddService.road)
                     selectedIndex.value = 2
                 })
 

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">OpenPressing</string>
+    <string name="arrow_back">Back</string>
 
     <string name="notifications">Notifications</string>
     <string name="location">location</string>

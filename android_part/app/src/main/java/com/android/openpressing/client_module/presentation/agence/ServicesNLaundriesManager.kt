@@ -1,6 +1,5 @@
 package com.android.openpressing.client_module.presentation.agence
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,18 +19,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.client_module.presentation.agence.components.AddPrestationScreen
 import com.android.openpressing.client_module.presentation.agence.utils.AgenceInfo
 import com.android.openpressing.client_module.presentation.agence.utils.Data
 import com.android.openpressing.client_module.presentation.agence.utils.Laundry
 import com.android.openpressing.client_module.presentation.agence.utils.Service
-import com.android.openpressing.ui.theme.Purple200
-import com.android.openpressing.ui.theme.SoftPurple200
-import com.android.openpressing.ui.theme.VerySoftPurple200
+import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.Screen
 
-@Preview
+
 @Composable
-fun ServicesNLaundriesManager() {
+fun ServicesNLaundriesManager(navController: NavHostController) {
 
     val agenceInfo = AgenceInfo(
             "Elegance Pressing",
@@ -64,7 +63,7 @@ fun ServicesNLaundriesManager() {
 
     Scaffold(
             topBar = {
-                 TopNavBar()
+                 TopNavBar(navController)
             },
             content = { innerPadding ->
                       BodyList(
@@ -73,44 +72,93 @@ fun ServicesNLaundriesManager() {
                               laundries = laundries,
                               services = services,
                               updateLaundryData = { laundries = it },
-                              updateServiceData = { services = it }
+                              updateServiceData = { services = it },
+
                       )
+
             },
             bottomBar = {
                 Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.White)
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
 
                     TextButton(
-                            onClick = {  },
-                            colors = ButtonDefaults.textButtonColors(
-                                    backgroundColor = Purple200,
-                                    contentColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .fillMaxWidth()
+                        onClick = {  },
+                        colors = ButtonDefaults.textButtonColors(
+                            backgroundColor = Purple200,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .fillMaxWidth()
                     ) {
                         Text(
-                                text = "Save",
-                                style = MaterialTheme.typography.body1.copy(
-                                        fontSize = 22.sp
-                                )
+                            text = "Save",
+                            style = MaterialTheme.typography.body1.copy(
+                                fontSize = 22.sp
+                            )
                         )
                     }
 
                 }
+                //BottomBar(navController)
             }
     )
 }
 
+/*fun BottomBar(navController: NavHostController) {
+    val selectedIndex = remember { mutableStateOf(0) }
+    BottomNavigation(
+        elevation = 2.dp,
+        backgroundColor = blanc
+    ) {
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+        },
+            label = { Text(text = "Laundry") },
+            selected = (selectedIndex.value == 0),
+            onClick = {
+                navController.navigate(Screen.Home.road)
+                selectedIndex.value = 0
+            })
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Reorder, "")
+        },
+            label = { Text(text = "Order") },
+            selected = (selectedIndex.value == 1),
+            onClick = {
+                selectedIndex.value = 1
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Chat, "")
+        },
+            label = { Text(text = "Chat") },
+            selected = (selectedIndex.value == 2),
+            onClick = {
+                selectedIndex.value = 2
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(imageVector = Icons.Default.Person, "")
+        },
+            label = { Text(text = "Profile") },
+            selected = (selectedIndex.value == 3),
+            onClick = {
+                navController.navigate(Screen.Profile.road)
+                selectedIndex.value = 3
+            })
+    }
+}*/
+
 @Composable
-fun TopNavBar() {
+fun TopNavBar(navController: NavHostController) {
 
     Row(
             modifier = Modifier
@@ -122,7 +170,7 @@ fun TopNavBar() {
     ) {
 
         IconButton(
-                onClick = {  },
+                onClick = { navController.navigate(Screen.Home.road) },
                 modifier = Modifier
                     .weight(0.2f)
         ) {
