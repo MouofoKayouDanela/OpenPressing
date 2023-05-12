@@ -1,29 +1,49 @@
 package com.android.openpressing.viewmodels.services
 
-import android.util.Log
+import android.view.WindowManager.InvalidDisplayException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.viewmodels.services.state.PromotionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class ServiceViewModel @Inject constructor(
-    private val serviceRepository: ServiceRepository
-    ) : ViewModel()
-{
+    private val serviceRepository: ServiceRepository)
+    :ViewModel()
+     {
+
+private  val _availableservices = MutableStateFlow<PromotionState>(PromotionState.Empty)
+var avilableservice: StateFlow<PromotionState> = _availableservices
+
+init {
+    getAll()
+
+}
 
         fun getAll() {
+            _availableservices.value = PromotionState.Loading
 
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val services = serviceRepository.getAll()
-                } catch (e: Exception) {
+                    _availableservices.value= PromotionState.Success(services)
+
+                } catch (exception: HttpException ) {
+                    _availableservices.value= PromotionState.Error("No internet connection")
 
                 }
+                catch (exception: InvalidDisplayException ) {
+                _availableservices.value= PromotionState.Error("something went wong")
+
+            }
             }
 
         }

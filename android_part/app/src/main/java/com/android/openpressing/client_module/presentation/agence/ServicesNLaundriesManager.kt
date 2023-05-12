@@ -103,9 +103,9 @@ fun ServicesNLaundriesManager() {
                                 )
                         )
                     }
+                }
 
                 }
-            }
     )
 }
 

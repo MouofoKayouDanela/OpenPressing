@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
+import com.google.firebase.auth.FirebaseAuth
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -199,3 +200,8 @@ fun RegisterScreen(navController: NavHostController) {
         }
     }
 }
+private lateinit var auth: FirebaseAuth
+
+// ...
+// Initialize Firebase Auth
+

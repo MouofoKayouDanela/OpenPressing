@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98088891551",
+    "project_id": "openpressing",
+    "storage_bucket": "openpressing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98088891551:android:8c13c895d71547c00d1eaa",
+        "android_client_info": {
+          "package_name": "com.android.openpressing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98088891551-98n13edjhagqnupbk80kjihantsiq137.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoWk_qz9ajGrek74NInCkQHG6GimeQMTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98088891551-1cf76i2qnuuh8g07cld3od393s47r5dq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
