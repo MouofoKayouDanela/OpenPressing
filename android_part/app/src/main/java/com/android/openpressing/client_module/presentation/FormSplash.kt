@@ -32,7 +32,7 @@ data class HorizontalPagerContent(
 fun getList(): List<HorizontalPagerContent> {
     return listOf(
         HorizontalPagerContent(
-            R.drawable.logo,
+            R.drawable.logoi3,
             ""
         ),
         HorizontalPagerContent(
