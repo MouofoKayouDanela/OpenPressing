@@ -1,6 +1,8 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,8 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -196,7 +202,7 @@ fun FinitionScreen( navController: NavHostController) {
                     }
 
                     Button(
-                        onClick = { /* action on click */ },
+                        onClick = { createUser(email, password, navController)},
                         modifier = Modifier.width(150.dp)
                     ) {
                         Text("S'inscrire", style = MaterialTheme.typography.body1)
@@ -218,5 +224,28 @@ fun FinitionScreen( navController: NavHostController) {
                 )
             }
         }
+    }
+}
+fun createUser(
+    email:String,
+    password:String,
+    navController: NavController
+){
+    println("L'email est $email et le mot de passe est $password")
+
+    val auth=Firebase.auth
+    try {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                    task ->if(task.isSuccessful){
+                        Log.d(TAG,"createUserWithEmail:success")
+                        navController.navigate(Screen.Login.road)
+            }
+                else{
+                Log.w(TAG, "createUserWithEmail:failure", task.exception)
+            }
+        }
+    }catch (e: Exception){
+        println("Erreur : $e.message")
     }
 }

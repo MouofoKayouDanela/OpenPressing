@@ -20,7 +20,7 @@ class QuarterRepository @Inject constructor(
     suspend fun delete(id: Int) {
 
         val deletingQuarter = getById(id)
-        deletingQuarter.data.attributes.confirmed = false
+        //deletingQuarter.data.attributes.confirmed = false
 
         update(id, deletingQuarter)
     }

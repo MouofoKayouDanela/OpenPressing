@@ -1,10 +1,11 @@
 package com.android.openpressing.repositories.laundry_type
 
 import com.android.openpressing.data.OpenPressingStrapiApi
+import com.android.openpressing.data.models.laundry_type.LaundryType
 import com.android.openpressing.data.models.laundry_type.LaundryTypeData
 import javax.inject.Inject
 
-class LaundryType @Inject constructor(
+class LaundryTypeRepository @Inject constructor(
     private val laundryTypeApi : OpenPressingStrapiApi.LaundryTypeApi
 ) {
     suspend fun getAll() : MutableList<LaundryTypeData> = laundryTypeApi.getAll().data

@@ -19,7 +19,7 @@ class OwnerRepository @Inject constructor(
     suspend fun delete(id: Int) {
 
         val deletingOwner = getById(id)
-        deletingOwner.data.attributes.confirmed = false
+            //deletingOwner.data.attributes.confirmed = false
 
         update(id, deletingOwner)
     }
