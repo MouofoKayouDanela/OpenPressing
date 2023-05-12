@@ -90,7 +90,7 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
             pressing(
-                imageVector = painterResource(R.drawable.lavage),
+                imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
                 position= "Logbessou",
                 nomLivraison = "Free Delivery"

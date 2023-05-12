@@ -3,9 +3,6 @@ package com.android.openpressing.client_module.presentation
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -38,22 +35,22 @@ fun getList(): List<HorizontalPagerContent> {
         HorizontalPagerContent(
             "Open Pressing",
             R.drawable.image1,
-            "Verification is an extra or final bit of proof that establishes something is true"
+            "Lavages des pressings à Bling Pressing"
+        ),
+        HorizontalPagerContent(
+            "Open Pressing",
+            R.drawable.images2,
+            "laver vos vetements"
         ),
         HorizontalPagerContent(
             "Open Pressing",
             R.drawable.image3,
-            "We pay attention to all of your payments and find way for saving your money"
+            "livraison des vetements"
         ),
         HorizontalPagerContent(
             "Open Pressing",
-            R.drawable.images2,
-            "Free Advisory service,mobile banking application,visa"
-        ),
-        HorizontalPagerContent(
-            "Open Pressing",
-            R.drawable.images2,
-            "Bank your life,We create something new you have never seen before"
+            R.drawable.image3,
+            "livraison des vetements"
         )
     )
 }
@@ -142,8 +139,7 @@ fun IntroScreen(navController: NavHostController) {
 
             if (isNextVisible.value) {
                 Button(onClick = {
-                    navController.navigate(Screen.Login.road)
-                    scope.launch {
+                    scope.launch{
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }) {
