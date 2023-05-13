@@ -5,6 +5,7 @@ package com.android.openpressing.client_module.presentation.besoin
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -26,7 +27,6 @@ fun AddRequirementScreen(){
     val scrollState = rememberLazyListState()
     Box{
        MainScreen( scrollState)
-        RequirementContent(scrollState)
 
     }
 
@@ -35,10 +35,11 @@ fun AddRequirementScreen(){
 }
 
 @Composable
-fun MainScreen(scaffoldState: LazyListState) {
+fun MainScreen(scrollstate: LazyListState) {
 
   TopAppBar(
-      backgroundColor = Color.White
+      backgroundColor = Color.White,
+      modifier= Modifier.height(100.dp)
   ) {
       Row(
           modifier = Modifier.padding(start = 4.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
@@ -104,13 +105,5 @@ fun RequirementCard(  @DrawableRes image:Int, title: String  ) {
 
 
 
-
-
-
-        }
-
-    }
-
-}
 
 
