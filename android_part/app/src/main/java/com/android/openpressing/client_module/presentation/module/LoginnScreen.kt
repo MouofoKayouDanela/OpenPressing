@@ -53,7 +53,7 @@ fun LoginScreen(navController: NavHostController) {
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Sign in Illustration",
                 modifier = Modifier
-                    .weight(5f)
+                    .weight(3f)
                     .padding(
                         horizontal = 32.dp,
                     ),

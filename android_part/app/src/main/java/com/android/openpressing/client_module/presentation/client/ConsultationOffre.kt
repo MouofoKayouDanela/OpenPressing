@@ -145,13 +145,9 @@ fun AppTopBar(agency:agency, scrollState: LazyListState, navController: NavHostC
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                Icons.Rounded.LocationOn,
-                                contentDescription =" stringResource(R.string.location)",
-                                tint = Orange
-                            )
+
                             Text(
-                                agency.location,
+                                "",
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 11.sp,
                                 color = Color.White,
