@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.besoin.MainScreen
-import com.android.openpressing.client_module.presentation.besoin.RequirementContent
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
@@ -100,7 +98,7 @@ fun AppBottom() { //Footer
                 modifier = Modifier.size(32.dp, 32.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.facebook),
+                    painter = painterResource(id = R.drawable.ele1),
                     contentDescription = "My Image",
                     modifier = Modifier
                 )
