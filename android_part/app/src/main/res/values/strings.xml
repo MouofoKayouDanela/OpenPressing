@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">OpenPressing</string>
+    <string name="arrow_back">Back</string>
+
+    <string name="notifications">Notifications</string>
+    <string name="location">location</string>
+    <string name="money">Solde</string>
+    <string name="previewPage">previewPage</string>
+    <string name="nextPage">nextPage</string>
+    <string name="list">liste</string>
+    <string name="liste">liste de commande</string>
+    <string name="editer">Editer</string>
+    <string name="message">Message</string>
+
 </resources>

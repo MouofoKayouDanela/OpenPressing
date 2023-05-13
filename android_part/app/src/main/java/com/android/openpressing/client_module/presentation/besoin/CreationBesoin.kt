@@ -12,6 +12,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -33,14 +35,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.data.models.client.Client
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.message.Messages
-import com.android.openpressing.data.models.requirement_detail.RequirementDetails
-import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.client_module.presentation.client.*
+import com.android.openpressing.client_module.presentation.client.pressing
 import com.android.openpressing.ui.theme.*
-import com.google.gson.annotations.SerializedName
+import com.android.openpressing.utils.Screen
+import okhttp3.internal.http.HTTP_RESET_CONTENT
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
@@ -83,36 +85,76 @@ data class linge(
     val nom:String
 )
 
-@Preview
+
 @Composable
-fun AddRequirementScreen(){
+fun AddRequirementScreen(navController: NavHostController) {
 
     val scrollState = rememberLazyListState()
-    Column {
-        TopBar()
-    }
-        LazyColumn(contentPadding = PaddingValues(start=80.dp), state = scrollState  ) {
+    Scaffold(
+        topBar = { TopBar(navController = navController ) },
 
-            item {
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-                Content(laundryService = "Netoyage", serviceImage = R.drawable.pant)
-
-
+        content = { innerPadding ->
+            ContentCard(
+                services = listOf(
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                    service(
+                        imageVector = painterResource(R.drawable.pant),
+                        nom = "nettoyage a eau"
+                    ),
+                ),
+                scrollState, navController, innerPadding = innerPadding
+            )
+        },
+        floatingActionButton ={
+            FloatingActionButton(
+                onClick = {navController .navigate( Screen.ListBesoin.road) },
+                backgroundColor = Purple500,
+                contentColor = Color.White,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Add requirement",
+                    style = MaterialTheme.typography.body1.copy(
+                        fontSize = 22.sp
+                    )
+                )
+            }
         }
 
+    )
 
-    }
+
+
+
+
 
 
 
 }
 
 @Composable
-fun  TopBar()
+fun  TopBar(navController: NavHostController)
    {
        TopAppBar(
            elevation =  AppBarDefaults.TopAppBarElevation,
@@ -129,7 +171,7 @@ fun  TopBar()
            {
 
                IconButton(
-                   onClick = { /*TODO*/ },
+                   onClick = { navController.navigate(Screen.ListOffer.road ) },
                    modifier = Modifier.size(32.dp, 32.dp)
 
 
@@ -141,20 +183,14 @@ fun  TopBar()
                    color = Color.DarkGray,
                    style= MaterialTheme.typography.h5,
                    modifier = Modifier.fillMaxWidth()
-
-
                )
            }
-
-
        }
-
-
   }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Content( laundryService: String, @DrawableRes serviceImage:Int){
+fun Content( servicee: service){
    var  expandedState by remember { mutableStateOf( false) }
 
     Card(
@@ -187,20 +223,20 @@ fun Content( laundryService: String, @DrawableRes serviceImage:Int){
 
 
                 Image(
-                    painter = painterResource(id = serviceImage),
+                    painter = servicee.imageVector,
                     contentDescription = "image du service",
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(35.dp)
                         .border(
                             width = 0.dp,
-                            brush = Brush.horizontalGradient(listOf(Color.White)),
+                            brush = Brush.horizontalGradient(listOf(Color.White, Color.LightGray )),
                             shape = CircleShape
                         )
                 )
 
                 Text(
-                    text = laundryService,
+                    text = servicee .nom,
                     color = Color.DarkGray,
                     style = MaterialTheme.typography.body1
                 )
@@ -369,6 +405,23 @@ fun LaundryLines(LaundryTitle:String,  @DrawableRes LaundryImage:Int ) {
 
 
         }
+@Composable
+fun ContentCard(services: List<service>, scrollState: LazyListState, navController: NavHostController, innerPadding: PaddingValues){
+
+    LazyColumn(contentPadding =innerPadding, state = scrollState ){
+
+        items(services){
+
+            Content(it)
+        }
+    }
+
+
+
+
+
+
+}
 
 
 
