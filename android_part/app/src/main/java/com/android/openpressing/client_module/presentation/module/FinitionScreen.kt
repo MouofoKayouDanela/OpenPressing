@@ -72,7 +72,7 @@ fun FinitionScreen( navController: NavHostController) {
         ) {
             Box(modifier = Modifier.height(24.dp))
             Image(
-                painter = painterResource(id = com.android.openpressing.R.drawable.logopressing),
+                painter = painterResource(id = com.android.openpressing.R.drawable.registre),
                 contentDescription = "Sign up Illustration",
                 modifier = Modifier
                     .weight(3f)
@@ -258,7 +258,7 @@ fun FinitionScreen( navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogUsername=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez remplir tous les champs")},
+                            text={Text("Veuillez entrer votre username")},
                             confirmButton = {
                                 Button(onClick = {showDialogUsername=false },
                                     modifier=Modifier.width(80.dp)
@@ -274,7 +274,7 @@ fun FinitionScreen( navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogEmail=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez remplir tous les champs")},
+                            text={Text("Veuillez entrer votre email")},
                             buttons = {
                                 Button(onClick = {showDialogEmail=false },
                                     modifier=Modifier.width(80.dp)

@@ -96,6 +96,7 @@ fun IntroScreen(navController: NavHostController) {
                         modifier = Modifier
                             .height(380.dp)
                             .width(300.dp)
+
                     )
 
                     Text(

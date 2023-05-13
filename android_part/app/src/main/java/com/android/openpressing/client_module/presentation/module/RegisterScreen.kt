@@ -67,7 +67,7 @@ fun RegisterScreen(navController: NavHostController) {
         ) {
             Box(modifier = Modifier.height(24.dp))
             Image(
-                painter = painterResource(id = R.drawable.logopressing),
+                painter = painterResource(id = R.drawable.registre),
                 contentDescription = "Sign up Illustration",
                 modifier = Modifier
                     .weight(3f)
@@ -196,7 +196,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogNom=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez remplir tous les champs")},
+                            text={Text("Veuillez entrer votre nom")},
                             buttons = {
                                 Button(onClick = {showDialogNom=false },
                                     modifier=Modifier.width(80.dp)
@@ -212,7 +212,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogPrenom=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez remplir tous les champs")},
+                            text={Text("Veuillez entrer votre prenom")},
                             buttons = {
                                 Button(onClick = {showDialogPrenom=false },
                                     modifier=Modifier.width(80.dp)
@@ -228,7 +228,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogDate=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez remplir tous les champs")},
+                            text={Text("Veuillez entrer la date")},
                             buttons = {
                                 Button(onClick = {showDialogDate=false },
                                     modifier=Modifier.width(80.dp)
