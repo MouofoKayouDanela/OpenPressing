@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
+import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.client.OfferScreen
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.client_module.presentation.module.FinitionScreen
@@ -47,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
                     composable(Screen.ListOffer.road){ OfferScreen(navController) }
                     composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
+                    composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                 }
             }
         }

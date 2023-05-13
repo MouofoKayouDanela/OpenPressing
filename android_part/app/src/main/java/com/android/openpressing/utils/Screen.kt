@@ -18,4 +18,6 @@ sealed class Screen(val road: String){
     object ListOffer: Screen("/list_offer")
     object AddBesoin: Screen("/add_besoin")
 
+    object ConsulterMessage : Screen("/ConsulterMessage")
+
 }

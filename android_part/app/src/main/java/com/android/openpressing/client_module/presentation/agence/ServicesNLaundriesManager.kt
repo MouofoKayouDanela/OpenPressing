@@ -107,10 +107,11 @@ fun ServicesNLaundriesManager(navController: NavHostController) {
                 }
 
                 }
+    )
                 //BottomBar(navController)
             }
-    )
-}
+
+
 
 /*fun BottomBar(navController: NavHostController) {
     val selectedIndex = remember { mutableStateOf(0) }
