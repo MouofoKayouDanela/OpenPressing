@@ -76,7 +76,6 @@ fun EditerProfil(navController: NavHostController) {
                 )
             }
 
-            BottomBar(navController)
         }
 
     }

@@ -108,7 +108,6 @@ fun RegisterScreen(navController: NavHostController) {
                         onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
                     value = nom,
-                    modifier = Modifier.background(color = DarkGray)
 
                 )
                 AppTextField(
@@ -129,7 +128,6 @@ fun RegisterScreen(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }
                     ),
                     value = prenom,
-                    modifier = Modifier.background(color = DarkGray)
                 )
                 AppTextField(
                     onValueChange = {
@@ -149,7 +147,7 @@ fun RegisterScreen(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }
                     ),
                     value = date_naissance,
-                    modifier = Modifier.background(color = DarkGray)
+
                 )
                 //Button(
                 // onClick = {
