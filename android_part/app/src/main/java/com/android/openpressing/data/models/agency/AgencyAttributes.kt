@@ -17,6 +17,6 @@ data class AgencyAttributes(
     var messages: Messages ,
     var agency_services: AgencyServices ,
     var agency_laundries: AgencyLaundries ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )
