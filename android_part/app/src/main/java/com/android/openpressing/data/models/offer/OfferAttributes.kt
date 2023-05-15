@@ -11,7 +11,7 @@ data class OfferAttributes(
     var agency_laundry: AgencyLaundry ,
     var agency_service: AgencyService ,
     var announce: Announce ,
-    var promotion: Promotion ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var promotion: Promotion? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

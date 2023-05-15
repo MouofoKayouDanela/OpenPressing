@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AnnounceAttributes(
     @SerializedName("Description") var description: String ,
-    var offers: Offers ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var offers: Offers? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

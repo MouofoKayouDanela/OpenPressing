@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LaundryCategoryAttributes(
     @SerializedName("Name") var name: String ,
-    var laundries: Laundries ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var laundries: Laundries? = null ,
+    var confirmed: Boolean = true,
+    var blocked: Boolean = false
 )

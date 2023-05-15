@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class CityAttributes(
     @SerializedName("Name") var name: String ,
     val country: Country ,
-    var quarters: Quarters ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var quarters: Quarters? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )
