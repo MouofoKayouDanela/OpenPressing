@@ -39,14 +39,14 @@ import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.services.state.PressingState
 import kotlinx.coroutines.launch
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
 data class pressing(
     val imageVector: Painter,
     val nom:String,
-    val position:String,
-    val nomLivraison:String
+    val position:String
 )
 
 data class user(
@@ -68,38 +68,32 @@ fun ScaffoldSample(navController: NavHostController) {
             pressing(
                 imageVector = painterResource(R.drawable.lavage4),
                 nom = "Elegance Pressing",
-                position= "Bonamoussadi",
-                nomLivraison = "Free Delivery"
+                position= "Bonamoussadi"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage2),
                 nom = "Eco Pressing",
-                position= "Makepe",
-                nomLivraison = "Free Delivery"
+                position= "Makepe"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage1),
                 nom = "Blinding Pressing",
-                position= "Logpom",
-                nomLivraison = "Free Delivery"
+                position= "Logpom"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage5),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
         ),
             innerPadding = innerPadding,
@@ -219,7 +213,11 @@ fun SectionBleue(navController: NavHostController){
 }
 
 @Composable
-fun CardWithContent(pressing: pressing, navController: NavHostController) { //navController: NavHostController
+fun CardWithContent(
+    pressing: pressing,
+    navController: NavHostController,
+    pressingState: PressingState,
+) { //navController: NavHostController
     val paddingModifier = Modifier.padding(15.dp)
     Card(
         elevation = 10.dp,
@@ -279,7 +277,8 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                     }
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        //modifier=Modifier.padding(5.dp)
+                        modifier=Modifier.padding(
+                            horizontal = 8.dp)
                     ) {
                         Icon(
                             Icons.Rounded.LocationOn,
@@ -295,27 +294,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                         )
                     }
                 }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier=Modifier.weight(0.3f),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_directions_bike_24),
-                        contentDescription = "position",
-                        tint = Orange,
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .size(30.dp)
-                            .height(44.dp)
-                    )
-                    Text(
-                        text = pressing.nomLivraison,
-                        color = black,
-                        style = MaterialTheme.typography.body1.copy(
-                            fontSize = 15.sp
-                        )
-                    )
-                }
+
             }
         }
 
@@ -401,7 +380,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                 })
             }
             items(pressing) {
-                CardWithContent(it, navController) //navController = NavHostController
+                CardWithContent(it, navController,pressingState) //navController = NavHostController
             }
         }
     }

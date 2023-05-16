@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,6 +25,7 @@ import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +35,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
+            val pressingModel : PressingViewModel = viewModel()
+
             OpenPressingTheme{
                 NavHost(navController = navController, startDestination = Screen.Login.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
@@ -40,7 +44,16 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
-                    composable(Screen.Home.road){ ScaffoldSample(navController) }
+                    composable(Screen.Home.road){
+                        ScaffoldSample(navController)
+
+                        pressingModel.getAll()
+
+                        CardWithContent(
+                        pressingState=pressingModel.pressingState.collectAsState().value
+                        )
+
+                    }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
                     composable(Screen.Splash.road){ IntroScreen(navController) }

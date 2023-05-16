@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LaundryViewModel @Inject constructor
-    ( private val laundryRepository: LaundryRepository):ViewModel(){
+    (
+    private val laundryRepository: LaundryRepository):ViewModel(){
 
 
 
@@ -51,7 +52,7 @@ class LaundryViewModel @Inject constructor
     fun getById(id: Int) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val laundry = laundryRepository .getById( id)
+                val laundry = laundryRepository.getById( id)
             }
         } catch (e: Exception) {
 
@@ -80,8 +81,8 @@ class LaundryViewModel @Inject constructor
                 }
             }
 
-        } catch (e: Exception) {
-
+        }
+        catch (e: Exception) {
         }
     }
     }
