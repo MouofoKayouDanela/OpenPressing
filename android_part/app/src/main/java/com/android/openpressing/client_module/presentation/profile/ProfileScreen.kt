@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 //import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.material.*
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -22,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.client_module.presentation.requirement.details.components.DeliveryArea
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 
@@ -31,21 +35,23 @@ import com.android.openpressing.utils.Screen
 @Composable
 fun ProfileScreen(navController: NavHostController) {
 
+    Scaffold(
+        topBar = {BlueSection(navController)
+        },
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        //.background(color = mainColor)
+        content = { innerPadding ->
+            LazyColumn(
+                contentPadding = innerPadding,
+                modifier = Modifier
+                    .fillMaxHeight(),
+            ) {
 
-    ){
-        Column() {
-            BlueSection(navController)
-            ///////**********PARTIES BLANCHE DES DETAILS DU PROFILE*******//////////////
-
-            ListeSoustitre(navController)
-
+                item {
+                    ListeSoustitre(navController)
+                }
+            }
         }
-    }
-    
+    )
 }
 
 
@@ -55,13 +61,13 @@ fun BlueSection(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .size(height = 180.dp, width = 230.dp) /////taille du box bleue/////
+            .size(height = 80.dp, width = 230.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
                     topEnd = 0.dp,
-                    bottomEnd = 40.dp,
-                    bottomStart = 40.dp
+                    bottomEnd = 20.dp,
+                    bottomStart = 20.dp
                 )
             )//////forme arrondie de la box/////
             .background(color = Purple500)
@@ -99,111 +105,27 @@ fun BlueSection(navController: NavHostController) {
                 }
             }
 
-            ////////////Image +nom//////////////
             Row(
-                modifier = Modifier
-                    .padding( horizontal = 25.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier .padding(horizontal = 98.dp),
+                horizontalArrangement = Arrangement.Center,
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.homme),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(50.dp)
-                        .border(1.dp, color = Color.White, CircleShape)
-
+                Text(
+                    text = "Paramètres",
+                    fontSize = 20.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
                 )
-                //Spacer(Modifier.width(1.dp))
-                //////description du la photo////
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .padding( horizontal = 25.dp)
-                ) {
-                    Text(
-                        "Emmanuel Zipar",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                    )
-                    Spacer(Modifier.height(5.dp))
-                    ////logo de location/////
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Rounded.LocationOn,
-                            contentDescription = stringResource(R.string.location),
-                            tint = Orange
-                        )
-                        Text(
-                            "Douala,Nyalla Rue 225",
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 11.sp,
-                            color = Color.White,
-                        )
-                    }
-                }
             }
-
-
-            ////////////Les 3 icones du bas//////////////
-                Column(
-                    Modifier
-                        .padding(horizontal = 50.dp, vertical = 15.dp)
-                ) {
-                    Row{
-                        Icon(
-                            Icons.Rounded.AttachMoney, /////icone du solde////////////
-                            contentDescription = stringResource(R.string.money),
-                            tint = Vert
-                        )
-                        Text(
-                            "Solde",
-                            fontWeight = FontWeight.Normal,
-                            color = Color.White,
-
-                            )
-                    }
-                    Spacer(Modifier.height(1.dp))
-                    Text(
-                        "25.000Fcfa",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                    )
-                }
-
-                //////*****Icone de gauche*******///////////
-
-
         }
     }
 }
 
 @Composable
 fun ListeSoustitre(navController: NavHostController) {
-    Box(
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 35.dp)
-            .width(300.dp)
-            .height(600.dp)
-            .clip(
-                shape = RoundedCornerShape(
-                    topStart = 15.dp,
-                    topEnd = 15.dp,
-                    bottomEnd = 15.dp,
-                    bottomStart = 15.dp
-                )
-            )//////forme arrondie de la box/////
-            .background(color = Color.White),
 
-
-        ) {
         Column(
-            modifier = Modifier.padding(vertical = 15.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.padding(vertical = 45.dp, horizontal = 5.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             ///////*******LIGNE DE SOUS PAGE*********//////
             Row(
@@ -217,19 +139,19 @@ fun ListeSoustitre(navController: NavHostController) {
                     contentDescription = stringResource(R.string.nextPage),
                     tint = Color.Green
                 )
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(6.dp))
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         "Informations sur le compte",
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
                     Text(
                         "Nom, Email, Adresse, ...",
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         color = Grey,
                     )
@@ -265,13 +187,13 @@ fun ListeSoustitre(navController: NavHostController) {
                 ) {
                     Text(
                         "Historique des commandes",
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
                     Text(
                         "par jour, par semaine,...",
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         color = Grey,
                     )
@@ -294,7 +216,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    Icons.Rounded.FastRewind,
+                    Icons.Rounded.Launch,
                     contentDescription = stringResource(R.string.liste),
                     tint = Teal200
                 )
@@ -303,19 +225,19 @@ fun ListeSoustitre(navController: NavHostController) {
 
                 ) {
                     Text(
-                        "Show",
-                        fontSize = 14.sp,
+                        "Mes besoins",
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
                     Text(
-                        "A propos de cette application",
-                        fontSize = 12.sp,
+                        "Mes demandes datées ",
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         color = Grey,
                     )
                 }
-                Spacer(Modifier.width(24.dp))
+                Spacer(Modifier.width(45.dp))
                 IconButton(onClick = { navController.navigate(Screen.Parametre.road)}) {
                     Icon(
                         Icons.Rounded.NavigateNext,
@@ -343,13 +265,13 @@ fun ListeSoustitre(navController: NavHostController) {
                 ) {
                     Text(
                         "Mes favoris",
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
                     Text(
                         "Vos meilleurs hbnmbv hbvh  ",
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         color = Grey,
                     )
@@ -382,13 +304,13 @@ fun ListeSoustitre(navController: NavHostController) {
                 ) {
                     Text(
                         "A Propos",
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                     )
                     Text(
                         "A propos de cette application",
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
                         color = Grey,
                     )
@@ -404,8 +326,12 @@ fun ListeSoustitre(navController: NavHostController) {
             }
         }
 
-
-    }
 }
 
+@Preview
+@Composable
+fun Profileview(){
+    val navController = rememberNavController()
+    ProfileScreen(navController)
+}
 
