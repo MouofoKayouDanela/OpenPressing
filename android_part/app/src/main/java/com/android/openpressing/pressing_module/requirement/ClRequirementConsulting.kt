@@ -6,6 +6,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -142,48 +145,43 @@ fun TopAppBar() {
     Column {
         Row(
                 Modifier
-                    .fillMaxWidth()
-                    .background(primaryColor)
-                    .padding(
-                            horizontal = 8.dp ,
-                            vertical = 4.dp
-                    )
-        ) {
-            IconButton(
-                    onClick = { }
-            ) {
-                Icon(
-                        Icons.Rounded.KeyboardArrowLeft ,
-                        contentDescription = null ,
-                        tint = Color.White,
-                        modifier = Modifier.size(48.dp)
-                )
-            }
-        }
-
-        Row(
-                Modifier
                     .clip(
                             RoundedCornerShape(
-                                    bottomStart = 30.dp ,
-                                    bottomEnd = 30.dp
+                                    bottomStart = 10.dp ,
+                                    bottomEnd = 10.dp
                             )
                     )
                     .fillMaxWidth()
-                    .height(80.dp)
                     .background(primaryColor)
                     .padding(
                             horizontal = 8.dp ,
                             vertical = 4.dp
                     ),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.Center
+                verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                    "Besoins disponibles",
-                    style = MaterialTheme.typography.h4,
-                    color = Color.White
-            )
+            IconButton(
+                    onClick = { },
+                    modifier = Modifier.weight(0.1f)
+            ) {
+                Icon(
+                        Icons.Rounded.KeyboardArrowLeft ,
+                        contentDescription = null ,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(48.dp)
+                )
+            }
+
+            Row(
+                    modifier = Modifier.weight(0.9f),
+                    horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                        "Besoins disponibles" ,
+                        style = MaterialTheme.typography.h5 ,
+                        color = Color.White
+                )
+            }
         }
     }
 }
@@ -203,10 +201,7 @@ fun RequirementList(
             Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                                vertical = 8.dp ,
-                                horizontal = 8.dp
-                        ),
+                        .padding(6.dp),
                     elevation = 2.dp,
                     backgroundColor = Color.White,
                     border = BorderStroke(
@@ -251,7 +246,7 @@ fun RequirementList(
                             )
                             Text(
                                     data.date.toString() ,
-                                    style = MaterialTheme.typography.subtitle2
+                                    style = MaterialTheme.typography.overline
                             )
                         }
 
@@ -274,20 +269,36 @@ fun RequirementList(
                     if (isExpanded) {
 
                         Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                modifier = Modifier.padding(8.dp)
                         ){
 
-                            data.services.forEach { service ->
-                                Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                            service,
-                                            style = MaterialTheme.typography.body1
-                                    )
+                            LazyRow(
+                                    modifier = Modifier
+                                        .padding(
+                                                top = 4.dp,
+                                                bottom = 10.dp
+                                        )
+                            ) {
+
+                                items(data.services) { service ->
+
+                                    Row(
+                                            modifier = Modifier
+                                                .padding(end = 8.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                                service,
+                                                style = MaterialTheme.typography.body1,
+                                                modifier = Modifier
+                                                    .clip(CircleShape)
+                                                    .background(primaryPrimeColor)
+                                                    .padding(4.dp)
+                                        )
+                                    }
                                 }
+
                             }
 
                             Row(
@@ -295,9 +306,15 @@ fun RequirementList(
                                         .fillMaxWidth()
                                         .border(
                                                 width = 1.dp ,
-                                                brush = Brush.linearGradient(listOf(Color.Black, Color.Black)) ,
+                                                brush = Brush.linearGradient(
+                                                        listOf(
+                                                                Color.Black ,
+                                                                Color.Black
+                                                        )
+                                                ) ,
                                                 shape = RoundedCornerShape(20)
                                         )
+                                        .padding(4.dp)
                                         .clickable { }
                             ) {
                                 Text(
