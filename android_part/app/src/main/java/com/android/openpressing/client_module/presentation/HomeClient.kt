@@ -380,7 +380,7 @@ fun CardWithContent(
                 })
             }
             items(pressing) {
-                CardWithContent(it, navController,pressingState) //navController = NavHostController
+                CardWithContent(it, navController) //navController = NavHostController
             }
         }
     }

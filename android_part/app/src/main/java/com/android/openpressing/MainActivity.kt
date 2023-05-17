@@ -49,9 +49,9 @@ class MainActivity : ComponentActivity() {
 
                         pressingModel.getAll()
 
-                        CardWithContent(
+                       /* CardWithContent(
                         pressingState=pressingModel.pressingState.collectAsState().value
-                        )
+                        )*/
 
                     }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
