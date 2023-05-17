@@ -10,6 +10,6 @@ data class PromotionAttributes (
     @SerializedName("CreationDate") var creation_date: Date,
     @SerializedName("ExpiredDate") var expired_date: Date,
     var offer: Offer,
-    var confirmed: Boolean,
-    var blocked: Boolean
+    var confirmed: Boolean = true,
+    var blocked: Boolean = false
 )

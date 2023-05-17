@@ -14,7 +14,7 @@ data class UserAttributes(
     var username: String ,
     var email: String ,
     var password: String ,
-    var registerDate: Date ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var registerDate: Date = Date(),
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

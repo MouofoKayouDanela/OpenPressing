@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
 
 data class OwnerAttributes(
     @SerializedName("users_permissions_user") val user: UserPermission ,
-    var pressings: Pressings
+    var pressings: Pressings? = null
 )

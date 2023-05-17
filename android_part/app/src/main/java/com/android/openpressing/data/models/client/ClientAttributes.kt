@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ClientAttributes(
     @SerializedName("users_permissions_user") val user: UserPermission ,
-    @SerializedName("besoins") var requirements: Requirements
+    @SerializedName("besoins") var requirements: Requirements? = null
 ) {
 
 }
