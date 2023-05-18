@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.viewmodels.services.state.RequirementState
 import com.android.openpressing.viewmodels.services.state.ServicesStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,30 +21,25 @@ class ServiceViewModel @Inject constructor(
     :ViewModel()
      {
 
-private  val _availableservices = MutableStateFlow<ServicesStates>(ServicesStates.Empty)
-private var availableservice: StateFlow<ServicesStates> = _availableservices
-
-init {
-    getAll()
-
-}
+private  val _serviceState = MutableStateFlow<ServicesStates>(ServicesStates.Empty)
+val serviceState: StateFlow<ServicesStates> = _serviceState
 
         fun getAll() {
-            _availableservices.value = ServicesStates.Loading
+            _serviceState.value = ServicesStates.Loading
 
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val services = serviceRepository.getAll()
-                    _availableservices.value= ServicesStates.Success(services)
+                    _serviceState.value= ServicesStates.Success.ServicesSuccess(services)
 
                 } catch (exception: HttpException ) {
-                    _availableservices.value= ServicesStates.Error("No internet connection")
+                    _serviceState.value= ServicesStates.Error("No internet connection")
 
                 }
                 catch (exception: InvalidDisplayException ) {
-                _availableservices.value= ServicesStates.Error("something went wong")
+                _serviceState.value= ServicesStates.Error("something went wong")
 
-            }
+                }
             }
 
         }
@@ -54,8 +48,14 @@ init {
             try {
                 viewModelScope.launch(Dispatchers.IO) {
                     val service = serviceRepository.getById(id)
+                    _serviceState.value = ServicesStates.Success.ServiceSuccess(service)
                 }
-            } catch (e: Exception) {
+            }  catch (exception: HttpException ) {
+                _serviceState.value= ServicesStates.Error("No internet connection")
+
+            }
+            catch (exception: InvalidDisplayException ) {
+                _serviceState.value= ServicesStates.Error("something went wong")
 
             }
         }

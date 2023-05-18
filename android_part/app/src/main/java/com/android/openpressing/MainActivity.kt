@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,8 +25,9 @@ import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
+import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.pressing.PressingViewModel
+import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,13 +35,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
+           /* val navController = rememberNavController()
 
             val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
                 NavHost(navController = navController, startDestination = Screen.Login.road){
-                    composable(Screen.Login.road){ LoginScreen(navController) }
+                    composable(Screen.Login.road){
+                       // LoginScreen(navController)
+                        AddRequirementScreen()
+                    }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
@@ -82,5 +87,7 @@ fun DefaultPreview() {
         //form()
         //Default()
 
-    }
+    }*/
 }
+
+    }   }

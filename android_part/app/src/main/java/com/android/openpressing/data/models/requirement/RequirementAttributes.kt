@@ -4,11 +4,13 @@ import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.message.Messages
 import com.android.openpressing.data.models.requirement_detail.RequirementDetails
+import java.util.*
 
 data class RequirementAttributes(
     var requirement_details: RequirementDetails ,
-    var messages: Messages ,
+    var messages: Messages? = null ,
     var client: Client ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false ,
+    val createdAt: Date,
 )

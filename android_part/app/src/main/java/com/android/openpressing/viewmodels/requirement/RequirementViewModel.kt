@@ -15,10 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
-
-class RequirementViewModel {
     @HiltViewModel
-    class ServiceViewModel @Inject constructor(
+    class RequirementViewModel @Inject constructor(
         private val requirementRepository: RequirementRepository
     )
         : ViewModel()
@@ -26,11 +24,6 @@ class RequirementViewModel {
 
         private  val _availablerequirement = MutableStateFlow<RequirementState>(RequirementState.Empty)
         var avilablerequirement: StateFlow<RequirementState> = _availablerequirement
-
-        init {
-            getAll()
-
-        }
 
         fun getAll() {
             _availablerequirement.value = RequirementState.Loading
@@ -89,4 +82,3 @@ class RequirementViewModel {
             }
         }
     }
-}

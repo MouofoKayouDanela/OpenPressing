@@ -13,10 +13,10 @@ import com.android.openpressing.data.models.quarter.Quarter
 data class AgencyAttributes(
     val pressing: Pressing ,
     val quarter: Quarter ,
-    var agents: Agents ,
-    var messages: Messages ,
-    var agency_services: AgencyServices ,
-    var agency_laundries: AgencyLaundries ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var agents: Agents? = null ,
+    var messages: Messages? = null ,
+    var agency_services: AgencyServices? = null ,
+    var agency_laundries: AgencyLaundries? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

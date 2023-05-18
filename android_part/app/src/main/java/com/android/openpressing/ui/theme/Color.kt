@@ -34,3 +34,10 @@ val blanc = Color(0xFFFCFBFB)
 val bla = Color(0xFFE6DCDC)
 val Orang= Color(0xFFFF5722)
 
+
+val primaryColor = Color(0xFFA80E9B)
+val primaryPrimeColor = Color(0xFFE7DBEB)
+val softPrimaryPrimeColor = Color(0xFFEFECF0)
+val secondaryColor = Color(0xFFF8825C)
+val secondaryPrimeColor = Color(0xFFF0CBBF)
+
