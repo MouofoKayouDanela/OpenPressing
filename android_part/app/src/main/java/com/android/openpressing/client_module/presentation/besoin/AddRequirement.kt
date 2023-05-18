@@ -402,9 +402,10 @@ fun ContentCardlist(
 }
     }
 
+fun fetchDatas1(
 
-        fun fetchDatas1(
             laundries: List<Laundry>
+
         ) : List<Data> {
 
             val datas : MutableList<Data> = mutableListOf()
