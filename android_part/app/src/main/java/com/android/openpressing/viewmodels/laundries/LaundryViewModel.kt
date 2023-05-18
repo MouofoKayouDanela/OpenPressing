@@ -20,28 +20,24 @@ class LaundryViewModel @Inject constructor
 
 
 
-    private  val _availablelaundries = MutableStateFlow<LaundryState>(LaundryState.Empty)
-    private var availablelaundries: StateFlow<LaundryState> = _availablelaundries
+    private  val _laundryState = MutableStateFlow<LaundryState>(LaundryState.Empty)
+    val laundryState: StateFlow<LaundryState> = _laundryState
 
-    init {
-        getAll()
-
-    }
 
     fun getAll() {
-        _availablelaundries .value = LaundryState.Loading
+        _laundryState .value = LaundryState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val laundries = laundryRepository.getAll()
-                _availablelaundries.value=LaundryState .Success(laundries)
+                _laundryState.value=LaundryState.Success.LaundriesSuccess(laundries)
 
             } catch (exception: HttpException) {
-                _availablelaundries.value= LaundryState.Error("No internet connection")
+                _laundryState.value= LaundryState.Error("No internet connection")
 
             }
             catch (exception: WindowManager.InvalidDisplayException) {
-                _availablelaundries.value= LaundryState.Error("something went wong")
+                _laundryState.value= LaundryState.Error("something went wong")
 
             }
         }
@@ -49,11 +45,20 @@ class LaundryViewModel @Inject constructor
     }
 
     fun getById(id: Int) {
+
+        _laundryState.value = LaundryState.Empty
+
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val laundry = laundryRepository .getById( id)
+                _laundryState.value = LaundryState.Success.LaundrySuccess(laundry)
             }
-        } catch (e: Exception) {
+        } catch (exception: HttpException) {
+            _laundryState.value= LaundryState.Error("No internet connection")
+
+        }
+        catch (exception: WindowManager.InvalidDisplayException) {
+            _laundryState.value= LaundryState.Error("something went wong")
 
         }
     }
