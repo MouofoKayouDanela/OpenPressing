@@ -1,9 +1,6 @@
 package com.android.openpressing.pressing_module.requirement
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,12 +18,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
+import com.android.openpressing.data.models.client.Client
+import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.requirement.Requirement
+import com.android.openpressing.data.models.requirement.RequirementData
+import com.android.openpressing.data.models.requirement_detail.RequirementDetail
+import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
 import com.android.openpressing.ui.theme.softPrimaryPrimeColor
+import com.android.openpressing.utils.BASE_URL
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.client.state.ClientState
+import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import com.android.openpressing.viewmodels.promotion.PromotionViewModel
+import com.android.openpressing.viewmodels.requirement.RequirementViewModel
+import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
+import com.android.openpressing.viewmodels.requirement_detail.state.RequirementDetailState
+import com.android.openpressing.viewmodels.services.ServiceViewModel
+import com.android.openpressing.viewmodels.services.state.LaundryState
+import com.android.openpressing.viewmodels.services.state.RequirementState
+import com.android.openpressing.viewmodels.services.state.ServicesStates
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import java.util.*
 
 data class Data(
@@ -128,15 +152,31 @@ val myDatas = listOf(
         )
 )
 
-@Preview
 @Composable
-fun ClRequirementConsulting() {
+fun ClRequirementConsulting(
+    state: RequirementState
+) {
+
+    var actualPage by remember { mutableStateOf(0) }
+    var pageSize by remember { mutableStateOf(0) }
+
     Scaffold(
             topBar = { TopAppBar() } ,
             content = { innerPadding ->
-                RequirementList(innerPadding)
+                RequirementList(
+                        innerPadding = innerPadding,
+                        actualPage = actualPage,
+                        updatePageSize = { pageSize = it },
+                        state = state
+                )
             } ,
-            bottomBar = { BottomAppBar() } ,
+            bottomBar = {
+                BottomAppBar(
+                        actualPage = actualPage,
+                        pageSize = pageSize,
+                        updateActualPage = { actualPage = it }
+                )
+            }
     )
 }
 
@@ -188,158 +228,297 @@ fun TopAppBar() {
 
 @Composable
 fun RequirementList(
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    actualPage: Int,
+    updatePageSize: (Int) -> Unit,
+    state: RequirementState
 ) {
-    LazyColumn(
-            contentPadding = innerPadding
-    ) {
 
-        items(myDatas) { data ->
+    when (state) {
 
-            var isExpanded by remember { mutableStateOf(false) }
-
-            Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp),
-                    elevation = 2.dp,
-                    backgroundColor = Color.White,
-                    border = BorderStroke(
-                            1.dp,
-                            secondaryPrimeColor
-                    ),
-                    shape = RoundedCornerShape(if (isExpanded) 10 else 20)
+        is RequirementState.Success -> {
+            LazyColumn(
+                    contentPadding = innerPadding
             ) {
 
-                Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp) ,
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Row(
+                items(fetchRequirement(
+                        requirements = state.data,
+                        actualPage = actualPage,
+                        updatePageSize = { updatePageSize(it) }
+                )) { data ->
+
+                    var isExpanded by remember { mutableStateOf(false) }
+
+                    Card(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically ,
-                            horizontalArrangement = Arrangement.Center
+                                .fillMaxWidth()
+                                .padding(6.dp) ,
+                            elevation = 2.dp ,
+                            backgroundColor = Color.White ,
+                            border = BorderStroke(
+                                    1.dp ,
+                                    secondaryPrimeColor
+                            ) ,
+                            shape = RoundedCornerShape(if (isExpanded) 10 else 20)
                     ) {
 
-                        Icon(
-                                Icons.Rounded.Person ,
-                                contentDescription = null ,
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .background(Color.LightGray)
-                                    .size(48.dp)
-                        )
-
                         Column(
                                 modifier = Modifier
-                                    .weight(0.65f)
+                                    .fillMaxWidth()
                                     .padding(8.dp) ,
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.Center ,
+                                horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                    data.username ,
-                                    style = MaterialTheme.typography.body1
-                            )
-                            Text(
-                                    data.date.toString() ,
-                                    style = MaterialTheme.typography.overline
-                            )
-                        }
-
-                        IconButton(
-                                onClick = { isExpanded = !isExpanded } ,
-                                modifier = Modifier.weight(0.1f)
-                        ) {
-
-                            Icon(
-                                    imageVector = if (!isExpanded)
-                                                    Icons.Rounded.KeyboardArrowDown
-                                                 else
-                                                     Icons.Rounded.KeyboardArrowUp,
-                                    contentDescription = null ,
-                            )
-                        }
-
-                    }
-
-                    if (isExpanded) {
-
-                        Column(
-                                modifier = Modifier.padding(8.dp)
-                        ){
-
-                            LazyRow(
+                            Row(
                                     modifier = Modifier
-                                        .padding(
-                                                top = 4.dp,
-                                                bottom = 10.dp
-                                        )
+                                        .fillMaxWidth() ,
+                                    verticalAlignment = Alignment.CenterVertically ,
+                                    horizontalArrangement = Arrangement.Center
                             ) {
 
-                                items(data.services) { service ->
+//                                Icon(
+//                                        Icons.Rounded.Person ,
+//                                        contentDescription = null ,
+//                                        modifier = Modifier
+//                                            .clip(CircleShape)
+//                                            .background(Color.LightGray)
+//                                            .size(48.dp)
+//                                )
+
+                                Image(
+                                        rememberAsyncImagePainter(
+                                                model = BASE_URL + fetchUser(
+                                                        fetchClient(data.attributes.client.data.id!!)
+                                                            !!.data.attributes.user.data.id!!
+                                                )!!.profile_picture.attributes.formats.medium.url
+                                        ),
+                                       contentDescription = null,
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .size(48.dp),
+                                        contentScale = ContentScale.Crop
+
+                                )
+
+                                Column(
+                                        modifier = Modifier
+                                            .weight(0.65f)
+                                            .padding(8.dp) ,
+                                        verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                            fetchUser(
+                                                    fetchClient(data.attributes.client.data.id!!)
+                                                    !!.data.attributes.user.data.id!!
+                                            )!!.username ,
+                                            style = MaterialTheme.typography.body1
+                                    )
+                                    Text(
+                                            "${data.attributes.createdAt}",
+                                            style = MaterialTheme.typography.overline
+                                    )
+                                }
+
+                                IconButton(
+                                        onClick = { isExpanded = !isExpanded } ,
+                                        modifier = Modifier.weight(0.1f)
+                                ) {
+
+                                    Icon(
+                                            imageVector = if (!isExpanded)
+                                                Icons.Rounded.KeyboardArrowDown
+                                            else
+                                                Icons.Rounded.KeyboardArrowUp ,
+                                            contentDescription = null ,
+                                    )
+                                }
+
+                            }
+
+                            if (isExpanded) {
+
+                                Column(
+                                        modifier = Modifier.padding(8.dp)
+                                ) {
+
+                                    LazyRow(
+                                            modifier = Modifier
+                                                .padding(
+                                                        top = 4.dp ,
+                                                        bottom = 10.dp
+                                                )
+                                    ) {
+
+                                        val datas = data.attributes.requirement_details?.data
+
+                                        if (datas != null){
+                                            items(datas) { requirement_details ->
+
+                                                val requirement_detail = fetchRequirementDetails(requirement_details.id!!)
+
+                                                Row(
+                                                        modifier = Modifier
+                                                            .padding(end = 8.dp) ,
+                                                        verticalAlignment = Alignment.CenterVertically ,
+                                                        horizontalArrangement = Arrangement.Center
+                                                ) {
+
+                                                    val service = fetchService(requirement_detail!!.data.attributes.service.data.id!!)!!
+
+                                                    Text(
+                                                            "${service.data.attributes.type.data.attributes.title}  ${service.data.attributes.category.data.attributes.name}" ,
+                                                            style = MaterialTheme.typography.body1 ,
+                                                            modifier = Modifier
+                                                                .clip(CircleShape)
+                                                                .background(primaryPrimeColor)
+                                                                .padding(4.dp)
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                    }
 
                                     Row(
                                             modifier = Modifier
-                                                .padding(end = 8.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.Center
+                                                .fillMaxWidth()
+                                                .border(
+                                                        width = 1.dp ,
+                                                        brush = Brush.linearGradient(
+                                                                listOf(
+                                                                        Color.Black ,
+                                                                        Color.Black
+                                                                )
+                                                        ) ,
+                                                        shape = RoundedCornerShape(20)
+                                                )
+                                                .padding(4.dp)
+                                                .clickable { }
                                     ) {
                                         Text(
-                                                service,
-                                                style = MaterialTheme.typography.body1,
+                                                "Voir plus" ,
+                                                style = MaterialTheme.typography.body1 ,
                                                 modifier = Modifier
-                                                    .clip(CircleShape)
-                                                    .background(primaryPrimeColor)
-                                                    .padding(4.dp)
+                                                    .weight(0.9f)
+                                        )
+                                        Icon(
+                                                Icons.Rounded.ArrowRightAlt ,
+                                                contentDescription = null ,
+                                                modifier = Modifier.weight(0.1f)
                                         )
                                     }
                                 }
 
                             }
-
-                            Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .border(
-                                                width = 1.dp ,
-                                                brush = Brush.linearGradient(
-                                                        listOf(
-                                                                Color.Black ,
-                                                                Color.Black
-                                                        )
-                                                ) ,
-                                                shape = RoundedCornerShape(20)
-                                        )
-                                        .padding(4.dp)
-                                        .clickable { }
-                            ) {
-                                Text(
-                                        "Voir plus",
-                                        style = MaterialTheme.typography.body1,
-                                        modifier = Modifier
-                                            .weight(0.9f)
-                                )
-                                Icon(
-                                        Icons.Rounded.ArrowRightAlt,
-                                        contentDescription =  null,
-                                        modifier = Modifier.weight(0.1f)
-                                )
-                            }
                         }
-
                     }
                 }
             }
         }
+
+        else -> {}
     }
 }
 
 @Composable
-fun BottomAppBar() {
+private fun fetchUser(
+    id: Int,
+    userViewModel: UserViewModel = hiltViewModel()
+) : User? {
+
+    userViewModel.getById(id)
+    return when(val state = userViewModel.userState.collectAsState().value) {
+
+        is UserState.Success.UserSuccess -> state.data
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchClient(
+    id: Int,
+    clientViewModel: ClientViewModel = hiltViewModel()
+) : Client? {
+
+    clientViewModel.getById(id)
+    return when(val state = clientViewModel.clientState.collectAsState().value) {
+
+        is ClientState.Success.ClientSuccess -> state.data
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchRequirementDetails(
+    id: Int,
+    requirementDetailViewModel: RequirementDetailViewModel = hiltViewModel()
+) : RequirementDetail? {
+
+    requirementDetailViewModel.getById(id)
+    return when(val state = requirementDetailViewModel.requirementDetailState.collectAsState().value) {
+
+        is RequirementDetailState.Success -> state.requirementDetail
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchLaundry(
+    id: Int,
+    laundryViewModel: LaundryViewModel = hiltViewModel()
+) : Laundry? {
+
+    laundryViewModel.getById(id)
+    return when(val state = laundryViewModel.laundryState.collectAsState().value) {
+
+        is LaundryState.Success.LaundrySuccess -> state.data
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchService(
+    id: Int,
+    serviceViewModel: ServiceViewModel = hiltViewModel()
+) : Service? {
+
+    serviceViewModel.getById(id)
+    return when(val state = serviceViewModel.serviceState.collectAsState().value) {
+
+        is ServicesStates.Success.ServiceSuccess -> state.data
+
+        else -> null
+    }
+}
+
+private fun fetchRequirement(
+    actualPage: Int ,
+    updatePageSize: (Int) -> Unit,
+    requirements: List<RequirementData>
+) : List<RequirementData> {
+
+    updatePageSize((requirements.size + 6) / 7)
+
+    return requirements.subList(
+            actualPage * 7,
+            minOf(
+                    (actualPage + 1) * 7,
+                    requirements.size
+            )
+    )
+
+}
+
+@Composable
+fun BottomAppBar(
+    actualPage: Int,
+    pageSize: Int,
+    updateActualPage: (Int) -> Unit
+) {
     Row(
             Modifier
                 .fillMaxWidth()
@@ -352,8 +531,9 @@ fun BottomAppBar() {
             horizontalArrangement = Arrangement.Center
     ) {
         IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1.5f)
+                onClick = { updateActualPage(0) },
+                modifier = Modifier.weight(1.5f),
+                enabled = actualPage != 0
         ) {
             Icon(
                     Icons.Rounded.SkipPrevious,
@@ -362,8 +542,9 @@ fun BottomAppBar() {
             )
         }
         IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1.5f)
+                onClick = { updateActualPage(actualPage + 1) },
+                modifier = Modifier.weight(1.5f),
+                enabled = actualPage != 0
         ) {
             Icon(
                     Icons.Rounded.KeyboardArrowLeft,
@@ -372,21 +553,25 @@ fun BottomAppBar() {
             )
         }
 
+        val page = if (actualPage <= 9) "0${actualPage + 1}" else "${actualPage + 1}"
+        val size = if (pageSize <= 9) "0${pageSize + 1}" else "${pageSize + 1}"
+
         Row(
                 modifier = Modifier.weight(4f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
         ){
             Text(
-                    "page 01 sur 07" ,
+                    "page $page sur $size" ,
                     color = Color.White,
                     style = MaterialTheme.typography.body1
             )
         }
 
         IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1.5f)
+                onClick = { updateActualPage(actualPage - 1) },
+                modifier = Modifier.weight(1.5f),
+                enabled = actualPage != pageSize
         ) {
             Icon(
                     Icons.Rounded.KeyboardArrowRight,
@@ -395,8 +580,9 @@ fun BottomAppBar() {
             )
         }
         IconButton(
-                onClick = { },
-                modifier = Modifier.weight(1.5f)
+                onClick = { updateActualPage(pageSize) },
+                modifier = Modifier.weight(1.5f),
+                enabled = actualPage != pageSize
         ) {
             Icon(
                     Icons.Rounded.SkipNext,
