@@ -244,10 +244,10 @@ sealed interface OpenPressingStrapiApi{
 
     interface ClientApi: OpenPressingStrapiApi {
 
-        @GET(CLIENT_FEATURES+ INCLUSION_FEATURES)
+        @GET(CLIENT_FEATURES + POPULATE)
         suspend fun getAll() : Clients
 
-        @GET("$CLIENT_FEATURES/{id}$INCLUSION_FEATURES")
+        @GET("$CLIENT_FEATURES/{id}$POPULATE")
         suspend fun getById(@Path("id") id: Int) : Client
 
         @POST(CLIENT_FEATURES)
