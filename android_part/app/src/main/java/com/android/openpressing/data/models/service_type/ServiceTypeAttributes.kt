@@ -10,7 +10,7 @@ data class ServiceTypeAttributes(
     @SerializedName("createdAt") var created_at: Date ,
     @SerializedName("updateAt") var updated_at: Date ,
     @SerializedName("publishedAt") var published_at: Date ,
-    var confirmed: Boolean ,
-    var blocked: Boolean ,
-    var services: Services ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false ,
+    var services: Services? = null ,
 )

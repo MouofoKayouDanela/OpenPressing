@@ -12,7 +12,7 @@ data class AgencyServiceAttributes(
     @SerializedName("AddingDate") var addingDate: Date ,
     @SerializedName("RetireDate") var retireDate: Date ,
     @SerializedName("Status") var status: String ,
-    var offers: Offers ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var offers: Offers? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

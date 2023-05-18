@@ -13,6 +13,6 @@ data class RequirementDetailAttributes(
     @SerializedName("Name") var name: String ,
     @SerializedName("Description") var description: String ,
     val requirement: Requirement ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )
