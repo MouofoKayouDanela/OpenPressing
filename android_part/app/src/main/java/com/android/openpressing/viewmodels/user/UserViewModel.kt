@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
-@HiltViewModel
-class UserViewModel @Inject constructor(
+//@HiltViewModel
+/*class UserViewModel @Inject constructor(
     private val userViewModel: UserViewModel
 ) :ViewModel(){
 
@@ -34,7 +34,7 @@ class UserViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val users = serviceRepository.getAll()
+                val users = userRepository.getAll()
                 _availableusers.value= UserStates.Success(users)
 
             } catch (exception: HttpException) {
@@ -52,7 +52,7 @@ class UserViewModel @Inject constructor(
     fun getById(id: Int) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
-                val service = serviceRepository.getById(id)
+                val service = userRepository.getById(id)
             }
         } catch (e: Exception) {
 
@@ -63,7 +63,7 @@ class UserViewModel @Inject constructor(
         try {
 
             viewModelScope.launch(Dispatchers.IO) {
-                serviceRepository.save(service)
+               userRepository.save(service)
             }
 
         } catch (e: Exception) {
@@ -75,7 +75,7 @@ class UserViewModel @Inject constructor(
         try {
 
             viewModelScope.launch(Dispatchers.IO) {
-                val updatedService = serviceRepository.update(id, service)
+                val updatedService = userRepository.update(id, service)
                 if (updatedService.equals(service)){
 
                 }
@@ -85,4 +85,4 @@ class UserViewModel @Inject constructor(
 
         }
     }
-}
+}*/

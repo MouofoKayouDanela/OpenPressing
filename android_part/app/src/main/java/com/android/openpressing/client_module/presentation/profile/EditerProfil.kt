@@ -5,10 +5,14 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+//import androidx.compose.foundation.gestures.ModifierLocalScrollableContainerProvider.value
+//import androidx.compose.foundation.gestures.ModifierLocalScrollableContainerProvider.value
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -26,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -125,15 +130,36 @@ fun FixBare(navController: NavHostController) {
 
 @Composable
 fun ListBox() {
-    var value by remember {
+    var name by remember {
+        mutableStateOf("")
+    }
+
+    var adresse by remember {
+        mutableStateOf("")
+    }
+
+    var mail by remember {
+        mutableStateOf("")
+    }
+
+    var phone by remember {
         mutableStateOf(0)
     }
+
     var defaultname by remember { mutableStateOf("") }
     var defaultmail by remember { mutableStateOf("") }
     var defaultphone by remember { mutableStateOf(0) }
     var defaultadress by remember { mutableStateOf("") }
-    val showDialog = remember { mutableStateOf(false) }
-    var texte by remember { mutableStateOf("") }
+
+    val showDialogName = remember { mutableStateOf(false) }
+    val showDialogMail = remember { mutableStateOf(false) }
+    val showDialogPhone = remember { mutableStateOf(false) }
+    val showDialogLocal = remember { mutableStateOf(false) }
+
+    var textename by remember { mutableStateOf("") }
+    var textemail by remember { mutableStateOf("") }
+    var textephone by remember { mutableStateOf(0) }
+    var textelocal by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -202,16 +228,16 @@ fun ListBox() {
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        " Emmanuel Zipar",
+                        " $textename",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black,
                     )
                 }
-
                 IconButton(
                     modifier = Modifier .weight(0.3f),
                     onClick = {
+                        showDialogName.value = true
                     //navController.navigate(Screen.EditScreen.road)
                 }
                 ) {
@@ -223,6 +249,47 @@ fun ListBox() {
                             .clip(CircleShape)
                             //.background(VioletPal)
                             .padding(5.dp)
+                    )
+                }
+                if (showDialogName.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogName.value = false },
+                        title = { Text("Enter your new name") },
+                        text = {
+                            TextField(
+                                value = textename,
+                                onValueChange = { textename=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$name")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultname = textename
+                                    showDialogName.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogName.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
                     )
                 }
             }
@@ -262,7 +329,7 @@ fun ListBox() {
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        " Emanuelzipar@gmail.com",
+                        " $textemail",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black,
@@ -272,8 +339,9 @@ fun ListBox() {
                 IconButton(
                     modifier = Modifier .weight(0.3f),
                     onClick = {
+                        showDialogMail.value = true
                     //navController.navigate(Screen.EditScreen.road)
-                }
+                    }
                 ) {
                     Icon(
                         Icons.Rounded.Edit,
@@ -283,6 +351,63 @@ fun ListBox() {
                             .clip(CircleShape)
                             //.background(VioletPal)
                             .padding(5.dp)
+                    )
+                }
+
+                //////////FONCTION DE VERIFICATION DU FORMAT DE L'EMAIL////////////////////
+                fun isEmailValid(email: String): Boolean {
+                    val regex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})")
+                    return regex.matches(email)
+                }
+
+                if (showDialogMail.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogMail.value = false },
+                        title = { Text("Enter your new mail") },
+                        text = {
+                            TextField(
+                                value = textemail,
+                                onValueChange = { textemail=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$mail")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    /*val email = "example@email.com"
+                                    val isEmailValid = isEmailValid(email)
+
+                                    if (isEmailValid) {
+                                        Text("Validate", color = Color.Green)
+                                    } else {
+                                        Text("Validate", color = Color.Red)
+                                    }*/
+                                    defaultmail = textemail
+                                    showDialogMail.value = false
+
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogMail.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
                     )
                 }
             }
@@ -320,18 +445,28 @@ fun ListBox() {
                         color = Color.Black.copy(alpha = 0.5f),
                     )
                     Spacer(modifier = Modifier.height(5.dp))
-                    Text(
-                        " +237 657 290 643",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
+                    Row() {
+                        Text(
+                            " +237 ",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Black,
+                        )
+                        Text(
+                            " $textephone",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Black,
+                        )
+                    }
+
+
                 }
                 IconButton(
                     modifier = Modifier .weight(0.3f),
-                    onClick = {
-                    //navController.navigate(Screen.EditScreen.road)
-                },
+                    onClick = { showDialogPhone.value = true
+                        //navController.navigate(Screen.EditScreen.road)
+                    },
                 ) {
                     Icon(
                         Icons.Rounded.Edit,
@@ -343,6 +478,47 @@ fun ListBox() {
                             .padding(5.dp)
                     )
                 }
+                /*if (showDialogPhone.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogPhone.value = false },
+                        title = { Text("Enter your new phone") },
+                        text = {
+                            TextField(
+                                value = textephone,
+                                onValueChange = { textephone = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                placeholder = {Text(text = "$phone")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultphone = textephone
+                                    showDialogPhone.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogLocal.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }*/
             }
 
             ////////////LIGNE DE SEPARATION////////
@@ -436,7 +612,7 @@ fun ListBox() {
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        " Douala, Nyalla Rue210",
+                        " $textelocal",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Black,
@@ -444,7 +620,7 @@ fun ListBox() {
                 }
                 IconButton(
                     modifier = Modifier .weight(0.3f),
-                    onClick = {
+                    onClick = { showDialogLocal.value = true
                     //navController.navigate(Screen.EditScreen.road)
                 }) {
                     Icon(
@@ -455,6 +631,50 @@ fun ListBox() {
                             .clip(CircleShape)
                             //.background(VioletPal)
                             .padding(5.dp)
+                    )
+                }
+
+
+
+                if (showDialogLocal.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogLocal.value = false },
+                        title = { Text("Enter your new adress") },
+                        text = {
+                            TextField(
+                                value = textelocal,
+                                onValueChange = { textelocal=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$adresse")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultadress = textelocal
+                                    showDialogLocal.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogLocal.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
                     )
                 }
             }
@@ -476,8 +696,11 @@ fun ListBox() {
         }
 
         Row (
-            modifier = Modifier.padding(horizontal = 70.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+            modifier = Modifier
+                .padding(horizontal = 70.dp)
+                .fillMaxHeight(0.8f),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Bottom
         ){
             TextButton(
                 onClick = { /*TODO*/ },
