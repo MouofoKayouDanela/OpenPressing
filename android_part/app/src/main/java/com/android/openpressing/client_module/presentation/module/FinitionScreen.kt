@@ -195,11 +195,32 @@ fun FinitionScreen( navController: NavHostController) {
                         Text("Précédent", style = MaterialTheme.typography.body1)
                     }
 
+                    var showSnackbar by remember {
+                        mutableStateOf(false)
+                    }
                     Button(
-                        onClick = { /* action on click */ },
+                        onClick = {
+                            if (email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()) {
+                            } else {
+                                showSnackbar =true
+                            }
+
+
+                        },
                         modifier = Modifier.width(150.dp)
                     ) {
                         Text("S'inscrire", style = MaterialTheme.typography.body1)
+                    }
+                    if (showSnackbar){
+                        Snackbar(
+                            action = {
+                                Button(onClick = {  showSnackbar = false }) {
+                                    Text("OK")
+                                }
+                            }
+                        ) {
+                            Text("Veuillez remplir tous les champs.")
+                        }
                     }
                 }
             }

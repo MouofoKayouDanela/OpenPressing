@@ -116,59 +116,48 @@ fun RegisterScreen(navController: NavHostController) {
                     ),
                     value = prenom,
                 )
-                AppTextField(
-                    onValueChange = {
-                        date_naissance = it
-                    },
-                    hint = "Date de naissance",
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Lock,
-                            contentDescription = "date de naissance",
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    value = date_naissance
-                )
-                //Button(
-                // onClick = {
-                // },
-                //shape = RoundedCornerShape(16.dp),
-                //modifier = Modifier
-                //  .height(48.dp)
-                //  .fillMaxWidth(),
-                //) {
-                //   Text(
-                //       text = "Continue", style = MaterialTheme.typography.body1,
-                //       modifier = Modifier.clickable {
-                //           navController.navigate(FINITION_ROUTE)
-                //       }
-                //   )
-                //  }
+                dropDownMenuVille()
+                dropDownMenuPays()
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { navController.navigate(Screen.Login.road) },
+                        onClick = { /* Gérer l'événement du bouton précédent */ },
                         enabled = false // Griser le bouton précédent,
 
                     ) {
                         Text(text = "Précédent", style = MaterialTheme.typography.body1)
                     }
+                    var showSnackbar by remember {
+                        mutableStateOf(false)
+                    }
                     Button(
-                        onClick = { /* Gérer l'événement du bouton continuer */ }
+                        onClick = {
+                            if (nom.isNotEmpty() && prenom.isNotEmpty()) {
+                                // Naviguer vers l'ecran suivant
+                            } else // Naviguer vers l'ecran suivant
+                            {
+                                showSnackbar = true
+                            }
+                            // Afficher un message d'erreur }
+                        }
                     ) {
                         Text(text = "Continuer", style = MaterialTheme.typography.body1,
                             modifier = Modifier.clickable {
-                                navController.navigate(Screen.Finition.road)
+                                navController.navigate(Screen.Login.road)
                             })
+                    }
+                    if (showSnackbar){
+                        Snackbar(
+                            action = {
+                                Button(onClick = { showSnackbar = false }) {
+                                    Text("OK")
+                                }
+                            }) {
+                            Text("veuillez remplir tous les champs.")
+                        }
                     }
                 }
                 Row(
