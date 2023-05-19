@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 data class PressingAttributes(
     @SerializedName("Name") var name: String ,
     @SerializedName("proprietaire") val owner: Owner ,
-    var agencies: Agencies ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var agencies: Agencies? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CountryAttributes(
     @SerializedName("Name") var name: String ,
-    var cities: Cities ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var cities: Cities? = null ,
+    var confirmed: Boolean = true ,
+    var blocked: Boolean = false
 )

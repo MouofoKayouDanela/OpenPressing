@@ -1,7 +1,9 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -17,15 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.utils.Screen
 
 
@@ -36,6 +42,10 @@ fun RegisterScreen(navController: NavHostController) {
     var nom by remember { mutableStateOf("") }
     var prenom by remember { mutableStateOf("") }
     var date_naissance by remember { mutableStateOf("") }
+    var showDialogNom by remember { mutableStateOf(false) }
+    var showDialogPrenom by remember { mutableStateOf(false) }
+    var showDialogDate by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
@@ -59,7 +69,7 @@ fun RegisterScreen(navController: NavHostController) {
         ) {
             Box(modifier = Modifier.height(24.dp))
             Image(
-                painter = painterResource(id = R.drawable.logopressing),
+                painter = painterResource(id = R.drawable.registre),
                 contentDescription = "Sign up Illustration",
                 modifier = Modifier
                     .weight(3f)
@@ -74,11 +84,13 @@ fun RegisterScreen(navController: NavHostController) {
                 modifier = Modifier.weight(7f),
             ) {
                 Text(
-                    text = "Sign Up", style = MaterialTheme.typography.h4.copy(
+                    text = "Sign Up",
+                    style = MaterialTheme.typography.h4.copy(
                         fontWeight = FontWeight.Bold
                     )
                 )
                 AppTextField(
+
                     onValueChange = {
                         nom = it
                     },
@@ -96,6 +108,7 @@ fun RegisterScreen(navController: NavHostController) {
                         onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
                     value = nom,
+
                 )
                 AppTextField(
                     onValueChange = {
@@ -128,12 +141,13 @@ fun RegisterScreen(navController: NavHostController) {
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
+                        imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = { focusManager.clearFocus() }
                     ),
-                    value = date_naissance
+                    value = date_naissance,
+
                 )
                 //Button(
                 // onClick = {
@@ -163,12 +177,71 @@ fun RegisterScreen(navController: NavHostController) {
                         Text(text = "Précédent", style = MaterialTheme.typography.body1)
                     }
                     Button(
-                        onClick = { /* Gérer l'événement du bouton continuer */ }
+                        onClick = {
+                            if(nom.isEmpty()){
+                                showDialogNom=true
+                            }
+                            else if (prenom.isEmpty()){
+                                showDialogPrenom=true
+                            }
+                            else if(date_naissance.isEmpty()){
+                                showDialogDate=true
+                            }
+                            else{
+                                navController.navigate(Screen.Finition.road)
+                            }
+                        /* Gérer l'événement du bouton continuer */ }
                     ) {
                         Text(text = "Continuer", style = MaterialTheme.typography.body1,
-                            modifier = Modifier.clickable {
-                                navController.navigate(Screen.Finition.road)
-                            })
+                        )
+                    }
+                    if(showDialogNom){
+                        BackHandler {
+                            showDialogNom=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogNom=false},
+                            title = {Text("Champ vide")},
+                            text={Text("Veuillez entrer votre nom")},
+                            buttons = {
+                                Button(onClick = {showDialogNom=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)) {
+                                    Text("ok")
+                                }
+                            }
+                        )
+                    }
+                    if(showDialogPrenom){
+                        BackHandler {
+                            showDialogPrenom=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogPrenom=false},
+                            title = {Text("Champ vide")},
+                            text={Text("Veuillez entrer votre prenom")},
+                            buttons = {
+                                Button(onClick = {showDialogPrenom=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)) {
+                                    Text("ok")
+                                }
+                            }
+                        )
+                    }
+                    if(showDialogDate){
+                        BackHandler {
+                            showDialogDate=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogDate=false},
+                            title = {Text("Champ vide")},
+                            text={Text("Veuillez entrer la date")},
+                            buttons = {
+                                Button(onClick = {showDialogDate=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)) {
+                                    Text("ok")
+                                }
+                            }
+                        )
                     }
                 }
                 Row(
@@ -199,3 +272,4 @@ fun RegisterScreen(navController: NavHostController) {
         }
     }
 }
+

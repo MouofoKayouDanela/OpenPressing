@@ -14,4 +14,40 @@
     </targetSelectedWithDropDown>
     <timeTargetWasSelectedWithDropDown value="2023-03-31T13:06:14.586851700Z" />
   </component>
+</project><?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="deploymentTargetDropDown">
+    <runningDeviceTargetSelectedWithDropDown>
+      <Target>
+        <type value="RUNNING_DEVICE_TARGET" />
+        <deviceKey>
+          <Key>
+<<<<<<< HEAD
+            <type value="SERIAL_NUMBER" />
+            <value value="060393713J002535" />
+=======
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\user\.android\avd\Pixel_4_API_32.avd" />
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
+          </Key>
+        </deviceKey>
+      </Target>
+    </runningDeviceTargetSelectedWithDropDown>
+<<<<<<< HEAD
+    <timeTargetWasSelectedWithDropDown value="2023-04-02T11:28:44.943432200Z" />
+=======
+    <targetSelectedWithDropDown>
+      <Target>
+        <type value="QUICK_BOOT_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\user\.android\avd\Pixel_4_API_32.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2023-04-02T00:07:08.346727600Z" />
+>>>>>>> cddf925a4f66bb3969d4899b9b3e2bb97b0461d0
+  </component>
 </project>

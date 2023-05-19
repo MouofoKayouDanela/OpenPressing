@@ -13,10 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AttachMoney
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material.icons.rounded.NavigateBefore
-import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
+import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.ui.theme.Orange
 import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.ui.theme.Vert
@@ -41,9 +39,7 @@ import com.android.openpressing.utils.Screen
 
 data class pressing(
     val imageVector: Painter,
-    val nom:String,
-    val position:String,
-    val nomLivraison:String
+    val nom:String
 )
 
 data class user(
@@ -56,7 +52,11 @@ data class offer(
     val lingee:linge,
     val unitPrice:Int
 )
+data class agency(
 
+    val pressing:pressing ,
+    val location:String
+)
 data class service(
     val imageVector: Painter,
     val nom:String
@@ -68,11 +68,11 @@ data class linge(
 )
 
 @Composable
-fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostController) {
+fun AppTopBar(agency:agency, scrollState: LazyListState, navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .size(height = 110.dp, width = 230.dp) /////taille du box bleue/////
+                .size(height = 110.dp, width = 180.dp) /////taille du box bleue/////
                 .clip(
                     shape = RoundedCornerShape(
                         topStart = 0.dp,
@@ -100,14 +100,15 @@ fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostCon
                             tint = Color.White
                         )
                     }
-
-                    IconButton(onClick = { /*TODO*/ }) {
+                     IconButton(onClick = {navController.navigate( Screen.AddBesoin.road) }) {
                         Icon(
-                            Icons.Rounded.Notifications,
-                            contentDescription = "stringResource(R.string.notifications)",
+                            Icons.Rounded.ShoppingCart,
+                            contentDescription = stringResource(R.string.notifications),
                             tint = Color.White
                         )
                     }
+
+
                 }
 
                 ////////////Image +nom//////////////
@@ -117,7 +118,7 @@ fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostCon
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Image(
-                        painter = painterResource(id = R.drawable.pant),
+                        painter = agency.pressing.imageVector,
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
@@ -128,12 +129,13 @@ fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostCon
                     //Spacer(Modifier.width(1.dp))
                     //////description du la photo////
                     Column(
-                        verticalArrangement = Arrangement.Center,
+                        verticalArrangement  =Arrangement.spacedBy(10.dp),
+                        horizontalAlignment=Alignment.CenterHorizontally,
                         modifier = Modifier
                             .padding( horizontal = 25.dp)
                     ) {
                         Text(
-                            "Emmanuel Zipar",
+                            text = agency.pressing.nom,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -143,16 +145,13 @@ fun AppTopBar(useer: user, scrollState: LazyListState, navController: NavHostCon
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                Icons.Rounded.LocationOn,
-                                contentDescription =" stringResource(R.string.location)",
-                                tint = Orange
-                            )
+
                             Text(
-                                "Douala,Nyalla Rue 225",
+                                "",
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 11.sp,
                                 color = Color.White,
+                                modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
                     }
@@ -240,7 +239,7 @@ fun OfferCard(offer: offer) {
                     nom = "nettoyage a eau"
                 ),
                 lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
+                    imageVector = painterResource(R.drawable.chaussurejersey    ),
                     nom = "chaussure en soie"
                 ),
                 unitPrice = 1000
@@ -252,7 +251,7 @@ fun OfferCard(offer: offer) {
                     nom = "nettoyage a eau"
                 ),
                 lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
+                    imageVector = painterResource(R.drawable.chaussurejersey),
                     nom = "robe en soie"
                 ),
                 unitPrice = 1000
@@ -264,7 +263,7 @@ fun OfferCard(offer: offer) {
                     nom = "nettoyage a eau"
                 ),
                 lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
+                    imageVector = painterResource(R.drawable.chaussurejersey),
                     nom = "chaussure en jersey"
                 ),
                 unitPrice = 1000
@@ -276,7 +275,7 @@ fun OfferCard(offer: offer) {
                     nom = "nettoyage a eau"
                 ),
                 lingee = linge(
-                    imageVector = painterResource(R.drawable.pant),
+                    imageVector = painterResource(R.drawable.chaussurejersey    ),
                     nom = "chaussure en jean"
                 ),
                 unitPrice = 1000
@@ -319,7 +318,7 @@ fun Laundryline(offer: offer) {
 
 
         Text(
-            text = offer.lingee.nom,
+            text = offer.lingee.nom +"(FCFA)",
             color = Color.DarkGray,
             style = MaterialTheme.typography.body1,
             modifier = Modifier.padding(end = 5.dp)
@@ -327,10 +326,14 @@ fun Laundryline(offer: offer) {
         )
 
         Text(
-            text =offer.unitPrice.toString() +"  FCFA",
+            text =offer.unitPrice.toString() ,
             color = Color.DarkGray,
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.width(75.dp)
+
         )
+
+
 
 
     }
@@ -344,7 +347,7 @@ fun OfferScreen(navController: NavHostController){
 
     val scrollState = rememberLazyListState()
      Scaffold(
-         topBar = {AppTopBar(useer = user(name = "dany", localisation = "NDogbon"), scrollState, navController)},
+         topBar = {AppTopBar(agency = agency(pressing = pressing(imageVector =  painterResource(R.drawable.ele1 ), nom = "Elegance Pressing",)    , location = "NDogbon"), scrollState, navController)},
 
          content = { innerPadding ->
              ContentCard(Offers= listOf (
@@ -406,7 +409,8 @@ fun OfferScreen(navController: NavHostController){
 
          ),
              scrollState,navController, innerPadding = innerPadding )
-         }
+         },
+
      )
 
 

@@ -24,11 +24,12 @@
     "confirmed": {
       "type": "boolean",
       "default": true,
-      "required": false
+      "required": true
     },
     "blocked": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "required": true
     }
   }
 }

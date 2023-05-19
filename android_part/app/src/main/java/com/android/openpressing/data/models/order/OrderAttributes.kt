@@ -10,6 +10,6 @@ data class OrderAttributes(
     var message: Message ,
     var pickup_address: Quarter ,
     var delivery_address: Quarter ,
-    var confirmed: Boolean ,
-    var blocked: Boolean
+    var confirmed: Boolean = true,
+    var blocked: Boolean = false
 )
