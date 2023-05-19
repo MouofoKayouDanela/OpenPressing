@@ -4,8 +4,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,38 +17,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.android.openpressing.R
 import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement.RequirementData
-import com.android.openpressing.data.models.requirement_detail.RequirementDetail
-import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
 import com.android.openpressing.ui.theme.softPrimaryPrimeColor
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
-import com.android.openpressing.viewmodels.promotion.PromotionViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
-import com.android.openpressing.viewmodels.requirement_detail.state.RequirementDetailState
 import com.android.openpressing.viewmodels.services.ServiceViewModel
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.RequirementState
-import com.android.openpressing.viewmodels.services.state.ServicesStates
 import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import java.util.*
 
 data class Data(
@@ -154,11 +142,13 @@ val myDatas = listOf(
 
 @Composable
 fun ClRequirementConsulting(
-    state: RequirementState
+    requirementViewModel: RequirementViewModel = hiltViewModel()
 ) {
 
     var actualPage by remember { mutableStateOf(0) }
     var pageSize by remember { mutableStateOf(0) }
+
+    requirementViewModel.getAll()
 
     Scaffold(
             topBar = { TopAppBar() } ,
@@ -167,7 +157,7 @@ fun ClRequirementConsulting(
                         innerPadding = innerPadding,
                         actualPage = actualPage,
                         updatePageSize = { pageSize = it },
-                        state = state
+                        state = requirementViewModel.avilablerequirement.collectAsState().value
                 )
             } ,
             bottomBar = {
@@ -287,10 +277,10 @@ fun RequirementList(
 
                                 Image(
                                         rememberAsyncImagePainter(
-                                                model = BASE_URL + fetchUser(
+                                                model = BASE_URL + FectchUser(
                                                         fetchClient(data.attributes.client.data.id!!)
-                                                            !!.data.attributes.user.data.id!!
-                                                )!!.profile_picture.attributes.formats.medium.url
+                                                            .data.attributes.user.data.id!!
+                                                ).profile_picture.attributes.formats.medium.url
                                         ),
                                        contentDescription = null,
                                         modifier = Modifier
@@ -307,10 +297,10 @@ fun RequirementList(
                                         verticalArrangement = Arrangement.Center
                                 ) {
                                     Text(
-                                            fetchUser(
+                                            FectchUser(
                                                     fetchClient(data.attributes.client.data.id!!)
-                                                    !!.data.attributes.user.data.id!!
-                                            )!!.username ,
+                                                    .data.attributes.user.data.id!!
+                                            ).username ,
                                             style = MaterialTheme.typography.body1
                                     )
                                     Text(
@@ -363,7 +353,7 @@ fun RequirementList(
                                                         horizontalArrangement = Arrangement.Center
                                                 ) {
 
-                                                    val service = fetchService(requirement_detail!!.data.attributes.service.data.id!!)!!
+                                                    val service = fetchService(requirement_detail.data.attributes.service.data.id!!)
 
                                                     Text(
                                                             "${service.data.attributes.type.data.attributes.title}  ${service.data.attributes.category.data.attributes.name}" ,
@@ -421,49 +411,104 @@ fun RequirementList(
 }
 
 @Composable
-private fun fetchUser(
+private fun FetchUser(
     id: Int,
-    userViewModel: UserViewModel = hiltViewModel()
-) : User? {
+    requirementDate: Date,
+    viewModel: UserViewModel = hiltViewModel()
+) {
+    viewModel.getById(id)
 
-    userViewModel.getById(id)
-    return when(val state = userViewModel.userState.collectAsState().value) {
+    when (val state = viewModel.userState.collectAsState().value) {
 
-        is UserState.Success.UserSuccess -> state.data
+        is UserState.Loading -> {
+            Row {
+                Row(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(48.dp)
+                            .background(softPrimaryPrimeColor) ,
+                        verticalAlignment = Alignment.CenterVertically ,
+                        horizontalArrangement = Arrangement.Center
 
-        else -> null
+                ) {
+                    CircularProgressIndicator(color = primaryColor)
+                }
+
+
+                Column(
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(8.dp) ,
+                        verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                            stringResource(R.string.loading_message) ,
+                            style = MaterialTheme.typography.body1
+                    )
+                    Text(
+                            stringResource(R.string.loading_message) ,
+                            style = MaterialTheme.typography.overline
+                    )
+                }
+            }
+        }
+
+        is UserState.Success.UserSuccess -> {
+            Row {
+                Image(
+                        rememberAsyncImagePainter(
+                                model = BASE_URL + state
+                                    .data
+                                    .profile_picture
+                                    .attributes
+                                    .formats
+                                    .medium
+                                    .url
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(48.dp),
+                        contentScale = ContentScale.Crop
+
+                )
+
+                Column(
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(8.dp) ,
+                        verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                            state.data.username ,
+                            style = MaterialTheme.typography.body1
+                    )
+                    Text(
+                            "$requirementDate",
+                            style = MaterialTheme.typography.overline
+                    )
+                }
+            }
+        }
+
+        else -> { }
+
     }
 }
 
 @Composable
-private fun fetchClient(
+private fun FetchClient(
     id: Int,
     clientViewModel: ClientViewModel = hiltViewModel()
-) : Client? {
+) {
 
-    clientViewModel.getById(id)
-    return when(val state = clientViewModel.clientState.collectAsState().value) {
-
-        is ClientState.Success.ClientSuccess -> state.data
-
-        else -> null
-    }
 }
 
 @Composable
 private fun fetchRequirementDetails(
     id: Int,
     requirementDetailViewModel: RequirementDetailViewModel = hiltViewModel()
-) : RequirementDetail? {
-
-    requirementDetailViewModel.getById(id)
-    return when(val state = requirementDetailViewModel.requirementDetailState.collectAsState().value) {
-
-        is RequirementDetailState.Success -> state.requirementDetail
-
-        else -> null
-    }
-}
+) = requirementDetailViewModel.getById(id)
 
 @Composable
 private fun fetchLaundry(
@@ -484,16 +529,7 @@ private fun fetchLaundry(
 private fun fetchService(
     id: Int,
     serviceViewModel: ServiceViewModel = hiltViewModel()
-) : Service? {
-
-    serviceViewModel.getById(id)
-    return when(val state = serviceViewModel.serviceState.collectAsState().value) {
-
-        is ServicesStates.Success.ServiceSuccess -> state.data
-
-        else -> null
-    }
-}
+) = serviceViewModel.getById(id)
 
 private fun fetchRequirement(
     actualPage: Int ,
