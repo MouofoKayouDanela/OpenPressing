@@ -189,7 +189,7 @@ fun ListBox() {
                         tint = primaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(VioletPal)
+                            .background(secondaryPrimeColor)
                             .padding(5.dp)
                             //.padding(horizontal = 5.dp)
                             .align(Alignment.BottomEnd)
