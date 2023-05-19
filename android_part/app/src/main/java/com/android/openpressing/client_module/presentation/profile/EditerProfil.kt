@@ -89,7 +89,7 @@ fun FixBare(navController: NavHostController) {
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = Purple500)
+            .background(color = primaryColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -176,7 +176,7 @@ fun ListBox() {
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(130.dp)
-                        .border(1.dp, color = Color.Black, CircleShape),
+                        .border(1.dp, color = primaryColor, CircleShape),
                     contentScale = ContentScale.FillHeight
                 )
                 ///////////icone de modification de l'image////////////
@@ -186,7 +186,7 @@ fun ListBox() {
                     Icon(
                         Icons.Rounded.PhotoCamera,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = Violet,
+                        tint = primaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             .background(VioletPal)
@@ -242,7 +242,7 @@ fun ListBox() {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = Orange,
+                        tint = secondaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -344,7 +344,7 @@ fun ListBox() {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = Orange,
+                        tint = secondaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -469,7 +469,7 @@ fun ListBox() {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = Orange,
+                        tint = secondaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -624,7 +624,7 @@ fun ListBox() {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = Orange,
+                        tint = secondaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -736,7 +736,7 @@ fun BottomBar(navController: NavHostController) {
     ) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = primaryColor)
         },
             label = { Text(text = "Laundry") },
             selected = (selectedIndex.value == 0),
