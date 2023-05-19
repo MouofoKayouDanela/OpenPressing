@@ -34,12 +34,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
+import com.android.openpressing.data.models.agency.AgencyData
+import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.pressing.Pressing
+import com.android.openpressing.data.models.pressing.PressingData
+import com.android.openpressing.data.models.quarter.QuarterData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.agency.AgencyViewModel
+import com.android.openpressing.viewmodels.agency.state.AgencyState
+import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import com.android.openpressing.viewmodels.pressing.PressingViewModel
+import com.android.openpressing.viewmodels.quarter.QuarterViewModel
+import com.android.openpressing.viewmodels.quarter.state.QuarterState
+import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
+import com.android.openpressing.viewmodels.services.state.RequirementState
 import kotlinx.coroutines.launch
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
@@ -216,88 +230,97 @@ fun SectionBleue(navController: NavHostController){
 fun CardWithContent(
     pressing: pressing,
     navController: NavHostController,
-    pressingState: PressingState,
+    pressingState: PressingState
 ) { //navController: NavHostController
     val paddingModifier = Modifier.padding(15.dp)
-    Card(
-        elevation = 10.dp,
-        contentColor = black,
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier
-            .padding(15.dp)
-            .clickable { navController.navigate(Screen.ListOffer.road) },
 
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 5.dp),
-        ){
-            Row(
-                modifier=Modifier.fillMaxSize(),
-            ) {
-                Image(
-                    painter = pressing.imageVector,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(
-                            shape = RoundedCornerShape(
-                                topEnd = 10.dp,
-                                topStart = 10.dp
-                            )
-                        )
-                        .fillMaxWidth()
-                        .height(200.dp),
+    when(pressingState){
 
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Row(
-                verticalAlignment=Alignment.CenterVertically
-            ) {
+        is PressingState.Success -> {
 
-                Column(
-                    modifier=Modifier.weight(0.8f),
+            Card(
+                elevation = 10.dp,
+                contentColor = black,
+                shape = RoundedCornerShape(15.dp),
+                modifier = Modifier
+                    .padding(15.dp)
+                    .clickable { navController.navigate(Screen.ListOffer.road) },
+
                 ) {
-
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 5.dp),
+                ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier=Modifier.padding(15.dp)
-
+                        modifier = Modifier.fillMaxSize(),
                     ) {
-                        Text(
-                            text = pressing.nom,
-                            color = black,
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        )
+                        Image(
+                            painter =Painter.imageVector,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .clip(
+                                    shape = RoundedCornerShape(
+                                        topEnd = 10.dp,
+                                        topStart = 10.dp
+                                    )
+                                )
+                                .fillMaxWidth()
+                                .height(200.dp),
 
+                            contentScale = ContentScale.Crop
+                        )
                     }
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier=Modifier.padding(
-                            horizontal = 8.dp)
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            Icons.Rounded.LocationOn,
-                            contentDescription = "position",
-                            tint = Orange
-                        )
-                        Text(
-                            text = pressing.position,
-                            color = black,
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 15.sp
-                            )
-                        )
+
+                        Column(
+                            modifier = Modifier.weight(0.8f),
+                        ) {
+
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                modifier = Modifier.padding(15.dp)
+
+                            ) {
+                                Text(
+                                    text = pressing.nom,
+                                    color = black,
+                                    style = MaterialTheme.typography.body1.copy(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                )
+
+                            }
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                modifier = Modifier.padding(
+                                    horizontal = 8.dp
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Rounded.LocationOn,
+                                    contentDescription = "position",
+                                    tint = Orange
+                                )
+                                Text(
+                                    text = pressing.position,
+                                    color = black,
+                                    style = MaterialTheme.typography.body1.copy(
+                                        fontSize = 15.sp
+                                    )
+                                )
+                            }
+                        }
+
                     }
                 }
 
             }
         }
-
+        else -> {}
     }
 }
 
@@ -360,7 +383,52 @@ fun CardWithContent(
         }
 
     }
+@Composable
+private fun fetchPressing(
+    id: Int,
+    pressingViewModel : PressingViewModel = hiltViewModel()
+) : MutableList<PressingData>? {
 
+    pressingViewModel.getById(id)
+    return when(val state = pressingViewModel.availablePressing.collectAsState().value) {
+
+        is PressingState.Success.PressingsSuccess -> state.data
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchAgencies(
+    id: Int,
+    agencyViewModel : AgencyViewModel = hiltViewModel()
+
+) : MutableList<AgencyData>? {
+
+    agencyViewModel.getById(id)
+    return when(val state = agencyViewModel.availableagencies.collectAsState().value) {
+
+        is AgencyState.Success.AgenciesSuccess -> state.data
+
+        else -> null
+    }
+}
+
+@Composable
+private fun fetchQuarter(
+    id: Int,
+    quarterViewModel : QuarterViewModel = hiltViewModel()
+
+) : MutableList<QuarterData>? {
+
+    quarterViewModel.getById(id)
+    return when(val state = quarterViewModel.availableQuarter.collectAsState().value) {
+
+        is QuarterState.Success.QuartersSuccess -> state.data
+
+        else -> null
+    }
+}
 
     ///////////card content///////////////////////
     @OptIn(ExperimentalFoundationApi::class)

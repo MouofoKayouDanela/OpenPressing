@@ -19,7 +19,7 @@ class AgencyViewModel @Inject constructor
 ): ViewModel(){
 
     private  val _availableAgencies = MutableStateFlow<AgencyState>(AgencyState.Empty)
-    private var availableagencies: StateFlow<AgencyState> = _availableAgencies
+    var availableagencies: StateFlow<AgencyState> = _availableAgencies
 
     fun getAll() {
         _availableAgencies .value = AgencyState.Loading
@@ -27,7 +27,7 @@ class AgencyViewModel @Inject constructor
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val agency = agencyRepository.getAll()
-                _availableAgencies.value= AgencyState .Success(agency)
+                _availableAgencies.value= AgencyState .Success.AgenciesSuccess(agency)
 
             } catch (exception: HttpException) {
                 _availableAgencies.value= AgencyState.Error("No internet connection")

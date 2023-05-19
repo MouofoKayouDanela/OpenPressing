@@ -7,6 +7,7 @@ import com.android.openpressing.client_module.presentation.pressing
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.repositories.pressing.PressingRepository
+import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ class PressingViewModel @Inject constructor(
 {
     private val _availablePressing = MutableStateFlow<PressingState>(PressingState.Empty)
 
-    private var availablePressing : StateFlow<PressingState> = _availablePressing
+    var availablePressing : StateFlow<PressingState> = _availablePressing
 
     fun getAll(){
         _availablePressing.value = PressingState.Loading
@@ -29,7 +30,7 @@ class PressingViewModel @Inject constructor(
         viewModelScope.launch (Dispatchers.IO ) {
             try {
                 val pressing = pressingRepository.getAll()
-                _availablePressing.value=PressingState.Success(pressing)
+                _availablePressing.value=PressingState.Success.PressingsSuccess(pressing)
             }
             catch (exception: HttpException){
                 _availablePressing.value=PressingState.Error("No internet connection")
@@ -39,6 +40,7 @@ class PressingViewModel @Inject constructor(
             }
         }
     }
+
 
     fun getById(id: Int){
         try {

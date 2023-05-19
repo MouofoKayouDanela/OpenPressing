@@ -21,7 +21,7 @@ class QuarterViewModel  @Inject constructor
 
     private  val _availableQuarter = MutableStateFlow<QuarterState>(QuarterState.Empty)
 
-    private var availableQuarter: StateFlow<QuarterState> = _availableQuarter
+    var availableQuarter: StateFlow<QuarterState> = _availableQuarter
 
     fun getAll() {
         _availableQuarter.value = QuarterState.Loading
