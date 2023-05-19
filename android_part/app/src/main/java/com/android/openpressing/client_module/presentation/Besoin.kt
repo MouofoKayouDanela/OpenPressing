@@ -33,7 +33,7 @@ import com.android.openpressing.utils.Screen
 @Composable
 fun Besoin(
     publier:Publication,
-    //navController: NavHostController
+    navController: NavHostController
 ){
     Box{
         Column(
@@ -153,22 +153,22 @@ data class Publication(
 @Composable
 fun BesoinCard(
     publications: List<Publication>,
-    modifier : Modifier = Modifier
-    //navController: NavHostController
+    modifier : Modifier = Modifier,
+    navController: NavHostController
 ){
     LazyColumn{
         stickyHeader{
-            TopBar(/*navController, modifier*/)
+            TopBar(navController = navController)
         }
         items(publications){
-                publication -> Besoin(publication)
+                publication -> Besoin(publication, navController =  navController)
         }
 
     }
 }
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier, /*navController: NavHostController*/){
+fun TopBar(modifier: Modifier = Modifier, navController: NavHostController){
     Box{
         Row(
             Modifier
@@ -178,7 +178,7 @@ fun TopBar(modifier: Modifier = Modifier, /*navController: NavHostController*/){
             horizontalArrangement = Arrangement.spacedBy(50.dp),
 
             ) {
-            IconButton(onClick = { /*navController.navigate(Screen.ListBesoin.road)*/ }) {
+            IconButton(onClick = { navController.navigate(Screen.Home.road ) }) {
                 Icon(
                     Icons.Rounded.ArrowBack,
                     contentDescription = null,
@@ -245,8 +245,11 @@ fun Default(navController: NavHostController) {
                publier = "15/08/2022"),
            Publication(prix = 19.5,
                publier = "15/08/2022")),
-
+           navController = navController
        )
+
+
+
 
     }
 }

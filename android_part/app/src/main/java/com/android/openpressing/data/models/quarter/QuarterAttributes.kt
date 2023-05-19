@@ -9,6 +9,6 @@ import com.google.gson.annotations.SerializedName
 data class QuarterAttributes(
     @SerializedName("Name") var name: String ,
     var city: City ,
-    var agencies: Agencies ,
-    var orders: Orders
+    var agencies: Agencies? = null ,
+    var orders: Orders? = null
 )

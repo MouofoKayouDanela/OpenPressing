@@ -1,6 +1,9 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,8 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.utils.Screen
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -36,7 +43,12 @@ fun FinitionScreen( navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var ConfirmPassword by remember { mutableStateOf("") }
     var passwordObscure by remember { mutableStateOf(true) }
+    var showDialogUsername by remember { mutableStateOf(false) }
+    var showDialogEmail by remember { mutableStateOf(false) }
+    var showDialogPassword by remember { mutableStateOf(false) }
+    var showDialogConfirmPassword by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -60,7 +72,7 @@ fun FinitionScreen( navController: NavHostController) {
         ) {
             Box(modifier = Modifier.height(24.dp))
             Image(
-                painter = painterResource(id = com.android.openpressing.R.drawable.logopressing),
+                painter = painterResource(id = com.android.openpressing.R.drawable.registre),
                 contentDescription = "Sign up Illustration",
                 modifier = Modifier
                     .weight(3f)
@@ -74,11 +86,7 @@ fun FinitionScreen( navController: NavHostController) {
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.weight(7f),
             ) {
-                Text(
-                    text = "Confirmation", style = MaterialTheme.typography.h4.copy(
-                        fontWeight = FontWeight.Bold
-                    )
-                )
+
                 AppTextField(
                     onValueChange = {
                         username = it
@@ -144,6 +152,33 @@ fun FinitionScreen( navController: NavHostController) {
                     ),
                     value = password,
                 )
+                AppTextField(
+                    onValueChange = {
+                        ConfirmPassword= it
+                    },
+                    hint = "Confirm Password",
+                    obscure = passwordObscure,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Lock,
+                            contentDescription = "Password Field",
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(painter = if (passwordObscure) painterResource(id = com.android.openpressing.R.drawable.ic_outline_visibility) else painterResource(
+                            id = com.android.openpressing.R.drawable.ic_outline_visibility_off
+                        ), contentDescription = "Show Password", modifier = Modifier.clickable {
+                            passwordObscure = !passwordObscure
+                        })
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
+                    ),
+                    value = ConfirmPassword,
+                )
 
                 Text(
                     text = buildAnnotatedString {
@@ -194,12 +229,77 @@ fun FinitionScreen( navController: NavHostController) {
                     ) {
                         Text("Précédent", style = MaterialTheme.typography.body1)
                     }
-
                     Button(
-                        onClick = { /* action on click */ },
+                        onClick = {
+                            if(username.isEmpty()){
+                                showDialogUsername=true
+                            }
+                            else if (email.isEmpty()){
+                                showDialogEmail=true
+                            }
+                            else if(password.isEmpty()){
+                                showDialogPassword=true
+                            }
+                            else if(password != ConfirmPassword ){
+                                showDialogPassword=true
+                            }
+                            else{
+                                createUser(email, password, navController)
+                                navController.navigate(Screen.Login.road)
+                            }
+                         },
                         modifier = Modifier.width(150.dp)
                     ) {
                         Text("S'inscrire", style = MaterialTheme.typography.body1)
+                    }
+                    if(showDialogUsername){
+                        BackHandler {
+                            showDialogUsername=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogUsername=false},
+                            title = {Text("Champ vide")},
+                            text={Text("Veuillez entrer votre username")},
+                            confirmButton = {
+                                Button(onClick = {showDialogUsername=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)) {
+                                    Text("ok")
+                                }
+                            }
+                        )
+                    }
+                    if(showDialogEmail){
+                        BackHandler {
+                            showDialogEmail=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogEmail=false},
+                            title = {Text("Champ vide")},
+                            text={Text("Veuillez entrer votre email")},
+                            buttons = {
+                                Button(onClick = {showDialogEmail=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)) {
+                                    Text("ok")
+                                }
+                            }
+                        )
+                    }
+                    if(showDialogPassword){
+                        BackHandler {
+                            showDialogPassword=false
+                        }
+                        AlertDialog(onDismissRequest = { showDialogPassword=false},
+                            title = {Text("Erreur")},
+                            text={Text("Le mot de passe et confirm mot de passe doivent etre pareil")},
+                            buttons = {
+                                Button(onClick = {showDialogPassword=false },
+                                    modifier=Modifier.width(80.dp)
+                                        .padding(horizontal = 12.dp)
+                                        ) {
+                                    Text("ok")
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -218,5 +318,28 @@ fun FinitionScreen( navController: NavHostController) {
                 )
             }
         }
+    }
+}
+fun createUser(
+    email:String,
+    password:String,
+    navController: NavController
+){
+    println("L'email est $email et le mot de passe est $password")
+
+    val auth=Firebase.auth
+    try {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                    task ->if(task.isSuccessful){
+                        Log.d(TAG,"createUserWithEmail:success")
+                        navController.navigate(Screen.Login.road)
+            }
+                else{
+                Log.w(TAG, "createUserWithEmail:failure", task.exception)
+            }
+        }
+    }catch (e: Exception){
+        println("Erreur : $e.message")
     }
 }

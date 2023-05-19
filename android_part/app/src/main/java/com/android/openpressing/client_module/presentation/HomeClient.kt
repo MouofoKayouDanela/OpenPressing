@@ -90,7 +90,7 @@ fun ScaffoldSample(navController: NavHostController) {
                 nomLivraison = "Free Delivery"
             ),
             pressing(
-                imageVector = painterResource(R.drawable.lavage),
+                imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
                 position= "Logbessou",
                 nomLivraison = "Free Delivery"
@@ -168,7 +168,7 @@ fun SectionBleue(navController: NavHostController){
 
             ////logo de location/////
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate(  Screen  .ConsulterMessage   .road   ) }) {
                 Icon(
                     Icons.Rounded.Notifications,
                     contentDescription = stringResource(R.string.notifications),
@@ -213,22 +213,6 @@ fun SectionBleue(navController: NavHostController){
                 color = Color.White,
             )
 
-            Spacer(Modifier.width(20.dp))
-            Button(modifier = Modifier
-                .background(color = VioletPal),
-                onClick = {
-                navController.navigate(Screen.ListBesoin.road)
-            },
-            ) {
-                Text(
-                    text = "Mes Besoins",
-                    style = MaterialTheme.typography.body1.copy(
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 12.sp,
-
-                    ))
-            }
         }
     }
     }
