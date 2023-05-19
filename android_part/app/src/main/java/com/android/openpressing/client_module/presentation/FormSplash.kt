@@ -82,12 +82,6 @@ fun IntroScreen(navController: NavHostController) {
                         .fillMaxWidth(), horizontalAlignment = CenterHorizontally
                 ) {
 
-                    Text(
-                        text = list[currentPage].title,
-                        style = MaterialTheme.typography.h4,
-                        color = Black,
-                        modifier = Modifier.padding(horizontal = 12.dp)
-                    )
                     AsyncImage(
                         model = list[currentPage].res,
                         contentDescription = null,
