@@ -256,7 +256,7 @@ fun CardWithContent(
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         Image(
-                            painter =Painter.imageVector,
+                            painter = pressing.imageVector,
                             contentDescription = null,
                             modifier = Modifier
                                 .clip(
@@ -448,7 +448,7 @@ private fun fetchQuarter(
                 })
             }
             items(pressing) {
-                CardWithContent(it, navController) //navController = NavHostController
+               // CardWithContent(it, navController) //navController = NavHostController
             }
         }
     }
