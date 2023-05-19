@@ -1,9 +1,18 @@
 package com.android.openpressing.client_module.presentation.profile
 
+import android.content.Intent
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
@@ -11,20 +20,28 @@ import androidx.compose.material.icons.filled.LocalLaundryService
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
+import com.android.openpressing.client_module.presentation.BlueSection
+import com.android.openpressing.client_module.presentation.BottomBar
+import com.android.openpressing.client_module.presentation.ListeSoustitre
+import com.android.openpressing.client_module.presentation.ProfileScreen
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
@@ -33,227 +50,684 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun EditerProfil(navController: NavHostController) {
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-
-    ){
-        Column() {
+    Scaffold(
+        topBar = {
             FixBare(navController)
+        },
 
-            Row(
+        content = { innerPadding ->
+            LazyColumn(
+                contentPadding = innerPadding,
                 modifier = Modifier
-                    .padding(vertical = 11.dp, horizontal = 10.dp),
-               // horizontalArrangement = Arrangement.End
+                    .fillMaxHeight(),
             ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.editer),
-                        tint = Violet,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(VioletPal)
-                            .padding(5.dp)
-                    )
 
+                item {
+                    ListBox()
                 }
             }
+        },
 
-
-            ListBox()
-
-            Spacer(Modifier.height(7.dp))
-            TextButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.padding(horizontal = 80.dp),
-
-            ) {
-                Text(
-                    "Se Deconnecter",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Red,
-                )
-            }
-
-            BottomBar(navController)
-        }
-
-    }
+        bottomBar = {BottomBar(navController)}
+    )
 
 
 }
+
 
 
 
 @Composable
 fun FixBare(navController: NavHostController) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(60.dp)
-        .background(color = Color.White)
-    ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-
-        ){
-            IconButton(onClick = { navController.navigate(Screen.Profile.road) }) {
-                Icon(
-                    Icons.Rounded.NavigateBefore,
-                    contentDescription = stringResource(R.string.previewPage),
-                    tint = Color.Black
-                )
-            }
-            //Spacer(Modifier.width(15.dp))
-            Text(
-                "Informations Personnelles",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-            )
-            Spacer(Modifier.width(15.dp))
-
-    }
-}
-}
-
-
-@Composable
-fun ListBox() {
     Box(
         modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .size(300.dp)
+            .fillMaxWidth()
+            .size(height = 50.dp, width = 230.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
-                    topStart = 15.dp,
-                    topEnd = 15.dp,
-                    bottomEnd = 15.dp,
-                    bottomStart = 15.dp
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomEnd = 10.dp,
+                    bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = Color.White),
-
-        ) {
-        Column(
-            modifier = Modifier.padding(vertical = 15.dp),
-            //horizontalArrangement = Arrangement.SpaceBetween,
-            //verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            ///////*******LIGNE DE SOUS PAGE*********//////
+            .background(color = Violet)
+        //shape=RoundedCornerShape(32.dp)
+    ){
+        Column() {
+            /////Ligne de l'icone de notification/////
             Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(50.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ) {
+
+            ){
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screen.Profile.road)
+                    }
+                ) {
+                    Icon(
+                        Icons.Rounded.NavigateBefore,
+                        contentDescription = stringResource(R.string.previewPage),
+                        tint = Color.White
+                    )
+                }
 
                 Text(
-                    "FullName : ",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                )
-                Text(
-                    " Emmanuel Zipar",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-            }
-
-
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text(
-                    "Email : ",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-                Text(
-                    " Emanuelzipar@gmail.com",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-            }
-
-
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text(
-                    "Contact : ",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-                Text(
-                    " +237 657 290 643",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text(
-                    "Date & lieu de naissance : ",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-                Text(
-                    " Banfang, 23/08/1998",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-            }
-
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text(
-                    "Adresse de residence : ",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                )
-                Text(
-                    " Douala, Nyalla Rue210",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
+                    text = "Mon Profil",
+                    fontSize = 20.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
     }
+
 }
+
+@Composable
+fun ListBox() {
+    var name by remember {
+        mutableStateOf("")
+    }
+
+    var adresse by remember {
+        mutableStateOf("")
+    }
+
+    var mail by remember {
+        mutableStateOf("")
+    }
+
+    var phone by remember {
+        mutableStateOf(0)
+    }
+
+    var defaultname by remember { mutableStateOf("") }
+    var defaultmail by remember { mutableStateOf("") }
+    var defaultphone by remember { mutableStateOf(0) }
+    var defaultadress by remember { mutableStateOf("") }
+
+    val showDialogName = remember { mutableStateOf(false) }
+    val showDialogMail = remember { mutableStateOf(false) }
+    val showDialogPhone = remember { mutableStateOf(false) }
+    val showDialogLocal = remember { mutableStateOf(false) }
+
+    var textename by remember { mutableStateOf("") }
+    var textemail by remember { mutableStateOf("") }
+    var textephone by remember { mutableStateOf("") }
+    var textelocal by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .padding(vertical = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ///////*******BOX DE L'IMAGE*********//////
+        Row(
+        ) {
+            Box(
+                contentAlignment = Alignment.BottomEnd
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.homme),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(130.dp)
+                        .border(1.dp, color = VioletPal, CircleShape),
+                    contentScale = ContentScale.FillHeight
+                )
+                ///////////icone de modification de l'image////////////
+                IconButton(onClick = {
+                    //openImagePicker()
+                }) {
+                    Icon(
+                        Icons.Rounded.PhotoCamera,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Violet,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(VioletPal)
+                            .padding(5.dp)
+                            //.padding(horizontal = 5.dp)
+                            .align(Alignment.BottomEnd)
+                    )
+                }
+            }
+        }
+
+///////////DIFFERENTS ELEMENTS///////////////
+        Spacer(modifier = Modifier.height(10.dp))
+
+        ///////////////GRANDE ROW////////////
+        Column(
+            modifier = Modifier .fillMaxHeight(0.5f),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            // horizontalAlignment = Alignment.CenterHorizontally
+        ){
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .padding(horizontal = 20.dp),
+                ) {
+
+                    Text(
+                        "FullName : ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black.copy(alpha = 0.5f),
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        " $textename",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                    )
+                }
+                IconButton(
+                    modifier = Modifier .weight(0.3f),
+                    onClick = {
+                        showDialogName.value = true
+                        //navController.navigate(Screen.EditScreen.road)
+                    }
+                ) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Orange,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            //.background(VioletPal)
+                            .padding(5.dp)
+                    )
+                }
+                if (showDialogName.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogName.value = false },
+                        title = { Text("Enter your new name") },
+                        text = {
+                            TextField(
+                                value = textename,
+                                onValueChange = { textename=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$name")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultname = textename
+                                    showDialogName.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogName.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }
+            }
+
+            ////////////LIGNE DE SEPARATION////////
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
+            ) {
+                drawLine(
+                    color = Color.Black,
+                    alpha = 0.1f,
+                    start = Offset(3f, 3f),
+                    end = Offset(size.width, size.height / 2),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+            ////
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Column(
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .padding(horizontal = 20.dp),
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    //verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        "Email : ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black.copy(alpha = 0.5f),
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        " $textemail",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                    )
+                }
+
+                IconButton(
+                    modifier = Modifier .weight(0.3f),
+                    onClick = {
+                        showDialogMail.value = true
+                        //navController.navigate(Screen.EditScreen.road)
+                    }
+                ) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Orange,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            //.background(VioletPal)
+                            .padding(5.dp)
+                    )
+                }
+
+                //////////FONCTION DE VERIFICATION DU FORMAT DE L'EMAIL////////////////////
+                fun isEmailValid(email: String): Boolean {
+                    val regex = Regex("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})")
+                    return regex.matches(email)
+                }
+
+                if (showDialogMail.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogMail.value = false },
+                        title = { Text("Enter your new mail") },
+                        text = {
+                            TextField(
+                                value = textemail,
+                                onValueChange = { textemail=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$mail")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    /*val email = "example@email.com"
+                                    val isEmailValid = isEmailValid(email)
+
+                                    if (isEmailValid) {
+                                        Text("Validate", color = Color.Green)
+                                    } else {
+                                        Text("Validate", color = Color.Red)
+                                    }*/
+                                    defaultmail = textemail
+                                    showDialogMail.value = false
+
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogMail.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }
+            }
+
+            ////////////LIGNE DE SEPARATION////////
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
+            ) {
+                drawLine(
+                    color = Color.Black,
+                    alpha = 0.1f,
+                    start = Offset(3f, 3f),
+                    end = Offset(size.width, size.height / 2),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .padding(horizontal = 20.dp),
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    //verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        "Contact : ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black.copy(alpha = 0.5f),
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Row() {
+                        Text(
+                            " +237 ",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Black,
+                        )
+                        Text(
+                            " $textephone",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Black,
+                        )
+                    }
+
+
+                }
+                IconButton(
+                    modifier = Modifier .weight(0.3f),
+                    onClick = { showDialogPhone.value = true
+                        //navController.navigate(Screen.EditScreen.road)
+                    },
+                ) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Orange,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            //.background(VioletPal)
+                            .padding(5.dp)
+                    )
+                }
+                if (showDialogPhone.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogPhone.value = false },
+                        title = { Text("Enter your new phone") },
+                        text = {
+                            TextField(
+                                value = textephone,
+                                onValueChange = { textephone = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                placeholder = {Text(text = "$phone")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultphone = textephone.toInt()
+                                    showDialogPhone.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogLocal.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }
+            }
+
+            ////////////LIGNE DE SEPARATION////////
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
+            ) {
+                drawLine(
+                    color = Color.Black,
+                    alpha = 0.1f,
+                    start = Offset(3f, 3f),
+                    end = Offset(size.width, size.height / 2),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+
+            /*Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .padding(horizontal = 20.dp),
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    //verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        "Date & lieu de naissance : ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black.copy(alpha = 0.5f),
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        " Banfang, 23/08/1998",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                    )
+                }
+                IconButton(
+                    modifier = Modifier .weight(0.3f),
+                    onClick = {
+                    //navController.navigate(Screen.EditScreen.road)
+                }
+                ) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Orange,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            //.background(VioletPal)
+                            .padding(5.dp)
+                    )
+                }
+            }
+            ////////////LIGNE DE SEPARATION////////
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
+            ) {
+                drawLine(
+                    color = Color.Black,
+                    alpha = 0.1f,
+                    start = Offset(3f, 3f),
+                    end = Offset(size.width, size.height / 2),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }*/
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .weight(0.7f),
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    //verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        "Adresse de residence : ",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black.copy(alpha = 0.5f),
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        " $textelocal",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black,
+                    )
+                }
+                IconButton(
+                    modifier = Modifier .weight(0.3f),
+                    onClick = { showDialogLocal.value = true
+                        //navController.navigate(Screen.EditScreen.road)
+                    }) {
+                    Icon(
+                        Icons.Rounded.Edit,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = Orange,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            //.background(VioletPal)
+                            .padding(5.dp)
+                    )
+                }
+
+
+
+                if (showDialogLocal.value) {
+                    AlertDialog(
+
+                        onDismissRequest = { showDialogLocal.value = false },
+                        title = { Text("Enter your new adress") },
+                        text = {
+                            TextField(
+                                value = textelocal,
+                                onValueChange = { textelocal=it},
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                singleLine = true,
+                                placeholder = {Text(text = "$adresse")},
+                            )
+                        },
+
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    defaultadress = textelocal
+                                    showDialogLocal.value = false
+                                },
+                                modifier = Modifier.padding(end = 15.dp)
+
+                            ) {
+                                Text("Validate")
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                modifier = Modifier.padding(end = 55.dp),
+                                onClick = {
+                                    showDialogLocal.value = false
+                                }
+                            ) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }
+            }
+
+            ////////////LIGNE DE SEPARATION////////
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
+            ) {
+                drawLine(
+                    color = Color.Black,
+                    alpha = 0.1f,
+                    start = Offset(3f, 3f),
+                    end = Offset(size.width, size.height / 2),
+                    strokeWidth = 1.dp.toPx()
+                )
+            }
+        }
+    }
+
+    Row (
+        modifier = Modifier
+            .padding(horizontal = 70.dp)
+            .fillMaxHeight(0.8f),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom
+    ){
+        TextButton(
+            onClick = { /*TODO*/ },
+            shape = CircleShape
+        ) {
+            Icon(
+                Icons.Rounded.Logout,
+                contentDescription = stringResource(R.string.nextPage),
+                tint = Color.Red,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    //.background(VioletPal)
+                    .padding(5.dp)
+                //.padding(horizontal = 5.dp)
+            )
+            Text(
+                "Se Deconnecter",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+            )
+        }
+    }
+}
+
+
+
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -300,4 +774,11 @@ fun BottomBar(navController: NavHostController) {
                 selectedIndex.value = 3
             })
     }
+}
+
+@Preview
+@Composable
+fun EditionView() {
+    val navController = rememberNavController()
+    EditerProfil(navController)
 }
