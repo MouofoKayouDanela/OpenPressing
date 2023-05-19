@@ -35,9 +35,9 @@ val bla = Color(0xFFE6DCDC)
 val Orang= Color(0xFFFF5722)
 
 
-val primaryColor = Color(0xFFA80E9B)
-val primaryPrimeColor = Color(0xFFE7DBEB)
+val primaryColor = Color(0xFF196ede)
+val primaryPrimeColor = Color(0xFF91aff3)
 val softPrimaryPrimeColor = Color(0xFFEFECF0)
-val secondaryColor = Color(0xFFF8825C)
-val secondaryPrimeColor = Color(0xFFF0CBBF)
+val secondaryColor = Color(0xFFf8825c)
+val secondaryPrimeColor = Color(0xFFf0cbbf)
 

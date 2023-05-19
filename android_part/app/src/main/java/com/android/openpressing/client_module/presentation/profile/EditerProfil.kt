@@ -3,7 +3,6 @@ package com.android.openpressing.client_module.presentation.profile
 import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -192,7 +191,7 @@ fun ListBox() {
                         tint = primaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(secondaryPrimeColor)
+                            .background(primaryPrimeColor)
                             .padding(5.dp)
                             //.padding(horizontal = 5.dp)
                             .align(Alignment.BottomEnd)
