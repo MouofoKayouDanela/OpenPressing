@@ -12,6 +12,7 @@ import com.android.openpressing.viewmodels.services.state.PressingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class PressingViewModel @Inject constructor(
 {
     private val _availablePressing = MutableStateFlow<PressingState>(PressingState.Empty)
 
-    var availablePressing : StateFlow<PressingState> = _availablePressing
+    var availablePressing  = _availablePressing.asStateFlow()
 
     fun getAll(){
         _availablePressing.value = PressingState.Loading

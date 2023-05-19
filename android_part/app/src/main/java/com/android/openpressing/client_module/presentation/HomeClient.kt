@@ -44,6 +44,7 @@ import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.quarter.QuarterData
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.agency.state.AgencyState
@@ -54,6 +55,7 @@ import com.android.openpressing.viewmodels.quarter.state.QuarterState
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
 import com.android.openpressing.viewmodels.services.state.RequirementState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import kotlinx.coroutines.launch
 import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
@@ -230,13 +232,14 @@ fun SectionBleue(navController: NavHostController){
 fun CardWithContent(
     pressing: pressing,
     navController: NavHostController,
-    pressingState: PressingState
+    viewModel: PressingViewModel = hiltViewModel()
+
 ) { //navController: NavHostController
     val paddingModifier = Modifier.padding(15.dp)
 
-    when(pressingState){
+    when (val state = viewModel.availablePressing.collectAsState().value) {
 
-        is PressingState.Success -> {
+        is PressingState.Success.PressingSuccess -> {
 
             Card(
                 elevation = 10.dp,
@@ -255,8 +258,12 @@ fun CardWithContent(
                     Row(
                         modifier = Modifier.fillMaxSize(),
                     ) {
+
                         Image(
-                            painter = pressing.imageVector,
+                            painter = BASE_URL + state
+                                .data
+                                .profile_picture
+                                .url ,
                             contentDescription = null,
                             modifier = Modifier
                                 .clip(
@@ -285,7 +292,7 @@ fun CardWithContent(
 
                             ) {
                                 Text(
-                                    text = pressing.nom,
+                                    text =  state.data.data.attributes.name,
                                     color = black,
                                     style = MaterialTheme.typography.body1.copy(
                                         fontSize = 20.sp,
