@@ -4,8 +4,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,19 +17,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import com.android.openpressing.R
 import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement.RequirementData
-import com.android.openpressing.data.models.requirement_detail.RequirementDetail
-import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
@@ -40,7 +33,6 @@ import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
-import com.android.openpressing.viewmodels.promotion.PromotionViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
 import com.android.openpressing.viewmodels.requirement_detail.state.RequirementDetailState
@@ -50,7 +42,6 @@ import com.android.openpressing.viewmodels.services.state.RequirementState
 import com.android.openpressing.viewmodels.services.state.ServicesStates
 import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import java.util.*
 
 data class Data(
@@ -154,11 +145,13 @@ val myDatas = listOf(
 
 @Composable
 fun ClRequirementConsulting(
-    state: RequirementState
+    requirementViewModel: RequirementViewModel = hiltViewModel()
 ) {
 
     var actualPage by remember { mutableStateOf(0) }
     var pageSize by remember { mutableStateOf(0) }
+
+    requirementViewModel.getAll()
 
     Scaffold(
             topBar = { TopAppBar() } ,
@@ -167,7 +160,7 @@ fun ClRequirementConsulting(
                         innerPadding = innerPadding,
                         actualPage = actualPage,
                         updatePageSize = { pageSize = it },
-                        state = state
+                        state = requirementViewModel.avilablerequirement.collectAsState().value
                 )
             } ,
             bottomBar = {
@@ -285,43 +278,49 @@ fun RequirementList(
 //                                            .size(48.dp)
 //                                )
 
-                                Image(
-                                        rememberAsyncImagePainter(
-                                                model = BASE_URL + fetchUser(
-                                                        fetchClient(data.attributes.client.data.id!!)
-                                                            !!.data.attributes.user.data.id!!
-                                                )!!.profile_picture.attributes.formats.medium.url
-                                        ),
-                                       contentDescription = null,
-                                        modifier = Modifier
-                                            .clip(CircleShape)
-                                            .size(48.dp),
-                                        contentScale = ContentScale.Crop
+//                                Image(
+//                                        rememberAsyncImagePainter(
+//                                                model = BASE_URL + FectchUser(
+//                                                        fetchClient(data.attributes.client.data.id!!)
+//                                                            .data.attributes.user.data.id!!
+//                                                ).profile_picture.attributes.formats.medium.url
+//                                        ),
+//                                       contentDescription = null,
+//                                        modifier = Modifier
+//                                            .clip(CircleShape)
+//                                            .size(48.dp),
+//                                        contentScale = ContentScale.Crop
+//
+//                                )
+//
+//                                Column(
+//                                        modifier = Modifier
+//                                            .weight(0.65f)
+//                                            .padding(8.dp) ,
+//                                        verticalArrangement = Arrangement.Center
+//                                ) {
+//                                    Text(
+//                                            FectchUser(
+//                                                    fetchClient(data.attributes.client.data.id!!)
+//                                                    .data.attributes.user.data.id!!
+//                                            ).username ,
+//                                            style = MaterialTheme.typography.body1
+//                                    )
+//                                    Text(
+//                                            "${data.attributes.createdAt}",
+//                                            style = MaterialTheme.typography.overline
+//                                    )
+//                                }
 
+                                FetchClient(
+                                        id = data.attributes.client.data.id!! ,
+                                        requirementDate = data.attributes.createdAt,
+                                        modifier = Modifier.weight(0.7f)
                                 )
-
-                                Column(
-                                        modifier = Modifier
-                                            .weight(0.65f)
-                                            .padding(8.dp) ,
-                                        verticalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                            fetchUser(
-                                                    fetchClient(data.attributes.client.data.id!!)
-                                                    !!.data.attributes.user.data.id!!
-                                            )!!.username ,
-                                            style = MaterialTheme.typography.body1
-                                    )
-                                    Text(
-                                            "${data.attributes.createdAt}",
-                                            style = MaterialTheme.typography.overline
-                                    )
-                                }
 
                                 IconButton(
                                         onClick = { isExpanded = !isExpanded } ,
-                                        modifier = Modifier.weight(0.1f)
+                                        modifier = Modifier.weight(0.3f)
                                 ) {
 
                                     Icon(
@@ -354,26 +353,9 @@ fun RequirementList(
                                         if (datas != null){
                                             items(datas) { requirement_details ->
 
-                                                val requirement_detail = fetchRequirementDetails(requirement_details.id!!)
-
-                                                Row(
-                                                        modifier = Modifier
-                                                            .padding(end = 8.dp) ,
-                                                        verticalAlignment = Alignment.CenterVertically ,
-                                                        horizontalArrangement = Arrangement.Center
-                                                ) {
-
-                                                    val service = fetchService(requirement_detail!!.data.attributes.service.data.id!!)!!
-
-                                                    Text(
-                                                            "${service.data.attributes.type.data.attributes.title}  ${service.data.attributes.category.data.attributes.name}" ,
-                                                            style = MaterialTheme.typography.body1 ,
-                                                            modifier = Modifier
-                                                                .clip(CircleShape)
-                                                                .background(primaryPrimeColor)
-                                                                .padding(4.dp)
-                                                    )
-                                                }
+                                                FetchRequirementDetails(
+                                                        id = requirement_details.id!!
+                                                )
                                             }
                                         }
 
@@ -420,49 +402,212 @@ fun RequirementList(
     }
 }
 
+private fun fetchRequirement(
+    actualPage: Int ,
+    updatePageSize: (Int) -> Unit,
+    requirements: List<RequirementData>
+) : List<RequirementData> {
+
+    updatePageSize((requirements.size + 7) / 8)
+
+    return requirements.subList(
+            actualPage * 8,
+            minOf(
+                    (actualPage + 1) * 8,
+                    requirements.size
+            )
+    )
+
+}
+
 @Composable
-private fun fetchUser(
+private fun FetchClient(
     id: Int,
-    userViewModel: UserViewModel = hiltViewModel()
-) : User? {
+    requirementDate: Date,
+    modifier : Modifier = Modifier,
+    viewModel: ClientViewModel = hiltViewModel()
+) {
 
-    userViewModel.getById(id)
-    return when(val state = userViewModel.userState.collectAsState().value) {
+    viewModel.getById(id)
 
-        is UserState.Success.UserSuccess -> state.data
+    when(val state = viewModel.clientState.collectAsState().value) {
 
-        else -> null
+        is ClientState.Loading -> {  }
+
+        is ClientState.Success.ClientSuccess -> {
+
+            FetchUser(
+                    id =  state.data.data.attributes.user.data.id!!,
+                    requirementDate = requirementDate,
+                    modifier = modifier
+            )
+
+        }
+
+        else -> {  }
+
+    }
+
+}
+
+@Composable
+private fun FetchUser(
+    id: Int,
+    requirementDate: Date,
+    modifier: Modifier = Modifier,
+    viewModel: UserViewModel = hiltViewModel()
+) {
+    viewModel.getById(id)
+
+    when (val state = viewModel.userState.collectAsState().value) {
+
+        is UserState.Loading -> {
+            Row(modifier) {
+                Row(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(48.dp)
+                            .background(softPrimaryPrimeColor) ,
+                        verticalAlignment = Alignment.CenterVertically ,
+                        horizontalArrangement = Arrangement.Center
+
+                ) {
+                    CircularProgressIndicator(
+                            modifier = Modifier.size(48.dp),
+                            color = primaryColor
+                    )
+                }
+
+
+                Column(
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(8.dp) ,
+                        verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                            stringResource(R.string.loading_message) ,
+                            style = MaterialTheme.typography.body1
+                    )
+                    Text(
+                            stringResource(R.string.loading_message) ,
+                            style = MaterialTheme.typography.overline
+                    )
+                }
+            }
+        }
+
+        is UserState.Success.UserSuccess -> {
+            Row {
+                Image(
+                        rememberAsyncImagePainter(
+                                model = BASE_URL + state
+                                    .data
+                                    .profile_picture
+                                    .url
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(48.dp),
+                        contentScale = ContentScale.Crop
+
+                )
+
+                Column(
+                        modifier = Modifier
+                            .padding(8.dp) ,
+                        verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                            state.data.username ,
+                            style = MaterialTheme.typography.body1
+                    )
+                    Text(
+                            "$requirementDate",
+                            style = MaterialTheme.typography.overline
+                    )
+                }
+            }
+        }
+
+        else -> { }
+
     }
 }
 
 @Composable
-private fun fetchClient(
+private fun FetchRequirementDetails(
     id: Int,
-    clientViewModel: ClientViewModel = hiltViewModel()
-) : Client? {
+    viewModel: RequirementDetailViewModel = hiltViewModel()
+) {
 
-    clientViewModel.getById(id)
-    return when(val state = clientViewModel.clientState.collectAsState().value) {
+    viewModel.getById(id)
 
-        is ClientState.Success.ClientSuccess -> state.data
+    Row(
+            modifier = Modifier
+                .padding(end = 8.dp) ,
+            verticalAlignment = Alignment.CenterVertically ,
+            horizontalArrangement = Arrangement.Center
+    ) {
 
-        else -> null
+        when(val state = viewModel.requirementDetailState.collectAsState().value) {
+
+            is RequirementDetailState.Loading -> {
+                CircularProgressIndicator(
+                        modifier = Modifier.size(15.dp),
+                        color = primaryColor
+                )
+            }
+
+            is RequirementDetailState.Success -> {
+
+                FetchService(id = state.requirementDetail.data.attributes.service.data.id!!)
+            }
+
+            else -> {  }
+
+        }
     }
+
 }
 
 @Composable
-private fun fetchRequirementDetails(
+private fun FetchService(
     id: Int,
-    requirementDetailViewModel: RequirementDetailViewModel = hiltViewModel()
-) : RequirementDetail? {
+    viewModel: ServiceViewModel = hiltViewModel()
+) {
 
-    requirementDetailViewModel.getById(id)
-    return when(val state = requirementDetailViewModel.requirementDetailState.collectAsState().value) {
+    viewModel.getById(id)
 
-        is RequirementDetailState.Success -> state.requirementDetail
+    when(val state = viewModel.serviceState.collectAsState().value) {
 
-        else -> null
+        is ServicesStates.Loading -> {
+            Text(
+                    stringResource(R.string.loading_message) ,
+                    style = MaterialTheme.typography.body1 ,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(primaryPrimeColor)
+                        .padding(4.dp)
+            )
+        }
+
+        is ServicesStates.Success.ServiceSuccess -> {
+            Text(
+                    "${state.data.data.attributes.type.data.attributes.title} ${state.data.data.attributes.category.data.attributes.name}" ,
+                    style = MaterialTheme.typography.body1 ,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(primaryPrimeColor)
+                        .padding(4.dp)
+            )
+        }
+
+        else -> {  }
+
     }
+
 }
 
 @Composable
@@ -478,39 +623,6 @@ private fun fetchLaundry(
 
         else -> null
     }
-}
-
-@Composable
-private fun fetchService(
-    id: Int,
-    serviceViewModel: ServiceViewModel = hiltViewModel()
-) : Service? {
-
-    serviceViewModel.getById(id)
-    return when(val state = serviceViewModel.serviceState.collectAsState().value) {
-
-        is ServicesStates.Success.ServiceSuccess -> state.data
-
-        else -> null
-    }
-}
-
-private fun fetchRequirement(
-    actualPage: Int ,
-    updatePageSize: (Int) -> Unit,
-    requirements: List<RequirementData>
-) : List<RequirementData> {
-
-    updatePageSize((requirements.size + 6) / 7)
-
-    return requirements.subList(
-            actualPage * 7,
-            minOf(
-                    (actualPage + 1) * 7,
-                    requirements.size
-            )
-    )
-
 }
 
 @Composable
@@ -530,31 +642,35 @@ fun BottomAppBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
     ) {
+
+        val canClickPrevious = actualPage != 0
+        val canClickNext = actualPage != pageSize - 1
+
         IconButton(
                 onClick = { updateActualPage(0) },
                 modifier = Modifier.weight(1.5f),
-                enabled = actualPage != 0
+                enabled = canClickPrevious
         ) {
             Icon(
                     Icons.Rounded.SkipPrevious,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = if (canClickPrevious) Color.White else Color.LightGray
             )
         }
         IconButton(
-                onClick = { updateActualPage(actualPage + 1) },
+                onClick = { updateActualPage(actualPage - 1) },
                 modifier = Modifier.weight(1.5f),
-                enabled = actualPage != 0
+                enabled = canClickPrevious
         ) {
             Icon(
                     Icons.Rounded.KeyboardArrowLeft,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = if (canClickPrevious) Color.White else Color.LightGray
             )
         }
 
-        val page = if (actualPage <= 9) "0${actualPage + 1}" else "${actualPage + 1}"
-        val size = if (pageSize <= 9) "0${pageSize + 1}" else "${pageSize + 1}"
+        val page = if (actualPage < 9) "0${actualPage + 1}" else "${actualPage + 1}"
+        val size = if (pageSize < 10) "0$pageSize" else "$pageSize"
 
         Row(
                 modifier = Modifier.weight(4f),
@@ -569,25 +685,25 @@ fun BottomAppBar(
         }
 
         IconButton(
-                onClick = { updateActualPage(actualPage - 1) },
+                onClick = { updateActualPage(actualPage + 1) },
                 modifier = Modifier.weight(1.5f),
-                enabled = actualPage != pageSize
+                enabled = canClickNext
         ) {
             Icon(
                     Icons.Rounded.KeyboardArrowRight,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = if (canClickNext) Color.White else Color.LightGray
             )
         }
         IconButton(
-                onClick = { updateActualPage(pageSize) },
+                onClick = { updateActualPage(pageSize - 1) },
                 modifier = Modifier.weight(1.5f),
-                enabled = actualPage != pageSize
+                enabled = canClickNext
         ) {
             Icon(
                     Icons.Rounded.SkipNext,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = if (canClickNext) Color.White else Color.LightGray
             )
         }
     }
