@@ -35,7 +35,7 @@ class UserViewModel @Inject constructor(
 
         }
         catch (exception: WindowManager.InvalidDisplayException) {
-            _userState.value= UserState.Error("something went wong")
+            _userState.value= UserState.Error("something went wrong")
 
         }
     }

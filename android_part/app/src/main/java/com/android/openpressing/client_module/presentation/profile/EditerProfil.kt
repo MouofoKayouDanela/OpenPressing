@@ -1,6 +1,10 @@
 package com.android.openpressing.client_module.presentation.profile
 
 import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
@@ -27,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,8 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.Manifest
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BlueSection
 import com.android.openpressing.client_module.presentation.BottomBar
@@ -45,6 +52,7 @@ import com.android.openpressing.client_module.presentation.ProfileScreen
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+
 
 
 @Composable
@@ -63,7 +71,7 @@ fun EditerProfil(navController: NavHostController) {
             ) {
 
                 item {
-                    ListBox()
+                    ListBox(onImageSelected: (Uri) -> Unit)
                 }
             }
         },
@@ -128,8 +136,22 @@ fun FixBare(navController: NavHostController) {
 
 }
 
+
+/*fun ImagePickerButton() {
+    val context = LocalContext.current
+    val permissionState = remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            // Handle the selected image URI here            val contentResolver: ContentResolver = context.contentResolver
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            // Do something with the bitmap
+        }
+    )
+}*/
+
 @Composable
-fun ListBox() {
+fun ListBox(onImageSelected: (Uri) -> Unit) {
     var name by remember {
         mutableStateOf("")
     }
@@ -161,6 +183,16 @@ fun ListBox() {
     var textephone by remember { mutableStateOf("") }
     var textelocal by remember { mutableStateOf("") }
 
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let { selectedUri ->
+                onImageSelected(selectedUri)
+            }
+        }
+    )
+
     Column(
         modifier = Modifier
             .padding(vertical = 20.dp),
@@ -182,7 +214,7 @@ fun ListBox() {
                     contentScale = ContentScale.FillHeight
                 )
                 ///////////icone de modification de l'image////////////
-                IconButton(onClick = {
+                IconButton(onClick = { launcher.launch("image/*")
                     //openImagePicker()
                 }) {
                     Icon(
