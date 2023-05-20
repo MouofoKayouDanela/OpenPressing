@@ -34,6 +34,14 @@
     "blocked": {
       "type": "boolean",
       "default": false
+    },
+    "logo": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
     }
   }
 }
