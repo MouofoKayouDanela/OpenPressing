@@ -71,7 +71,7 @@ fun EditerProfil(navController: NavHostController) {
             ) {
 
                 item {
-                    ListBox(onImageSelected: (Uri) -> Unit)
+                    ListBox(onImageSelected = {imageUri -> bipmap = imageUri})
                 }
             }
         },
@@ -812,5 +812,6 @@ fun BottomBar(navController: NavHostController) {
 @Composable
 fun EditionView() {
     val navController = rememberNavController()
+    val uri : Uri
     EditerProfil(navController)
 }
