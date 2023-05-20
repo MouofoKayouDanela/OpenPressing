@@ -17,131 +17,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.android.openpressing.R
 import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.requirement.RequirementData
+import com.android.openpressing.data.models.requirement_detail.RequirementDetail
+import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
-import com.android.openpressing.ui.theme.softPrimaryPrimeColor
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
-import com.android.openpressing.viewmodels.requirement_detail.state.RequirementDetailState
 import com.android.openpressing.viewmodels.services.ServiceViewModel
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.RequirementState
-import com.android.openpressing.viewmodels.services.state.ServicesStates
-import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import java.util.*
-
-data class Data(
-    val username: String ,
-    val date: Date ,
-    val services: List<String>
-)
-
-val myDatas = listOf(
-        Data(
-                "Boris Temfack",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Ernest Donfack",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Valdez Kanouo",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Claudel Noumbissie",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Henry Kemadjou",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Nicolas Bogni",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Idriss Keni",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Celestin Kouetchou",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        ),
-        Data(
-                "Loic Tatsalekeu",
-                Date(),
-                listOf(
-                        "Lavage à sec",
-                        "Lavage à eau",
-                        "Détachage",
-                        "Amidonnage"
-                )
-        )
-)
 
 @Composable
 fun ClRequirementConsulting(
@@ -231,7 +130,7 @@ fun RequirementList(
 
         is RequirementState.Success -> {
             LazyColumn(
-                    contentPadding = innerPadding
+                    contentPadding = innerPadding,
             ) {
 
                 items(fetchRequirement(
@@ -268,49 +167,6 @@ fun RequirementList(
                                     verticalAlignment = Alignment.CenterVertically ,
                                     horizontalArrangement = Arrangement.Center
                             ) {
-
-//                                Icon(
-//                                        Icons.Rounded.Person ,
-//                                        contentDescription = null ,
-//                                        modifier = Modifier
-//                                            .clip(CircleShape)
-//                                            .background(Color.LightGray)
-//                                            .size(48.dp)
-//                                )
-
-//                                Image(
-//                                        rememberAsyncImagePainter(
-//                                                model = BASE_URL + FectchUser(
-//                                                        fetchClient(data.attributes.client.data.id!!)
-//                                                            .data.attributes.user.data.id!!
-//                                                ).profile_picture.attributes.formats.medium.url
-//                                        ),
-//                                       contentDescription = null,
-//                                        modifier = Modifier
-//                                            .clip(CircleShape)
-//                                            .size(48.dp),
-//                                        contentScale = ContentScale.Crop
-//
-//                                )
-//
-//                                Column(
-//                                        modifier = Modifier
-//                                            .weight(0.65f)
-//                                            .padding(8.dp) ,
-//                                        verticalArrangement = Arrangement.Center
-//                                ) {
-//                                    Text(
-//                                            FectchUser(
-//                                                    fetchClient(data.attributes.client.data.id!!)
-//                                                    .data.attributes.user.data.id!!
-//                                            ).username ,
-//                                            style = MaterialTheme.typography.body1
-//                                    )
-//                                    Text(
-//                                            "${data.attributes.createdAt}",
-//                                            style = MaterialTheme.typography.overline
-//                                    )
-//                                }
 
                                 FetchClient(
                                         id = data.attributes.client.data.id!! ,
@@ -408,12 +264,12 @@ private fun fetchRequirement(
     requirements: List<RequirementData>
 ) : List<RequirementData> {
 
-    updatePageSize((requirements.size + 7) / 8)
+    updatePageSize((requirements.size + 6) / 7)
 
     return requirements.subList(
-            actualPage * 8,
+            actualPage * 7,
             minOf(
-                    (actualPage + 1) * 8,
+                    (actualPage + 1) * 7,
                     requirements.size
             )
     )
@@ -428,24 +284,22 @@ private fun FetchClient(
     viewModel: ClientViewModel = hiltViewModel()
 ) {
 
-    viewModel.getById(id)
+    var client by remember(id) { mutableStateOf<Client?>(null) }
 
-    when(val state = viewModel.clientState.collectAsState().value) {
+    LaunchedEffect(key1 = id) {
+        viewModel.getById(id)
+            .flowOn(Dispatchers.IO)
+            .collect { keptClient ->
+                client = keptClient
+            }
+    }
 
-        is ClientState.Loading -> {  }
-
-        is ClientState.Success.ClientSuccess -> {
-
-            FetchUser(
-                    id =  state.data.data.attributes.user.data.id!!,
-                    requirementDate = requirementDate,
-                    modifier = modifier
-            )
-
-        }
-
-        else -> {  }
-
+    client?.let { keptClient ->
+        FetchUser(
+                id = keptClient.data.attributes.user.data.id!! ,
+                requirementDate = requirementDate,
+                modifier = modifier
+        )
     }
 
 }
@@ -457,52 +311,22 @@ private fun FetchUser(
     modifier: Modifier = Modifier,
     viewModel: UserViewModel = hiltViewModel()
 ) {
-    viewModel.getById(id)
 
-    when (val state = viewModel.userState.collectAsState().value) {
+    var user by remember(id) { mutableStateOf<User?>(null) }
 
-        is UserState.Loading -> {
-            Row(modifier) {
-                Row(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(48.dp)
-                            .background(softPrimaryPrimeColor) ,
-                        verticalAlignment = Alignment.CenterVertically ,
-                        horizontalArrangement = Arrangement.Center
-
-                ) {
-                    CircularProgressIndicator(
-                            modifier = Modifier.size(48.dp),
-                            color = primaryColor
-                    )
-                }
-
-
-                Column(
-                        modifier = Modifier
-                            .weight(0.7f)
-                            .padding(8.dp) ,
-                        verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                            stringResource(R.string.loading_message) ,
-                            style = MaterialTheme.typography.body1
-                    )
-                    Text(
-                            stringResource(R.string.loading_message) ,
-                            style = MaterialTheme.typography.overline
-                    )
-                }
+    LaunchedEffect(key1 = id) {
+        viewModel.getById(id)
+            .flowOn(Dispatchers.IO)
+            .collect { keptUser ->
+                user = keptUser
             }
-        }
+    }
 
-        is UserState.Success.UserSuccess -> {
-            Row {
+    user?.let { keptUser ->
+            Row(modifier) {
                 Image(
                         rememberAsyncImagePainter(
-                                model = BASE_URL + state
-                                    .data
+                                model = BASE_URL + keptUser
                                     .profile_picture
                                     .url
                         ),
@@ -520,7 +344,7 @@ private fun FetchUser(
                         verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                            state.data.username ,
+                            keptUser.username ,
                             style = MaterialTheme.typography.body1
                     )
                     Text(
@@ -529,10 +353,6 @@ private fun FetchUser(
                     )
                 }
             }
-        }
-
-        else -> { }
-
     }
 }
 
@@ -542,7 +362,15 @@ private fun FetchRequirementDetails(
     viewModel: RequirementDetailViewModel = hiltViewModel()
 ) {
 
-    viewModel.getById(id)
+    var requirementDetail by remember(id) { mutableStateOf<RequirementDetail?>(null) }
+
+    LaunchedEffect(key1 = id) {
+        viewModel.getById(id)
+            .flowOn(Dispatchers.IO)
+            .collect { keptRequirementDetail ->
+                requirementDetail = keptRequirementDetail
+            }
+    }
 
     Row(
             modifier = Modifier
@@ -551,25 +379,10 @@ private fun FetchRequirementDetails(
             horizontalArrangement = Arrangement.Center
     ) {
 
-        when(val state = viewModel.requirementDetailState.collectAsState().value) {
-
-            is RequirementDetailState.Loading -> {
-                CircularProgressIndicator(
-                        modifier = Modifier.size(15.dp),
-                        color = primaryColor
-                )
-            }
-
-            is RequirementDetailState.Success -> {
-
-                FetchService(id = state.requirementDetail.data.attributes.service.data.id!!)
-            }
-
-            else -> {  }
-
+        requirementDetail?.let { keptRequirementDetail ->
+            FetchService(id = keptRequirementDetail.data.attributes.service.data.id!!)
         }
     }
-
 }
 
 @Composable
@@ -578,51 +391,27 @@ private fun FetchService(
     viewModel: ServiceViewModel = hiltViewModel()
 ) {
 
-    viewModel.getById(id)
+    var service by remember(id) { mutableStateOf<Service?>(null) }
 
-    when(val state = viewModel.serviceState.collectAsState().value) {
+    LaunchedEffect(key1 = id) {
+        viewModel.getById(id)
+            .flowOn(Dispatchers.IO)
+            .collect { keptService ->
+                service = keptService
+            }
+    }
 
-        is ServicesStates.Loading -> {
+    service?.let { keptService ->
             Text(
-                    stringResource(R.string.loading_message) ,
+                    "${keptService.data.attributes.type.data.attributes.title} ${keptService.data.attributes.category.data.attributes.name}" ,
                     style = MaterialTheme.typography.body1 ,
                     modifier = Modifier
                         .clip(CircleShape)
                         .background(primaryPrimeColor)
                         .padding(4.dp)
             )
-        }
-
-        is ServicesStates.Success.ServiceSuccess -> {
-            Text(
-                    "${state.data.data.attributes.type.data.attributes.title} ${state.data.data.attributes.category.data.attributes.name}" ,
-                    style = MaterialTheme.typography.body1 ,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(primaryPrimeColor)
-                        .padding(4.dp)
-            )
-        }
-
-        else -> {  }
-
     }
 
-}
-
-@Composable
-private fun fetchLaundry(
-    id: Int,
-    laundryViewModel: LaundryViewModel = hiltViewModel()
-) : Laundry? {
-
-    laundryViewModel.getById(id)
-    return when(val state = laundryViewModel.laundryState.collectAsState().value) {
-
-        is LaundryState.Success.LaundrySuccess -> state.data
-
-        else -> null
-    }
 }
 
 @Composable
