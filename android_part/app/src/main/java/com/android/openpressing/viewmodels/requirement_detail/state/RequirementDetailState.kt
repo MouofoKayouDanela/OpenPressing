@@ -1,6 +1,7 @@
 package com.android.openpressing.viewmodels.requirement_detail.state
 
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
+import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
 
 
 sealed class RequirementDetailState {
@@ -9,7 +10,10 @@ sealed class RequirementDetailState {
 
     object Loading : RequirementDetailState()
 
-    data class Success(val requirementDetail: RequirementDetail) : RequirementDetailState()
+    sealed class Success : RequirementDetailState() {
+        data class RdSuccess(val requirementDetail: RequirementDetail) : Success()
+        data class RdsSuccess(val requirementDetails: MutableList<RequirementDetailData>) : Success()
+    }
 
     data class Error(val message: String) : RequirementDetailState()
 

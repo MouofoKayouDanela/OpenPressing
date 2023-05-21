@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.laundry.Laundry
@@ -30,6 +31,7 @@ import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
 import com.android.openpressing.utils.BASE_URL
+import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
@@ -44,6 +46,7 @@ import java.util.*
 
 @Composable
 fun ClRequirementConsulting(
+    navController: NavController,
     requirementViewModel: RequirementViewModel = hiltViewModel()
 ) {
 
@@ -59,7 +62,8 @@ fun ClRequirementConsulting(
                         innerPadding = innerPadding,
                         actualPage = actualPage,
                         updatePageSize = { pageSize = it },
-                        state = requirementViewModel.avilablerequirement.collectAsState().value
+                        state = requirementViewModel.avilablerequirement.collectAsState().value,
+                        navController = navController
                 )
             } ,
             bottomBar = {
@@ -123,12 +127,13 @@ fun RequirementList(
     innerPadding: PaddingValues,
     actualPage: Int,
     updatePageSize: (Int) -> Unit,
-    state: RequirementState
+    state: RequirementState,
+    navController: NavController
 ) {
 
     when (state) {
 
-        is RequirementState.Success -> {
+        is RequirementState.Success.RequirementsSuccess -> {
             LazyColumn(
                     contentPadding = innerPadding,
             ) {
@@ -231,7 +236,11 @@ fun RequirementList(
                                                         shape = RoundedCornerShape(20)
                                                 )
                                                 .padding(4.dp)
-                                                .clickable { }
+                                                .clickable {
+                                                    navController.navigate(
+                                                            "${Screen.ClientRequirementDetails.road}/${data.id!!}"
+                                                    )
+                                                }
                                     ) {
                                         Text(
                                                 "Voir plus" ,
