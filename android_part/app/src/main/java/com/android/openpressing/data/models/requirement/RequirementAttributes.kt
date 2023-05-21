@@ -12,5 +12,5 @@ data class RequirementAttributes(
     var client: Client ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
-    val createdAt: Date,
+    val createdAt: Date = Date(),
 )
