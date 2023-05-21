@@ -28,7 +28,7 @@ import javax.inject.Inject
         fun getAll() {
             _availablerequirement.value = RequirementState.Loading
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val requirements = requirementRepository.getAll()
                     _availablerequirement.value= RequirementState.Success(requirements)
