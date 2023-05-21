@@ -173,6 +173,9 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
         }
     )
 
+    //////////////VARIABLE DE L'IMAGE PAR DEFAUT/////////////////
+    val defaultImage = painterResource(id = R.drawable.person)
+
     Column(
         modifier = Modifier
             .padding(vertical = 20.dp),
@@ -184,21 +187,29 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
             Box(
                 contentAlignment = Alignment.BottomEnd
             ){
-                selectedImageUri.value?.let { imageUri ->
-                    val contentResolver: ContentResolver = context.contentResolver
-                    val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                    selectedImageUri.value?.let { imageUri ->
+                        val contentResolver: ContentResolver = context.contentResolver
+                        val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
 
-                    Image(
-                        bitmap = bitmapImg.asImageBitmap(),
+                        Image(
+                            bitmap = bitmapImg.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(130.dp)
+                                .border(1.dp, color = Violet, CircleShape),
+                            contentScale = ContentScale.FillHeight
+                        )
+                    } ?: Image(
+                        painter = defaultImage,
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(130.dp)
-                            .border(1.dp, color = Violet, CircleShape),
+                            .border(1.dp, color = primaryColor, CircleShape),
                         contentScale = ContentScale.FillHeight
                     )
-                }
-
+                
                 ///////////icone de modification de l'image////////////
                 IconButton(onClick = {
                     launcher.launch("image/*")
