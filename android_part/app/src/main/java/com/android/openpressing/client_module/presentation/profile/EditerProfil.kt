@@ -1,12 +1,11 @@
 package com.android.openpressing.client_module.presentation.profile
 
-import android.content.Intent
+
+import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -30,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,25 +38,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.android.openpressing.Manifest
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.BlueSection
 import com.android.openpressing.client_module.presentation.BottomBar
-import com.android.openpressing.client_module.presentation.ListeSoustitre
-import com.android.openpressing.client_module.presentation.ProfileScreen
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 
 @Composable
 fun EditerProfil(navController: NavHostController) {
 
+    var bipmap  : Uri
     Scaffold(
         topBar = {
             FixBare(navController)
@@ -136,20 +129,6 @@ fun FixBare(navController: NavHostController) {
 
 }
 
-
-/*fun ImagePickerButton() {
-    val context = LocalContext.current
-    val permissionState = remember { mutableStateOf(false) }
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            // Handle the selected image URI here            val contentResolver: ContentResolver = context.contentResolver
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-            // Do something with the bitmap
-        }
-    )
-}*/
-
 @Composable
 fun ListBox(onImageSelected: (Uri) -> Unit) {
     var name by remember {
@@ -184,11 +163,12 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
     var textelocal by remember { mutableStateOf("") }
 
     val context = LocalContext.current
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             uri?.let { selectedUri ->
-                onImageSelected(selectedUri)
+                selectedImageUri.value = selectedUri
             }
         }
     )
@@ -204,18 +184,24 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
             Box(
                 contentAlignment = Alignment.BottomEnd
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.homme),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(130.dp)
-                        .border(1.dp, color = VioletPal, CircleShape),
-                    contentScale = ContentScale.FillHeight
-                )
+                selectedImageUri.value?.let { imageUri ->
+                    val contentResolver: ContentResolver = context.contentResolver
+                    val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+
+                    Image(
+                        bitmap = bitmapImg.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(130.dp)
+                            .border(1.dp, color = Violet, CircleShape),
+                        contentScale = ContentScale.FillHeight
+                    )
+                }
+
                 ///////////icone de modification de l'image////////////
-                IconButton(onClick = { launcher.launch("image/*")
-                    //openImagePicker()
+                IconButton(onClick = {
+                    launcher.launch("image/*")
                 }) {
                     Icon(
                         Icons.Rounded.PhotoCamera,
@@ -567,62 +553,6 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                 )
             }
 
-            /*Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    modifier = Modifier
-                        .weight(0.7f)
-                        .padding(horizontal = 20.dp),
-                    //horizontalArrangement = Arrangement.SpaceBetween,
-                    //verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Text(
-                        "Date & lieu de naissance : ",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black.copy(alpha = 0.5f),
-                    )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Text(
-                        " Banfang, 23/08/1998",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color.Black,
-                    )
-                }
-                IconButton(
-                    modifier = Modifier .weight(0.3f),
-                    onClick = {
-                    //navController.navigate(Screen.EditScreen.road)
-                }
-                ) {
-                    Icon(
-                        Icons.Rounded.Edit,
-                        contentDescription = stringResource(R.string.nextPage),
-                        tint = Orange,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            //.background(VioletPal)
-                            .padding(5.dp)
-                    )
-                }
-            }
-            ////////////LIGNE DE SEPARATION////////
-            Canvas(modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 18.dp)
-            ) {
-                drawLine(
-                    color = Color.Black,
-                    alpha = 0.1f,
-                    start = Offset(3f, 3f),
-                    end = Offset(size.width, size.height / 2),
-                    strokeWidth = 1.dp.toPx()
-                )
-            }*/
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
