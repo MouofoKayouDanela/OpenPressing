@@ -38,17 +38,24 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.user.UserViewModel
 
-
+var id : Int = 0
 
 @Composable
-fun EditerProfil(navController: NavHostController) {
+fun EditerProfil(navController: NavHostController,
+                 userViewModel: UserViewModel = hiltViewModel()
+) {
+
+
+    userViewModel.getById(id)
 
     var bipmap  : Uri
     Scaffold(
@@ -209,7 +216,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                             .border(1.dp, color = primaryColor, CircleShape),
                         contentScale = ContentScale.FillHeight
                     )
-                
+
                 ///////////icone de modification de l'image////////////
                 IconButton(onClick = {
                     launcher.launch("image/*")
