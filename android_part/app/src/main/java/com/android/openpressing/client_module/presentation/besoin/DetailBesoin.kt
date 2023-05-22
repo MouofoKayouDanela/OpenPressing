@@ -149,7 +149,7 @@ fun contenu(){
 fun picture(){
     Row(modifier = Modifier.padding(start =64.dp)){
 
-        Image(painter = painterResource(R.drawable.ep),
+        Image(painter = painterResource(R.drawable.ele),
             contentDescription = "",
             modifier = Modifier
                 .size(120.dp)

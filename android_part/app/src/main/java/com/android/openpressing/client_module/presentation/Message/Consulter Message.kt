@@ -67,105 +67,105 @@ fun MySMS(){
         content= {
             innerPadding-> stock(Msg= listOf(
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
                 img = Icons.Rounded.Delete
             ),
             Msg(
-                imageVector = painterResource(R.drawable.ep),
+                imageVector = painterResource(R.drawable.ele),
                 NomAgence = "Elegance Pressing",
                 titre = "Avez-vous besoin d'un pressing",
                 date = "15:21",
