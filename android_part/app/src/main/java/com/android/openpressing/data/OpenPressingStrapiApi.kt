@@ -521,15 +521,15 @@ sealed interface OpenPressingStrapiApi{
         @GET(REQUIREMENT_FEATURES+ INCLUSION_FEATURES)
         suspend fun getAll() : Requirements
 
-        @GET("$QUARTER_FEATURES/{id}$INCLUSION_FEATURES")
+        @GET("$REQUIREMENT_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : Requirement
 
-        @POST(QUARTER_FEATURES)
+        @POST(REQUIREMENT_FEATURES)
         suspend fun  save(
             @Body requirement: Requirement
         )
 
-        @PUT("$QUARTER_FEATURES/{id}")
+        @PUT("$REQUIREMENT_FEATURES/{id}")
         suspend fun  update(
             @Path("id") id: Int,
             @Body requirement: Requirement
