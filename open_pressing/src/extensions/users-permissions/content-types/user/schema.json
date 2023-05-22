@@ -90,12 +90,18 @@
       "type": "date"
     },
     "profilePicture": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "quarter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quarter.quarter",
+      "inversedBy": "users"
     }
   }
 }

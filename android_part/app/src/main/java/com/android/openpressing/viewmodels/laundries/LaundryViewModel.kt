@@ -8,8 +8,7 @@ import com.android.openpressing.repositories.laundry.LaundryRepository
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -44,24 +43,9 @@ class LaundryViewModel @Inject constructor
 
     }
 
-    fun getById(id: Int) {
-
-        _laundryState.value = LaundryState.Empty
-
-        try {
-            viewModelScope.launch(Dispatchers.IO) {
-                val laundry = laundryRepository .getById( id)
-                _laundryState.value = LaundryState.Success.LaundrySuccess(laundry)
-            }
-        } catch (exception: HttpException) {
-            _laundryState.value= LaundryState.Error("No internet connection")
-
-        }
-        catch (exception: WindowManager.InvalidDisplayException) {
-            _laundryState.value= LaundryState.Error("something went wong")
-
-        }
-    }
+    fun getById(id: Int) : Flow<Laundry> = flow {
+        emit(laundryRepository.getById(id))
+    }.flowOn(Dispatchers.IO)
 
     fun save(laundry: Laundry) {
         try {
