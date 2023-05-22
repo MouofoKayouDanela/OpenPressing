@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
-import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
@@ -33,7 +32,7 @@ data class HorizontalPagerContent(
 fun getList(): List<HorizontalPagerContent> {
     return listOf(
         HorizontalPagerContent(
-            R.drawable.logo,
+            R.drawable.logoapp,
             "",
             "Verification is an extra or final bit of proof that establishes something is true"
         ),

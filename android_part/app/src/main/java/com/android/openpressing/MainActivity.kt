@@ -26,7 +26,7 @@ import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
-import com.android.openpressing.utils.Screen
+import com.android.openpressing.ui.creeationpressing.MyInterface
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -77,6 +77,7 @@ fun DefaultPreview() {
         //Default()
 
     }*/
+            MyInterface()
 }
 
     }   }
