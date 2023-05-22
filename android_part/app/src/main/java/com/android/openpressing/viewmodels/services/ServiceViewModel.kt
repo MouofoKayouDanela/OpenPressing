@@ -1,42 +1,51 @@
 package com.android.openpressing.viewmodels.services
 
-import android.util.Log
+import android.view.WindowManager.InvalidDisplayException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.viewmodels.services.state.ServicesStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class ServiceViewModel @Inject constructor(
-    private val serviceRepository: ServiceRepository
-    ) : ViewModel()
-{
+
+    private val serviceRepository: ServiceRepository)
+    :ViewModel()
+     {
+
+private  val _serviceState = MutableStateFlow<ServicesStates>(ServicesStates.Empty)
+val serviceState: StateFlow<ServicesStates> = _serviceState
 
         fun getAll() {
+            _serviceState.value = ServicesStates.Loading
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val services = serviceRepository.getAll()
-                } catch (e: Exception) {
+                    _serviceState.value= ServicesStates.Success.ServicesSuccess(services)
+
+                } catch (exception: HttpException ) {
+                    _serviceState.value= ServicesStates.Error("No internet connection")
+
+                }
+                catch (exception: InvalidDisplayException ) {
+                _serviceState.value= ServicesStates.Error("something went wong")
 
                 }
             }
 
         }
 
-        fun getById(id: Int) {
-            try {
-                viewModelScope.launch(Dispatchers.IO) {
-                    val service = serviceRepository.getById(id)
-                }
-            } catch (e: Exception) {
-
-            }
-        }
+         fun getById(id: Int) : Flow<Service> = flow {
+             emit(serviceRepository.getById(id))
+         }.flowOn(Dispatchers.IO)
 
         fun save(service: Service) {
             try {

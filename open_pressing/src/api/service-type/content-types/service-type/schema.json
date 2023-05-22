@@ -23,11 +23,13 @@
     },
     "confirmed": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "required": true
     },
     "blocked": {
       "type": "boolean",
-      "default": false
+      "default": false,
+      "required": true
     }
   }
 }
