@@ -40,4 +40,5 @@ val primaryPrimeColor = Color(0xFFE7DBEB)
 val softPrimaryPrimeColor = Color(0xFFEFECF0)
 val secondaryColor = Color(0xFFF8825C)
 val secondaryPrimeColor = Color(0xFFF0CBBF)
+val softSecondaryPrimeColor = Color(0xFFF7EEEB)
 

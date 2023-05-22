@@ -8,8 +8,7 @@ import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.viewmodels.services.state.ServicesStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -27,7 +26,7 @@ val serviceState: StateFlow<ServicesStates> = _serviceState
         fun getAll() {
             _serviceState.value = ServicesStates.Loading
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val services = serviceRepository.getAll()
                     _serviceState.value= ServicesStates.Success.ServicesSuccess(services)
@@ -44,21 +43,9 @@ val serviceState: StateFlow<ServicesStates> = _serviceState
 
         }
 
-        fun getById(id: Int) {
-            try {
-                viewModelScope.launch(Dispatchers.IO) {
-                    val service = serviceRepository.getById(id)
-                    _serviceState.value = ServicesStates.Success.ServiceSuccess(service)
-                }
-            }  catch (exception: HttpException ) {
-                _serviceState.value= ServicesStates.Error("No internet connection")
-
-            }
-            catch (exception: InvalidDisplayException ) {
-                _serviceState.value= ServicesStates.Error("something went wong")
-
-            }
-        }
+         fun getById(id: Int) : Flow<Service> = flow {
+             emit(serviceRepository.getById(id))
+         }.flowOn(Dispatchers.IO)
 
         fun save(service: Service) {
             try {
