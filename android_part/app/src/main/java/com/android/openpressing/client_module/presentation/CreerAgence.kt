@@ -92,6 +92,7 @@ private fun CityDropdown() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(vertical = 30.dp, horizontal = 20.dp)
 
 
 
@@ -103,7 +104,7 @@ private fun CityDropdown() {
             label = { Text("Selectioner la ville") },
             readOnly = true,
             modifier = Modifier.fillMaxWidth()
-            .padding(vertical = 200.dp, horizontal = 20.dp),
+            .padding(vertical = 16.dp, horizontal = 20.dp),
             shape = RoundedCornerShape(11.dp)
         )
 
@@ -132,8 +133,7 @@ private fun NeighborhoodDropdown() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .padding(vertical = 6.dp, horizontal = 20.dp)
+            .padding(vertical = 16.dp, horizontal = 20.dp)
 
     ) {
         OutlinedTextField(
@@ -179,7 +179,7 @@ private fun NeighborhoodDropdown() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 10.dp, horizontal = 40.dp),
+                .padding(vertical = 20.dp, horizontal = 40.dp),
 
         ) {
             Button(
