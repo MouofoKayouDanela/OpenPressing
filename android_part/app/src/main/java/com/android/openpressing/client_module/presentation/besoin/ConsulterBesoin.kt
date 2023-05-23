@@ -16,9 +16,7 @@ import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,15 +28,54 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
+import com.android.openpressing.data.models.client.Client
+import com.android.openpressing.data.models.client.ClientData
+import com.android.openpressing.data.models.requirement.RequirementData
+import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
 import com.android.openpressing.ui.theme.Purple500
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.requirement.RequirementViewModel
+import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import java.util.Date
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
 @Composable
-fun MyNeed(){
+fun MyNeed(
+    rdViewModel: RequirementViewModel = hiltViewModel(),
+    clientViewModel: ClientViewModel= hiltViewModel()
+){
+    val userID = 4
+
+    val clients = remember(userID){ mutableStateOf<MutableList<ClientData>?>(null) }
+    val client = remember(userID){ mutableStateOf<ClientData?>(null) }
+
+    val rdkey = "allrdkey"
+    val requirements = remember(rdkey) { mutableStateOf<MutableList<RequirementData>?>(null) }
+
+    LaunchedEffect(key1 = userID){
+        clientViewModel.getAll()
+            .flowOn(Dispatchers.IO)
+            .collect{ clients.value = it }
+    }
+
+    if (clients.value != null){
+
+        client.value = clients.value!!.find { it.attributes.user.data.id == userID }
+
+        LaunchedEffect(key1 = rdkey) {
+            rdViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect { requirements.value = it }
+        }
+    }
+
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,88 +99,15 @@ fun MyNeed(){
                 }
             )},
         content= {
-                innerPadding-> stock(contenu= listOf(
-            Contenu(
-                Description = "5 Vetements",
-                prix = "1500 FCFA",
-                date = "publié le 22/03/2023"
-            ),
-            Contenu(
-                Description = "10 vetements",
-                prix = "1000 FCFA",
-                date = "publié le 15/03/2023"
+                innerPadding->
 
-            ),
-            Contenu(
-                Description = "12 Vetements",
-                prix = "3100 FCFA",
-                date = "publié le 15/03/2023"
 
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "20 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "18 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            ),
-            Contenu(
-                Description = "15 Vetements",
-                prix= "4000",
-                date = " publié le 15/05/2023"
-            )
-        ),
-            innerPadding = innerPadding
-        )
+            if (client.value != null && requirements.value != null){
+                stock(
+                    contenu = requirements.value!!.filter { it.attributes.client.data.id == client.value!!.id },
+                    innerPadding = innerPadding
+                )
+            }
 
 
         },
@@ -161,7 +125,7 @@ data class Contenu(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun stock(contenu: List<Contenu>,
+fun stock(contenu: List<RequirementData>,
           innerPadding: PaddingValues){
     LazyColumn(contentPadding = innerPadding) {
         items(contenu) {
@@ -216,7 +180,23 @@ fun BottomBar() {
 }
 
 @Composable
-fun Consult(affiche: Contenu) {
+fun Consult(
+    affiche: RequirementData,
+    requiremendetailsViewModel: RequirementDetailViewModel = hiltViewModel(),
+) {
+
+    val requirementId= affiche.id!!
+
+    val allRd= remember(requirementId) {
+        mutableStateOf<List<RequirementDetailData>?>(null)
+    }
+
+    LaunchedEffect(key1 = allRd){
+        requiremendetailsViewModel.getAll()
+            .flowOn(Dispatchers.IO)
+            .collect{ allRd.value = it }
+    }
+
     Card(
         elevation = 3.dp,
         shape = RoundedCornerShape(10.dp),
@@ -229,20 +209,29 @@ fun Consult(affiche: Contenu) {
             Column(
 
             ) {
-                Text(
-                    text = affiche.Description,
-                    color = Color.Black,
-                    fontSize = 16.sp
-                )
+                if (allRd.value != null){
+
+
+                    var quantity by remember { mutableStateOf(0) }
+                    allRd.value!!.forEach{ quantity += it.attributes.quantity  }
+                    Text(
+                        text = "${ if(quantity<10) "0$quantity" else quantity.toString()} Vetement(s)",
+                        color = Color.Black,
+                        fontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(height = 24.dp))
+
+                    var price by remember { mutableStateOf(0.0) }
+                    allRd.value!!.forEach{ price += it.attributes.unitPrice * it.attributes.quantity  }
+                    Text(
+                        text = "$price Fcfa",
+                        color = Color.Gray,
+                        fontSize = 16.sp
+                    )
+                }
                 Spacer(modifier = Modifier.height(height = 24.dp))
                 Text(
-                    text = affiche.prix,
-                    color = Color.Gray,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(height = 24.dp))
-                Text(
-                    text = affiche.date,
+                    text = affiche.attributes.createdAt.toString(),
                     color = Color.Gray,
                     fontSize = 16.sp
                 )
@@ -267,4 +256,85 @@ fun Consult(affiche: Contenu) {
         }
     }
 }
+
+/*listOf(
+                        Contenu(
+                            Description = "5 Vetements",
+                            prix = "1500 FCFA",
+                            date = "publié le 22/03/2023"
+                        ),
+                        Contenu(
+                            Description = "10 vetements",
+                            prix = "1000 FCFA",
+                            date = "publié le 15/03/2023"
+
+                        ),
+                        Contenu(
+                            Description = "12 Vetements",
+                            prix = "3100 FCFA",
+                            date = "publié le 15/03/2023"
+
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "20 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "18 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        ),
+                        Contenu(
+                            Description = "15 Vetements",
+                            prix = "4000",
+                            date = " publié le 15/05/2023"
+                        )
+                    )*/
 
