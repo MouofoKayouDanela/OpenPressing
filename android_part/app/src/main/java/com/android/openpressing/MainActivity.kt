@@ -15,6 +15,7 @@ import androidx.navigation.navArgument
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
+import com.android.openpressing.client_module.presentation.besoin.Detal
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.client.OfferScreen
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(Screen.ConsulterBesoin.road){ MyNeed()}
+                    composable(Screen.DetailBesoin.road){ Detal()}
                 }
             }
         }
