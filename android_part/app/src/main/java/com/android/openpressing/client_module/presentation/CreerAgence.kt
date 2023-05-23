@@ -60,27 +60,6 @@ fun NavBar() {
     )
 }
 
-@Composable
-fun MyInterface() {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp) ,
-    )
-
-    {
-        Image(
-            painter = painterResource(id = R.drawable.logoapp),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 32.dp,)
-                .size(50.dp),
-            contentScale = ContentScale.Fit,
-        )
-    }
-}
-
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
