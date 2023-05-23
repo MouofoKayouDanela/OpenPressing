@@ -403,10 +403,10 @@ sealed interface OpenPressingStrapiApi{
 
     interface OwnerApi: OpenPressingStrapiApi {
 
-        @GET(OWNER_FEATURES+ INCLUSION_FEATURES)
+        @GET(OWNER_FEATURES+ POPULATE)
         suspend fun getAll() : Owners
 
-        @GET("$OWNER_FEATURES/{id}$INCLUSION_FEATURES")
+        @GET("$OWNER_FEATURES/{id}$POPULATE")
         suspend fun getById(@Path("id") id: Int) : Owner
 
         @POST(OWNER_FEATURES)

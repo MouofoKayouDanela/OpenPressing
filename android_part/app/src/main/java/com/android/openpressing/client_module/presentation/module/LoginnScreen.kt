@@ -28,9 +28,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 import com.android.openpressing.R
+import com.android.openpressing.data.models.client.Client
+import com.android.openpressing.data.models.user.User
 
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.client.state.ClientState
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.owner.state.OwnerState
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.owner.OwnerViewModel
 import com.android.openpressing.viewmodels.services.state.UserState
@@ -149,7 +157,31 @@ fun LoginScreen(
                         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                             task -> showMessage = if(task.isSuccessful){
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
-                            navController.navigate(Screen.Home.road)
+
+                            userViewModel.getAll()
+                            if (userState is UserState.Success.UsersSuccess) {
+                                val user = userState.data.find {
+                                    it.email == email
+                                }
+                                if(user != null){
+                                    clientViewModel.getAll()
+                                    ownerViewModel.getAll()
+                                    if(
+                                        clientState is ClientState.Success.ClientsSuccess
+                                        &&
+                                        ownerState is OwnerState.Success.OwnersSuccess
+                                    ){
+                                        if (clientState.data.any{ it.attributes.user.data.id == user.id }){
+                                            navController.navigate(Screen.Home.road)
+                                        }
+                                        else if(ownerState.data.any{it.attributes.user.data.id == user.id}){
+                                            navController.navigate(Screen.ClientRequirement.road)
+                                        }
+                                    }
+
+                                }
+
+                            }
                             userViewModel.getAll()
                             if (userState is UserState.Success.UsersSuccess) {
                                 val user = userState.data.find {
