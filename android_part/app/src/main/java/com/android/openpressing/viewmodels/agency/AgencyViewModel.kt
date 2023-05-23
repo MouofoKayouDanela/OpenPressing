@@ -4,6 +4,7 @@ import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.agency.Agency
+import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.repositories.agency.AgencyRepository
 import com.android.openpressing.viewmodels.agency.state.AgencyState
 import kotlinx.coroutines.Dispatchers
@@ -40,8 +41,12 @@ class AgencyViewModel @Inject constructor
 
     }
 
-    fun findBById(id: Int): Flow <Agency> = flow {
+    fun findById(id: Int): Flow <Agency> = flow {
         emit(agencyRepository.getById(id))
+    }.flowOn(Dispatchers.IO)
+
+    fun findAll(): Flow <MutableList<AgencyData> > = flow {
+        emit(agencyRepository.getAll())
     }.flowOn(Dispatchers.IO)
 
 

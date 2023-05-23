@@ -39,11 +39,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
+import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.quarter.QuarterData
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
@@ -57,6 +59,8 @@ import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
 import com.android.openpressing.viewmodels.services.state.RequirementState
 import com.android.openpressing.viewmodels.user.UserViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 
@@ -238,9 +242,9 @@ fun SectionBleue(){
 fun CardWithContent(
     pressing: PressingData,
     //navController: NavHostController,
+    viewModel : AgencyViewModel = hiltViewModel(),
 
 ) { //navController: NavHostController
-    val paddingModifier = Modifier.padding(15.dp)
 
     Card(
         elevation = 10.dp,
@@ -264,7 +268,7 @@ fun CardWithContent(
 
                 Image(
                     rememberAsyncImagePainter(
-                        model = BASE_URL + state.data.data.attributes.logo.url
+                        model = BASE_URL + pressing.attributes.logo.url
                     ) ,
                     contentDescription = null,
                     modifier = Modifier
@@ -294,7 +298,7 @@ fun CardWithContent(
 
                     ) {
                         Text(
-                            text =  state.data.data.attributes.name,
+                            text =  pressing.attributes.name,
                             color = black,
                             style = MaterialTheme.typography.body1.copy(
                                 fontSize = 20.sp,
@@ -314,13 +318,32 @@ fun CardWithContent(
                             contentDescription = "position",
                             tint = Orange
                         )
-                        Text(
-                            text = pressing.position,
-                            color = black,
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 15.sp
-                            )
-                        )
+                        val quarterId = 2
+                        val AgencyId = pressing.attributes.agencies!!.data.find {
+                            it.attributes.quarter.data.id == quarterId
+                        }!!
+                        var agencies by remember(quarterId) { mutableStateOf<MutableList<AgencyData>?>(null) }
+
+                        LaunchedEffect(key1 = quarterId) {
+                            viewModel.findAll()
+                                .flowOn(Dispatchers.IO)
+                                .collect { keptAgencies ->
+                                    agencies = keptAgencies
+                                }
+                        }
+                        if(agencies != null ){
+                            val quarter = agencies!!.find { it.attributes.quarter.data.id == quarterId }?.attributes?.quarter
+
+                            if(quarter!= null){
+                                Text(
+                                    text = quarter.data.attributes.name,
+                                    color = black,
+                                    style = MaterialTheme.typography.body1.copy(
+                                        fontSize = 15.sp
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
 
