@@ -6,6 +6,7 @@ import com.android.openpressing.data.models.owner.Owner
 import com.android.openpressing.repositories.owner.OwnerRepository
 import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.owner.state.OwnerState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@HiltViewModel
 class OwnerViewModel @Inject constructor(
     private  val ownerRepository: OwnerRepository
 ): ViewModel() {
