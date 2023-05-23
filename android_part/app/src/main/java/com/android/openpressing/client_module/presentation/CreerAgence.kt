@@ -92,7 +92,7 @@ private fun CityDropdown() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 30.dp, horizontal = 20.dp)
+            .padding(vertical = 60.dp, horizontal = 20.dp)
 
 
 
@@ -103,8 +103,7 @@ private fun CityDropdown() {
             onValueChange = { selectedCity = it },
             label = { Text("Selectioner la ville") },
             readOnly = true,
-            modifier = Modifier.fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(11.dp)
         )
 
