@@ -138,7 +138,10 @@ fun LoginScreen(
                     Text("Forgot Password ?")
                 }
 
-                val state = userViewModel.userState.collectAsState().value
+                val userState = userViewModel.userState.collectAsState().value
+                val clientState = clientViewModel.clientState.collectAsState().value
+                val ownerState = ownerViewModel.ownerState.collectAsState().value
+
                 Button(
                     onClick = {
 
@@ -148,8 +151,12 @@ fun LoginScreen(
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
                             navController.navigate(Screen.Home.road)
                             userViewModel.getAll()
-                            if (state is UserState.Success.UserSuccess) {
-
+                            if (userState is UserState.Success.UsersSuccess) {
+                                val user = userState.data.find {
+                                    it.email == email && it.password == password
+                                }
+                                clientViewModel.getAll()
+                                ownerViewModel.getAll()
                             }
                             false
                             }
