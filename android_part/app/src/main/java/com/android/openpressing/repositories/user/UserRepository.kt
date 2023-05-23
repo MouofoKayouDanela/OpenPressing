@@ -12,4 +12,6 @@ class UserRepository @Inject constructor(
 
     suspend fun getById(id: Int) : User = userApi.getById(id)
 
+    suspend fun update( id: Int, user: User) : User = userApi.update(id, user)
+
 }
