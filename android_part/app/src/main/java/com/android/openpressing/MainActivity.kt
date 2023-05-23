@@ -40,19 +40,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            val pressingModel : PressingViewModel = viewModel()
+            //val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Login.road){
+                NavHost(navController = navController, startDestination = Screen.Home.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
                     composable(Screen.Home.road){
-                        ScaffoldSample(navController)
+                        ScaffoldSample()
 
-                        pressingModel.getAll()
+                        //pressingModel.getAll()
 
                        /* CardWithContent(
                         pressingState=pressingModel.pressingState.collectAsState().value

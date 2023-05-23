@@ -7,8 +7,7 @@ import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.repositories.agency.AgencyRepository
 import com.android.openpressing.viewmodels.agency.state.AgencyState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -40,6 +39,11 @@ class AgencyViewModel @Inject constructor
         }
 
     }
+
+    fun findBById(id: Int): Flow <Agency> = flow {
+        emit(agencyRepository.getById(id))
+    }.flowOn(Dispatchers.IO)
+
 
     fun getById(id: Int) {
         try {

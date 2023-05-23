@@ -29,7 +29,7 @@ class QuarterViewModel  @Inject constructor
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val quarter = quarterRepository.getAll()
-                _availableQuarter.value= QuarterState.Success(quarter)
+                _availableQuarter.value= QuarterState.Success.QuartersSuccess(quarter)
 
             } catch (exception: HttpException) {
                 _availableQuarter.value= QuarterState.Error("No internet connection")
