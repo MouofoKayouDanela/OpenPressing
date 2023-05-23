@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
+import com.android.openpressing.client_module.presentation.agence.components.Interface
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.client.OfferScreen
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
+            /*val navController = rememberNavController()
 
             OpenPressingTheme{
                 NavHost(navController = navController, startDestination = Screen.Login.road){
@@ -71,7 +72,8 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-            }
+            }*/
+            Interface()
         }
     }
 }

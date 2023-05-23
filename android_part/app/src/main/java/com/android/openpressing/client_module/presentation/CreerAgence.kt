@@ -1,8 +1,10 @@
-package com.android.openpressing.ui.creeationpressing
+package com.android.openpressing.client_module.presentation.agence.components
+
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,31 +12,43 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.android.openpressing.R
+import com.android.openpressing.client_module.presentation.MyApp
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun Interface() {
 
     Scaffold(
-        topBar = { NavBar() }
-    ) {
-         MyInterface()
-        CityDropdown()
-        NeighborhoodDropdown()
+        topBar = { NavBar() },
+        content = { innerPadding ->
+            LazyColumn(
+                contentPadding = innerPadding,
+                modifier = Modifier
+                    .fillMaxHeight(),
+            ) {
+
+                item {
+                    CityDropdown()
+                    NeighborhoodDropdown()
+                }
+            }
+        }
+    )
+
     }
 
-}
 
 @Composable
 fun NavBar() {
     TopAppBar(
         title = { Text(text = "Créer une agence ") },
-        backgroundColor = Color(0xFFFFFFFF),
+        backgroundColor = Color(0xFF5B1866),
         //shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp),
         navigationIcon = {
             IconButton(onClick = { }) {
@@ -52,22 +66,18 @@ fun MyInterface() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(1.dp)
-            .padding(vertical = 30.dp, horizontal = 20.dp),
-
+            .padding(start = 16.dp) ,
     )
 
     {
         Image(
-            painter = painterResource(R.drawable.logoapp),
+            painter = painterResource(id = R.drawable.logoapp),
             contentDescription = null,
             modifier = Modifier
-                .size(130.dp)
-                .padding(vertical = 30.dp, horizontal = 60.dp)
-
+                .padding(horizontal = 32.dp,)
+                .size(50.dp),
+            contentScale = ContentScale.Fit,
         )
-
-
     }
 }
 
@@ -79,12 +89,12 @@ private fun CityDropdown() {
     val cities = mutableStateListOf<String>()
     var selectedCity by remember { mutableStateOf<String?>(null) }
 
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .padding(vertical = 180.dp, horizontal = 20.dp)
-            .width(16.dp)
+
+
+
 
     ) {
         OutlinedTextField(
@@ -92,7 +102,8 @@ private fun CityDropdown() {
             onValueChange = { selectedCity = it },
             label = { Text("Selectioner la ville") },
             readOnly = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+            .padding(vertical = 200.dp, horizontal = 20.dp),
             shape = RoundedCornerShape(11.dp)
         )
 
@@ -118,17 +129,17 @@ private fun NeighborhoodDropdown() {
     var selectedNeighborhood by remember { mutableStateOf<String?>(null) }
     val neighborhoods = mutableStateMapOf<String, List<String>>()
 
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .padding(vertical = 290.dp, horizontal = 20.dp)
+            .padding(vertical = 6.dp, horizontal = 20.dp)
 
     ) {
         OutlinedTextField(
             value = selectedNeighborhood ?: "",
             onValueChange = { selectedNeighborhood = it },
-            label = { Text("Selectioner un quartier ")},
+            label = { Text("Selectioner un quartier ") },
             readOnly = true,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(11.dp)
@@ -164,13 +175,12 @@ private fun NeighborhoodDropdown() {
             onDispose { /* Do nothing */ }
         }
 
-
-        Box(
+    }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(vertical = 93.dp, horizontal = 40.dp),
-            //.width(18.dp)
+                .padding(vertical = 10.dp, horizontal = 40.dp),
+
         ) {
             Button(
                 onClick = {
@@ -179,11 +189,11 @@ private fun NeighborhoodDropdown() {
                 modifier = Modifier
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFF6F00)),
-                content = { Text("Confirmer") },
+                content = { Text("Confirmer") }
             )
         }
     }
-}
+
 
 @Preview
 @Composable
