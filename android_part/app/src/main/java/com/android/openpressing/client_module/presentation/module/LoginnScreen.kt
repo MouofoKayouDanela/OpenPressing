@@ -24,18 +24,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 import com.android.openpressing.R
 
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(
+    navController: NavHostController,
+    userViewModel: UserViewModel = hiltViewModel(),
+    ownerViewModel: OwnerViewModel = hiltViewModel(),
+    clientViewModel: ClientViewModel = hiltViewModel()
+
+) {
+
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -125,21 +137,28 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     Text("Forgot Password ?")
                 }
+
+                val state = userViewModel.userState.collectAsState().value
                 Button(
                     onClick = {
+
                         val auth=Firebase.auth
                         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                             task -> showMessage = if(task.isSuccessful){
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
                             navController.navigate(Screen.Home.road)
+                            userViewModel.getAll()
+                            if (state is UserState.Success.UserSuccess) {
+
+                            }
                             false
                             }
                             else{
-                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                            true
+                                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                                true
+                            }
                         }
-                        }
-                       },
+                    },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(48.dp)

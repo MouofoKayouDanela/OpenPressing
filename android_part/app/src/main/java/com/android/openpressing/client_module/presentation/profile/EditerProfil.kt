@@ -45,6 +45,8 @@ import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
 import com.android.openpressing.viewmodels.user.UserViewModel
 
 var id : Int = 0
@@ -52,10 +54,9 @@ var id : Int = 0
 @Composable
 fun EditerProfil(navController: NavHostController,
                  userViewModel: UserViewModel = hiltViewModel()
+                 //ownerViewModel: OwnerViewModel = hiltViewModel(),
+                // clientViewModel: ClientViewModel = hiltViewModel()
 ) {
-
-
-    userViewModel.getById(id)
 
     var bipmap  : Uri
     Scaffold(
