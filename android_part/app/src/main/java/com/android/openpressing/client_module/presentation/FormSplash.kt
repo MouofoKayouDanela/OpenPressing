@@ -126,6 +126,7 @@ fun IntroScreen(navController: NavHostController) {
 
             if (isNextVisible.value) {
                 Button(onClick = {
+                    navController.navigate(Screen.Login.road)
                     scope.launch{
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
