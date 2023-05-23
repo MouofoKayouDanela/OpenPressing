@@ -7,8 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.example.aninterface.MainActivity
-import com.example.aninterface.R
+import com.android.openpressing.MainActivity
+import com.android.openpressing.R
 
 class CreateNotification (
     var context : Context,
