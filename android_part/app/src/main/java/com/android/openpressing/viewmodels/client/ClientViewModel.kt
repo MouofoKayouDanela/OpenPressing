@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -26,9 +27,19 @@ class ClientViewModel @Inject constructor(
         emit(clientRepository.getById(id))
     }.flowOn(Dispatchers.IO)
 
-    fun getAll() : Flow<MutableList<ClientData>> = flow {
-        emit(clientRepository.getAll())
-    }.flowOn(Dispatchers.IO)
+    fun getAll() {
+        _clientState.value = ClientState.Loading
 
+        viewModelScope.launch {
+            try {
+                val clients = clientRepository.getAll()
+                _clientState.value = ClientState.Success.ClientsSuccess(clients)
+           } catch (e: IOException) {
+                _clientState.value = ClientState.Error("No internet connection !")
+           } catch (e: HttpException) {
+                _clientState.value = ClientState.Error("Something went wrong !")
+           }
+       }
+    }
 
 }

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -24,5 +25,24 @@ class UserViewModel @Inject constructor(
     fun getById(id: Int) : Flow<User> = flow {
         emit(userRepository.getById(id))
     }.flowOn(Dispatchers.IO)
+    
+    fun updateUser(id: Int, user: User): Flow<User> = flow {
+        emit(userRepository.update(id, user))
+    }.flowOn(Dispatchers.IO)
+
+    fun getAll() {
+        _userState.value = UserState.Loading
+
+        viewModelScope.launch {
+            try {
+                val users = userRepository.getAll()
+                _userState.value = UserState.Success.UsersSuccess(users.toMutableList())
+            } catch (e: IOException) {
+                _userState.value = UserState.Error("No internet connection !")
+            } catch (e: HttpException) {
+                _userState.value = UserState.Error("Something went wrong !")
+            }
+        }
+    }
 
 }

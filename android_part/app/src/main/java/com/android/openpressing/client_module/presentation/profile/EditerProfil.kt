@@ -38,17 +38,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.user.UserViewModel
 
-
+var id : Int = 0
 
 @Composable
-fun EditerProfil(navController: NavHostController) {
+fun EditerProfil(navController: NavHostController,
+                 userViewModel: UserViewModel = hiltViewModel()
+                 //ownerViewModel: OwnerViewModel = hiltViewModel(),
+                // clientViewModel: ClientViewModel = hiltViewModel()
+) {
 
     var bipmap  : Uri
     Scaffold(
@@ -173,6 +181,9 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
         }
     )
 
+    //////////////VARIABLE DE L'IMAGE PAR DEFAUT/////////////////
+    val defaultImage = painterResource(id = R.drawable.person)
+
     Column(
         modifier = Modifier
             .padding(vertical = 20.dp),
@@ -184,20 +195,28 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
             Box(
                 contentAlignment = Alignment.BottomEnd
             ){
-                selectedImageUri.value?.let { imageUri ->
-                    val contentResolver: ContentResolver = context.contentResolver
-                    val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                    selectedImageUri.value?.let { imageUri ->
+                        val contentResolver: ContentResolver = context.contentResolver
+                        val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
 
-                    Image(
-                        bitmap = bitmapImg.asImageBitmap(),
+                        Image(
+                            bitmap = bitmapImg.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(130.dp)
+                                .border(1.dp, color = Violet, CircleShape),
+                            contentScale = ContentScale.FillHeight
+                        )
+                    } ?: Image(
+                        painter = defaultImage,
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(130.dp)
-                            .border(1.dp, color = Violet, CircleShape),
+                            .border(1.dp, color = primaryColor, CircleShape),
                         contentScale = ContentScale.FillHeight
                     )
-                }
 
                 ///////////icone de modification de l'image////////////
                 IconButton(onClick = {

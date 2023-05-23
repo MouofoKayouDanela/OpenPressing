@@ -4,7 +4,8 @@
   "info": {
     "singularName": "quarter",
     "pluralName": "quarters",
-    "displayName": "Quarter"
+    "displayName": "Quarter",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -31,6 +32,21 @@
       "relation": "oneToMany",
       "target": "api::order.order",
       "mappedBy": "delivery_address"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "quarter"
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

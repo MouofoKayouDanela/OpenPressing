@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.ConsulterBesoin.road){
+                NavHost(navController = navController, startDestination = Screen.Splash.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
