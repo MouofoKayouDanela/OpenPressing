@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
                     composable(Screen.Home.road){
-                        ScaffoldSample()
+                        ScaffoldSample(navController)
 
                         //pressingModel.getAll()
 

@@ -3,6 +3,7 @@ package com.android.openpressing.client_module.presentation
 
 
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -111,8 +112,12 @@ listOf(
 
 
 @Composable
-fun ScaffoldSample() {
+fun ScaffoldSample(
+    navController: NavHostController,
+    viewModel : PressingViewModel = hiltViewModel()
+) {
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+    viewModel.getAll()
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
@@ -121,10 +126,11 @@ fun ScaffoldSample() {
         content = {
                 innerPadding->  CardContent(
             innerPadding = innerPadding,
-            //navController
+            state=viewModel.availablePressing.collectAsState().value,
+            navController
         )
                   },
-        bottomBar = { BottomBar()}
+        bottomBar = { BottomBar(navController)}
     )
 }
 
@@ -241,7 +247,7 @@ fun SectionBleue(){
 @Composable
 fun CardWithContent(
     pressing: PressingData,
-    //navController: NavHostController,
+    navController: NavHostController,
     viewModel : AgencyViewModel = hiltViewModel(),
 
 ) { //navController: NavHostController
@@ -253,7 +259,7 @@ fun CardWithContent(
         modifier = Modifier
             .padding(15.dp)
             .clickable {
-                //navController.navigate(Screen.ListOffer.road)
+                navController.navigate(Screen.ListOffer.road)
             },
 
         ) {
@@ -262,28 +268,26 @@ fun CardWithContent(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 5.dp),
         ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-
-                Image(
-                    rememberAsyncImagePainter(
-                        model = BASE_URL + pressing.attributes.logo.url
-                    ) ,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(
-                            shape = RoundedCornerShape(
-                                topEnd = 10.dp,
-                                topStart = 10.dp
-                            )
+            Image(
+                rememberAsyncImagePainter(
+                    model = BASE_URL + pressing.attributes.logo
+                        .data
+                        .attributes
+                        .url
+                ) ,
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(
+                            topEnd = 10.dp,
+                            topStart = 10.dp
                         )
-                        .fillMaxWidth()
-                        .height(200.dp),
+                    )
+                    .fillMaxWidth()
+                    .height(200.dp),
 
-                    contentScale = ContentScale.Crop
-                )
-            }
+                contentScale = ContentScale.Crop
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -319,11 +323,7 @@ fun CardWithContent(
                             tint = Orange
                         )
                         val quarterId = 2
-                        val AgencyId = pressing.attributes.agencies!!.data.find {
-                            it.attributes.quarter.data.id == quarterId
-                        }!!
                         var agencies by remember(quarterId) { mutableStateOf<MutableList<AgencyData>?>(null) }
-
                         LaunchedEffect(key1 = quarterId) {
                             viewModel.findAll()
                                 .flowOn(Dispatchers.IO)
@@ -332,7 +332,12 @@ fun CardWithContent(
                                 }
                         }
                         if(agencies != null ){
-                            val quarter = agencies!!.find { it.attributes.quarter.data.id == quarterId }?.attributes?.quarter
+                            val quarter = agencies!!.find { oneOfAllAgencies ->
+                                oneOfAllAgencies.attributes.quarter.data.id == quarterId &&
+                                        pressing.attributes.agencies!!.data.any{ pressingAgence ->
+                                            pressingAgence.id == oneOfAllAgencies.id
+                                        }
+                            }?.attributes?.quarter
 
                             if(quarter!= null){
                                 Text(
@@ -421,11 +426,10 @@ fun CardWithContent(
     @Composable
     fun CardContent(
         innerPadding: PaddingValues,
-       viewModel : PressingViewModel = hiltViewModel()
-        //navController: NavHostController
+        state : PressingState,
+        navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
-        val state = viewModel.availablePressing.collectAsState().value
         LazyColumn(contentPadding = innerPadding) {
             stickyHeader {
                 SearchField(onSearch = { searchText ->
@@ -434,10 +438,9 @@ fun CardWithContent(
                 })
 
             }
-            viewModel.getAll()
             if(state is PressingState.Success.PressingsSuccess){
                 items (state.data) { pressing ->
-                    CardWithContent(pressing)
+                    CardWithContent(pressing,navController)
                 }
             }
         }
@@ -445,7 +448,7 @@ fun CardWithContent(
 
     //////////////BOTTOM BARRE/////////////////
     @Composable
-    fun BottomBar() {
+    fun BottomBar(navController: NavHostController) {
         val selectedIndex = remember { mutableStateOf(0) }
         BottomNavigation(
             elevation = 2.dp,
@@ -458,7 +461,7 @@ fun CardWithContent(
                 label = { Text(text = "Laundry") },
                 selected = (selectedIndex.value == 0),
                 onClick = {
-                    //navController.navigate(Screen.Home.road)
+                   navController.navigate(Screen.Home.road)
                     selectedIndex.value = 0
                 })
             BottomNavigationItem(icon = {
@@ -467,7 +470,7 @@ fun CardWithContent(
                 label = { Text(text = "Order") },
                 selected = (selectedIndex.value == 1),
                 onClick = {
-                   // navController.navigate(Screen.ListCommande.road)
+                    navController.navigate(Screen.ListCommande.road)
                     selectedIndex.value = 1
                 })
 
@@ -477,7 +480,7 @@ fun CardWithContent(
                 label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
-                    //navController.navigate(Screen.AddService.road)
+                    navController.navigate(Screen.AddService.road)
                     selectedIndex.value = 2
                 })
 
@@ -487,16 +490,16 @@ fun CardWithContent(
                 label = { Text(text = "Profile") },
                 selected = (selectedIndex.value == 3),
                 onClick = {
-                    //navController.navigate(Screen.Profile.road)
+                    navController.navigate(Screen.Profile.road)
                     selectedIndex.value = 3
                 })
         }
     }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
    @Composable
     fun Preview() {
         OpenPressingTheme {
             ScaffoldSample()
         }
-    }
+    }*/

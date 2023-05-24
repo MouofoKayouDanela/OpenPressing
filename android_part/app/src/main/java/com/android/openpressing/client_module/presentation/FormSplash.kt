@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
+import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
@@ -89,7 +90,7 @@ fun IntroScreen(navController: NavHostController) {
                         text = list[currentPage].description,
                         style = MaterialTheme.typography.body1,
                         color = Black,
-                        fontWeight=Bold,
+                        fontWeight = Bold,
                         modifier = Modifier
                             .padding(horizontal = 12.dp)
                             .fillMaxWidth(.6f)
@@ -122,23 +123,25 @@ fun IntroScreen(navController: NavHostController) {
             }
             if (isPrevVisible.value && isNextVisible.value) {
                 Box(modifier = Modifier.fillMaxWidth(.2f))
-            }
 
-            if (isNextVisible.value) {
-                Button(onClick = {
-                    navController.navigate(Screen.Login.road)
-                    scope.launch{
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+
+                if (isNextVisible.value) {
+                    Button(onClick = {
+                        navController.navigate(Screen.Login.road)
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    }) {
+                        Text(text = "Next")
                     }
-                }) {
-                    Text(text = "Next")
                 }
+
             }
 
         }
-
     }
 }
+
 
 
 /*

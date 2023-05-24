@@ -7,12 +7,14 @@ import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.repositories.agency.AgencyRepository
 import com.android.openpressing.viewmodels.agency.state.AgencyState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@HiltViewModel
 class AgencyViewModel @Inject constructor
     (
     private val agencyRepository : AgencyRepository
