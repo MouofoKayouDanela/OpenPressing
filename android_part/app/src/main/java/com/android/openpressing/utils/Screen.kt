@@ -27,4 +27,6 @@ sealed class Screen(val road: String){
     object ConsulterBesoin : Screen("/ConsulterBesoin")
     object DetailBesoin : Screen("/DetailBesoin")
 
+    object AddReq : Screen("/AddReq")
+
 }

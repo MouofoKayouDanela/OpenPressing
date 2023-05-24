@@ -19,12 +19,8 @@ import com.android.openpressing.client_module.presentation.besoin.Detal
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.client.OfferScreen
+import com.android.openpressing.client_module.presentation.module.*
 import com.android.openpressing.ui.theme.OpenPressingTheme
-import com.android.openpressing.client_module.presentation.module.FinitionScreen
-import com.android.openpressing.client_module.presentation.module.ForgotPasswordScreen
-import com.android.openpressing.client_module.presentation.module.LoginScreen
-import com.android.openpressing.client_module.presentation.module.RegisterScreen
-import com.android.openpressing.client_module.presentation.module.ResetPasswordScreen
 import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
@@ -45,8 +41,8 @@ class MainActivity : ComponentActivity() {
             //val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.ConsulterBesoin.road){
-                    composable(Screen.Login.road){ LoginScreen(navController) }
+                NavHost(navController = navController, startDestination = Screen.Login.road){
+                    composable(Screen.Login.road){ LoginnScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
@@ -85,6 +81,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.ConsulterBesoin.road){ MyNeed()}
                     composable(Screen.DetailBesoin.road){ Detal()}
+
                 }
             }
         }

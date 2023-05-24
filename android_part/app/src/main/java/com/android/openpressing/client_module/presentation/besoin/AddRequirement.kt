@@ -1,5 +1,7 @@
 package com.android.openpressing.client_module.presentation.besoin
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,17 +34,23 @@ import com.android.openpressing.client_module.presentation.besoin.component.Choo
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Laundry
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
-import com.android.openpressing.ui.theme.Orange
-import com.android.openpressing.ui.theme.Purple200
-import com.android.openpressing.ui.theme.Purple500
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.ui.theme.blanc
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavHostController
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 
-@Preview
+
 @Composable
-fun AddRequirementScreen(){
+fun AddRequirementScreen(navController: NavHostController){
 
     var laundries by remember {
         mutableStateOf( listOf(
@@ -82,7 +91,36 @@ fun AddRequirementScreen(){
                     )
 
 
-    }
+    },
+            bottomBar ={
+              Row(modifier = Modifier
+                  .background(color = Color.White)
+                  .padding(16.dp))  {
+                    FloatingActionButton(
+                        onClick = {
+                           navController.navigate( Screen.ConsulterBesoin.road)
+                        },
+                        backgroundColor = Purple,
+                        contentColor = Color.White,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .fillMaxWidth()
+
+                    ) {
+                        Text(
+                            text = "Add requirement",
+                            style = MaterialTheme.typography.body1.copy(
+                                fontSize = 22.sp
+                            )
+                        )
+                    }
+                }
+
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            backgroundColor = Color.White
+
+
         )
 
 
@@ -106,7 +144,7 @@ fun AppBar() {
                     bottomStart = 40.dp
                 )
             )
-            .background(color = Purple500)
+            .background(color = Purple)
     ) {
         Column {
         Row(
@@ -120,7 +158,9 @@ fun AppBar() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick ={ }, modifier = Modifier.padding(start = 8.dp)) {
+                IconButton(onClick ={ }, modifier = Modifier
+                    .padding(start = 8.dp)
+                    .weight(0.2f)) {
 
                     Icon(
                         Icons.Rounded.ArrowBackIos,
@@ -130,7 +170,14 @@ fun AppBar() {
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text(text ="Besoin",
-                modifier =  Modifier    .fillMaxWidth())
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.8f),
+                    color = Color.White,
+
+
+                )
+
             }
         }
         }
@@ -150,12 +197,21 @@ fun ContentCardlist(
 ) {
     var showAddDialog1 by remember { mutableStateOf(false) }
     var showAddDialog2 by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     var expandedState   by remember {mutableStateOf(false    ) }
+    val context = LocalContext.current
+    var value by remember {
+        mutableStateOf(0)
+    }
+    var defaultPrice by remember { mutableStateOf(0) }
+    var texte by remember { mutableStateOf("") }
 
-    LazyColumn(contentPadding = innerPadding) {
+    LazyColumn(contentPadding = innerPadding, modifier = Modifier.background(color = Color.White)) {
 
-        item { Spacer(modifier = Modifier.height(5.dp)) }
+        item { Spacer(modifier = Modifier
+            .height(5.dp)
+            .background(color = Color.White)) }
 
 
         stickyHeader {
@@ -166,7 +222,8 @@ fun ContentCardlist(
                         vertical = 16.dp
                     )
                     .clickable { showAddDialog1 = !showAddDialog1 }
-                    .background(    color = Color.White
+                    .background(
+                        color = Color.White
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -228,16 +285,40 @@ fun ContentCardlist(
                         delayMillis = 300,
                         easing = LinearOutSlowInEasing
                     )
-                ) ,
+                )
+                .border(
+                    width = 1.dp,
+                    color = Orange,
+                    shape = RoundedCornerShape(
+                        topEnd = 10.dp,
+                        topStart = 10.dp,
+                        bottomEnd = 10.dp,
+                        bottomStart = 10.dp
+                    )
+                )
+                .background(color = secondaryPrimeColor)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onDoubleTap = {
+                            Toast
+                                .makeText(context, "xcjsjej gj", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    )
+                }
+
+                ,
+
                 onClick = {
                     expandedState = !expandedState
 
                 },
-                elevation =3.dp
+                elevation =10.dp
 
             ) {
                 Column(modifier =   Modifier.fillMaxWidth(),
                     verticalArrangement =Arrangement.SpaceBetween) {
+
 
                     Row(
                         Modifier
@@ -249,23 +330,92 @@ fun ContentCardlist(
                                 expandedState = !expandedState
                             },
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.spacedBy(50.dp)
                     ) {
-                        data.icon?.let {
-                            Icon(
-                                it ,
-                                contentDescription = null ,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .weight(0.2f)
-                            )
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.weight(0.6f)
+
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween) {
+                                data.icon?.let {
+                                    Icon(
+                                        it,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(48.dp)
+                                    )
+                                }
+
+
+                                Text(
+                                    text = data.name,
+
+                                )
+
+                            }
+                        }
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.weight(0.4f).padding(end=8.dp)
+
+
+                        ) {
+                            Row (verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(20.dp)
+
+                                    ){
+
+                                IconButton(
+                                    onClick = { value++ },
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .background(color = Orange)
+                                        .height(20.dp)
+                                        .width(20.dp)
+                                ) {
+
+                                    Image(
+                                        painter = painterResource(id = R.drawable.plus),
+                                        contentDescription = "plus"
+                                    )
+
+
+                                }
+                                Text(
+                                    "$value",
+                                    fontWeight = FontWeight.Bold,
+
+                                )
+                                IconButton(
+                                    onClick = {
+                                        if (value > 0) {
+                                            value--
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .background(color = Orange)
+                                        .width(20.dp)
+                                        .height(20.dp)
+
+                                ) {
+
+                                    Image(
+                                        painter = painterResource(id = R.drawable.minus),
+                                        contentDescription = "minus"
+                                    )
+
+
+                                }
+
+                            }
                         }
 
-                        Text(
-                            text = data.name ,
-                            modifier = Modifier
-                                .weight(0.8f)
-                        )
+
 
                 }
                     if (expandedState ) {
@@ -289,6 +439,7 @@ fun ContentCardlist(
                                 modifier = Modifier
                                     .size(48.dp)
                                     .weight(0.2f)
+
                             )
 
                             Text(
@@ -352,6 +503,7 @@ fun ContentCardlist(
                                     modifier = Modifier
                                         .weight(0.8f)
                                 )
+
                                 IconButton(
                                     onClick = {
 
@@ -378,6 +530,83 @@ fun ContentCardlist(
 
 
                             }
+                            Row(
+                                modifier = Modifier.padding(5.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "Prix unitaire (FCFA):",
+                                    fontWeight = FontWeight.W300,
+                                    modifier = Modifier
+                                        .padding(start = 8.dp, end = 8.dp)
+                                        .clickable {
+
+                                            showDialog = !showDialog
+                                        }
+                                )
+                                    if (!showDialog) {
+                                        AlertDialog(
+
+                                            onDismissRequest = { showDialog= !showDialog},
+                                            title = { Text("Entrer le prix unitaire de votre linge") },
+                                            text = {
+                                                TextField(
+                                                    value = texte,
+                                                    onValueChange = { texte=it},
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(),
+                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                                    singleLine = true,
+                                                    placeholder = {Text(text = "000000")},
+                                                )
+                                            },
+
+                                            confirmButton = {
+                                                Button(
+                                                    onClick = {
+                                                        defaultPrice = texte.toInt()
+                                                        showDialog=!showDialog
+                                                    },
+                                                    modifier = Modifier.padding(end = 15.dp)
+
+
+                                                ) {
+                                                    Text("Confirmer")
+                                                }
+                                            },
+                                            dismissButton = {
+                                                Button(
+                                                    modifier = Modifier.padding(end = 55.dp),
+                                                    onClick = {
+                                                        showDialog=!showDialog
+                                                    }
+                                                ) {
+                                                    Text("Annuler")
+                                                }
+                                            }
+                                        )
+                                    }
+                                val priceFormat = DecimalFormat("#,##0", DecimalFormatSymbols.getInstance())
+                                val formattedPrice = priceFormat.format(defaultPrice)
+
+                                Text(
+                                    formattedPrice,
+                                    fontWeight = FontWeight.W300,
+                                    modifier = Modifier
+                                        .padding(start = 8.dp, end = 8.dp)
+                                        .clickable {
+
+                                            showDialog = !showDialog
+                                        }
+                                )
+
+
+
+
+                            }
+
+
 
 
                         }
@@ -402,6 +631,7 @@ fun ContentCardlist(
 }
     }
 
+@SuppressLint("SuspiciousIndentation")
 fun fetchDatas1(
 
             laundries: List<Laundry>

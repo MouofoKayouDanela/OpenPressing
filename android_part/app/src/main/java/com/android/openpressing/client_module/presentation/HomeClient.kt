@@ -496,10 +496,10 @@ private fun fetchPressings(
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Chat, "")
             },
-                label = { Text(text = "Manager") },
+                label = { Text(text = "Requirement") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
-                    navController.navigate(Screen.AddService.road)
+                    navController.navigate(Screen.AddBesoin.road)
                     selectedIndex.value = 2
                 })
 
