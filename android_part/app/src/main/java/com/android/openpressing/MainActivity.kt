@@ -15,6 +15,8 @@ import androidx.navigation.navArgument
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
+import com.android.openpressing.client_module.presentation.besoin.Detal
+import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.client.OfferScreen
 import com.android.openpressing.ui.theme.OpenPressingTheme
@@ -40,14 +42,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
+            //val pressingModel : PressingViewModel = viewModel()
+
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Splash.road){
+                NavHost(navController = navController, startDestination = Screen.Home.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
-                    composable(Screen.Home.road){ ScaffoldSample(navController) }
+                    composable(Screen.Home.road){
+                        ScaffoldSample(navController)
+
+                        //pressingModel.getAll()
+
+                       /* CardWithContent(
+                        pressingState=pressingModel.pressingState.collectAsState().value
+                        )*/
+
+                    }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
@@ -70,6 +83,8 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                         )
                     }
+                    composable(Screen.ConsulterBesoin.road){ MyNeed()}
+                    composable(Screen.DetailBesoin.road){ Detal()}
                 }
             }
         }

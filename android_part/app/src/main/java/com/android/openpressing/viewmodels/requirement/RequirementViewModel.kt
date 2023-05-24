@@ -4,6 +4,7 @@ import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.requirement.Requirement
+import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.repositories.requirement.RequirementRepository
 import com.android.openpressing.repositories.services.ServiceRepository
@@ -43,6 +44,10 @@ import javax.inject.Inject
             }
 
         }
+
+        fun findAll() : Flow<MutableList<RequirementData>> = flow{
+            emit(requirementRepository.getAll())
+        }.flowOn(Dispatchers.IO)
 
         fun findById(id: Int) {
             _availablerequirement.value = RequirementState.Loading

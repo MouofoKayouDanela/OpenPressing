@@ -41,6 +41,10 @@ import com.android.openpressing.viewmodels.owner.OwnerViewModel
 import com.android.openpressing.viewmodels.owner.state.OwnerState
 import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -217,6 +221,14 @@ fun LoginScreen(
 
                                 }
 
+                            }
+                            userViewModel.getAll()
+                            if (userState is UserState.Success.UsersSuccess) {
+                                val user = userState.data.find {
+                                    it.email == email && it.password == password
+                                }
+                                clientViewModel.getAll()
+                                ownerViewModel.getAll()
                             }
                             false
                             }
