@@ -1,5 +1,5 @@
 package com.android.openpressing.data.models.utils.images
 
-data class ImageInfos(
-    var data: MutableList<ImageInfo>
+data class ImageInformation(
+    val data : ImageInfoData
 )
