@@ -362,9 +362,10 @@ fun CardWithContent(
     /////////BARRE DE RECHERCHE//////////////////
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun SearchField(onSearch: (String) -> Unit) {
-
-        var searchQuery by remember { mutableStateOf("") }
+    fun SearchField(
+        searchQuery: String,
+        onSearchQuery: (String) -> Unit
+    ) {
 
         Row(
             modifier = Modifier
@@ -374,7 +375,7 @@ fun CardWithContent(
         ) {
             TextField(
                 value = searchQuery,
-                onValueChange = { searchQuery = it },
+                onValueChange = { onSearchQuery(it) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
@@ -387,16 +388,17 @@ fun CardWithContent(
                 placeholder = { Text(text = "Search your laundry") },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
                     cursorColor = Color.Black,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = black
+                    textColor = black,
+                    placeholderColor = Color.LightGray,
+                    leadingIconColor = Color.LightGray
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search
                 ),
-                keyboardActions = KeyboardActions(onSearch = { onSearch(searchQuery) })
+                keyboardActions = KeyboardActions(onSearch = { onSearchQuery(searchQuery) })
             )
 
             //////icone de filtre/////
@@ -432,19 +434,36 @@ fun CardWithContent(
         var searchQuery by remember { mutableStateOf("") }
         LazyColumn(contentPadding = innerPadding) {
             stickyHeader {
-                SearchField(onSearch = { searchText ->
+                SearchField(
+                    searchQuery = searchQuery,
+                    onSearchQuery = { searchText ->
                     // Traiter la recherche ici
                     searchQuery = searchText
-                })
+                    }
+                )
 
             }
             if(state is PressingState.Success.PressingsSuccess){
-                items (state.data) { pressing ->
+                items (fetchPressings(
+                    searchQuery = searchQuery,
+                    pressings =state.data
+                )) { pressing ->
                     CardWithContent(pressing,navController)
                 }
             }
         }
     }
+
+private fun fetchPressings(
+    searchQuery:String,
+    pressings : MutableList<PressingData>
+): MutableList<PressingData> {
+
+    return if(searchQuery.isEmpty()) pressings else pressings.filter {
+        it.attributes.name.lowercase().contains(searchQuery.lowercase())
+    }.toMutableList()
+
+}
 
     //////////////BOTTOM BARRE/////////////////
     @Composable
