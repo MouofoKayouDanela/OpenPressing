@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
             //val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Home.road){
+                NavHost(navController = navController, startDestination = Screen.ConsulterBesoin.road){
                     composable(Screen.Login.road){ LoginScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}

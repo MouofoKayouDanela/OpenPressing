@@ -66,14 +66,14 @@ fun Detal(
 
 
     LaunchedEffect(key1 = userID){
-        clientViewModel.getAll()
+        clientViewModel.findAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
     }
 
     if (Laundries.value != null){
 
-        Laundry.value = Laundries.value!!.find { it.attributes.requirements.data.id == userID }
+        //Laundry.value = Laundries.value!!.find { it.attributes.requirement_details.data.i== userID }
 
         LaunchedEffect(key1 = rdkey) {
             rdViewModel.findAll()

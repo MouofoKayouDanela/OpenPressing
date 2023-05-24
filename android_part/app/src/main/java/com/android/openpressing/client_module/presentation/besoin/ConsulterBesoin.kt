@@ -58,7 +58,7 @@ fun MyNeed(
     val requirements = remember(rdkey) { mutableStateOf<MutableList<RequirementData>?>(null) }
 
     LaunchedEffect(key1 = userID){
-        clientViewModel.getAll()
+        clientViewModel.findAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
     }
@@ -73,8 +73,6 @@ fun MyNeed(
                 .collect { requirements.value = it }
         }
     }
-
-
 
     Scaffold(
         topBar = {
