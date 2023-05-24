@@ -65,15 +65,15 @@ fun Detal(
 
 
 
-    LaunchedEffect(key1 = userID){
+    /*LaunchedEffect(key1 = userID){
         clientViewModel.getAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
-    }
+    }*/
 
     if (Laundries.value != null){
 
-        Laundry.value = Laundries.value!!.find { it.attributes.requirements.data.id == userID }
+        //Laundry.value = Laundries.value!!.find { it.attributes.requirements.data.id == userID }
 
         LaunchedEffect(key1 = rdkey) {
             rdViewModel.findAll()

@@ -684,7 +684,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
         verticalAlignment = Alignment.Bottom
     ){
         TextButton(
-            onClick = { navController.navigate(Screen.Login.road)},
+            onClick = { /*navController.navigate(Screen.Login.road)*/},
             shape = CircleShape
         ) {
             Icon(

@@ -9,8 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.android.openpressing.MainActivity
 import com.android.openpressing.R
-import com.android.openpressing.MainActivity
-import com.android.openpressing.R
+
 
 
 class CreateNotification (

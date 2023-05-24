@@ -57,11 +57,11 @@ fun MyNeed(
     val rdkey = "allrdkey"
     val requirements = remember(rdkey) { mutableStateOf<MutableList<RequirementData>?>(null) }
 
-    LaunchedEffect(key1 = userID){
+    /*LaunchedEffect(key1 = userID){
         clientViewModel.getAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
-    }
+    }*/
 
     if (clients.value != null){
 
