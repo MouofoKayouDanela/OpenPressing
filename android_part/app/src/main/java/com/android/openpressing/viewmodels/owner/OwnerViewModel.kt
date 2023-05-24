@@ -2,7 +2,9 @@ package com.android.openpressing.viewmodels.owner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.owner.Owner
+import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.repositories.owner.OwnerRepository
 import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.owner.state.OwnerState
@@ -40,4 +42,8 @@ class OwnerViewModel @Inject constructor(
             }
         }
     }
+
+    fun fineAll():Flow<MutableList<OwnerData>> = flow {
+        emit(ownerRepository.getAll())
+    }. flowOn(Dispatchers.IO)
 }

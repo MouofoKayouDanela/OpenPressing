@@ -29,6 +29,8 @@ import androidx.navigation.NavHostController
 
 import com.android.openpressing.R
 import com.android.openpressing.data.models.client.Client
+import com.android.openpressing.data.models.client.ClientData
+import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 
 import com.android.openpressing.ui.component.AppTextField
@@ -41,6 +43,9 @@ import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -142,9 +147,45 @@ fun LoginScreen(
                     Text("Forgot Password ?")
                 }
 
-                val userState = userViewModel.userState.collectAsState().value
-                val clientState = clientViewModel.clientState.collectAsState().value
-                val ownerState = ownerViewModel.ownerState.collectAsState().value
+
+                ////////////Variable pour la recuperation du user////////////////
+                val allUserKey = "AllUserKey"
+                val users = remember(key1 = allUserKey) {
+                    mutableStateOf<List<User>?>(null)
+                }
+                LaunchedEffect(key1 = allUserKey){
+                    userViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            users.value = it
+                        }
+                }
+
+                ////////////Variable pour la recuperation du client////////////////
+                val allClientKey = "AllClientKey"
+                val clients = remember(key1 = allClientKey) {
+                    mutableStateOf<List<ClientData>?>(null)
+                }
+                LaunchedEffect(key1 = allClientKey){
+                    clientViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            clients.value = it
+                        }
+                }
+
+                ////////////Variable pour la recuperation du proprietaire////////////////
+                val allOwnerKey = "AllOwnerKey"
+                val owners = remember(key1 = allOwnerKey) {
+                    mutableStateOf<List<OwnerData>?>(null)
+                }
+                LaunchedEffect(key1 = allOwnerKey){
+                    ownerViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            owners.value = it
+                        }
+                }
 
                 Button(
                     onClick = {
@@ -154,23 +195,22 @@ fun LoginScreen(
                             task -> showMessage = if(task.isSuccessful){
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
 
-                            userViewModel.getAll()
-                            if (userState is UserState.Success.UsersSuccess) {
-                                val user = userState.data.find {
+                            if (users.value != null) {
+                                val user = users.value!!.find {
                                     it.email == email
                                 }
                                 if(user != null){
-                                    clientViewModel.getAll()
-                                    ownerViewModel.getAll()
                                     if(
-                                        clientState is ClientState.Success.ClientsSuccess
+                                        clients.value != null
                                         &&
-                                        ownerState is OwnerState.Success.OwnersSuccess
+                                        owners.value != null
                                     ){
-                                        if (clientState.data.any{ it.attributes.user.data.id == user.id }){
+                                        Log.i("", "${clients.value}")
+                                        Log.i("", "${owners.value}")
+                                        if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
                                             navController.navigate(Screen.Home.road)
                                         }
-                                        else if(ownerState.data.any{it.attributes.user.data.id == user.id}){
+                                        else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
                                             navController.navigate(Screen.ClientRequirement.road)
                                         }
                                     }
