@@ -79,7 +79,7 @@ fun AddRequirementScreen(navController: NavHostController){
 
         Scaffold(
             topBar = {
-               AppBar()
+               AppBar(navController)
             },
             content = { innerPadding ->
                 ContentCardlist(
@@ -89,8 +89,6 @@ fun AddRequirementScreen(navController: NavHostController){
                     updateLaundryData = { laundries = it },
                     updateServiceData = { services = it }
                     )
-
-
     },
             bottomBar ={
               Row(modifier = Modifier
@@ -100,7 +98,7 @@ fun AddRequirementScreen(navController: NavHostController){
                         onClick = {
                            navController.navigate( Screen.ConsulterBesoin.road)
                         },
-                        backgroundColor = Purple,
+                        backgroundColor = Purple500,
                         contentColor = Color.White,
                         modifier = Modifier
                             .clip(CircleShape)
@@ -131,7 +129,7 @@ fun AddRequirementScreen(navController: NavHostController){
 }
 
 @Composable
-fun AppBar() {
+fun AppBar(navController: NavHostController,) {
 
     Box(
         modifier = Modifier
@@ -144,7 +142,7 @@ fun AppBar() {
                     bottomStart = 40.dp
                 )
             )
-            .background(color = Purple)
+            .background(color = Purple500)
     ) {
         Column {
         Row(
@@ -158,7 +156,9 @@ fun AppBar() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick ={ }, modifier = Modifier
+                IconButton(onClick ={
+                     navController.navigate(Screen.Home.road)
+                }, modifier = Modifier
                     .padding(start = 8.dp)
                     .weight(0.2f)) {
 
@@ -305,10 +305,7 @@ fun ContentCardlist(
                                 .show()
                         }
                     )
-                }
-
-                ,
-
+                } ,
                 onClick = {
                     expandedState = !expandedState
 
@@ -318,8 +315,6 @@ fun ContentCardlist(
             ) {
                 Column(modifier =   Modifier.fillMaxWidth(),
                     verticalArrangement =Arrangement.SpaceBetween) {
-
-
                     Row(
                         Modifier
                             .padding(
@@ -348,8 +343,6 @@ fun ContentCardlist(
                                             .size(48.dp)
                                     )
                                 }
-
-
                                 Text(
                                     text = data.name,
 
@@ -415,8 +408,6 @@ fun ContentCardlist(
                             }
                         }
 
-
-
                 }
                     if (expandedState ) {
 
@@ -430,8 +421,6 @@ fun ContentCardlist(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-
-
                             Icon(
                                 Icons.Rounded.Add,
                                 contentDescription = null,
@@ -439,9 +428,7 @@ fun ContentCardlist(
                                 modifier = Modifier
                                     .size(48.dp)
                                     .weight(0.2f)
-
                             )
-
                             Text(
                                 text = "Add services",
                                 color = Purple200,
@@ -451,8 +438,6 @@ fun ContentCardlist(
                                 modifier = Modifier
                                     .weight(0.8f)
                             )
-
-
                         }
                         if (showAddDialog2) {
 
@@ -503,7 +488,6 @@ fun ContentCardlist(
                                     modifier = Modifier
                                         .weight(0.8f)
                                 )
-
                                 IconButton(
                                     onClick = {
 
@@ -527,7 +511,6 @@ fun ContentCardlist(
                                         tint = Purple200
                                     )
                                 }
-
 
                             }
                             Row(
@@ -601,52 +584,25 @@ fun ContentCardlist(
                                         }
                                 )
 
-
-
-
                             }
-
-
-
 
                         }
                     }
 
-
-
-
-
-
-
-
-
-
-
                 }
         }
 
-
     }
-
 }
-    }
+}
 
 @SuppressLint("SuspiciousIndentation")
 fun fetchDatas1(
-
             laundries: List<Laundry>
-
         ) : List<Data> {
-
             val datas : MutableList<Data> = mutableListOf()
-
-
-
                     laundries.forEach {
                         datas.add(Data(it.name , it.icon))
-
-
-
                     }
             return datas.toList()
         }
@@ -654,17 +610,10 @@ fun fetchDatas1(
 fun fetchDatas2(
    services:List<Service>
 ) : List<Data> {
-
     val datas : MutableList<Data> = mutableListOf()
-
-
-
    services.forEach {
         datas.add(Data(it.name   , it.icon     ))
-
-
-
-    }
+   }
     return datas.toList()
 }
 

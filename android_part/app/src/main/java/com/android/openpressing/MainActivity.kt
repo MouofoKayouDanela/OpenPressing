@@ -49,13 +49,6 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
                     composable(Screen.Home.road){
                         ScaffoldSample(navController)
-
-                        //pressingModel.getAll()
-
-                       /* CardWithContent(
-                        pressingState=pressingModel.pressingState.collectAsState().value
-                        )*/
-
                     }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
                     composable(Screen.EditScreen.road){ EditerProfil(navController) }
@@ -79,7 +72,7 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                         )
                     }
-                    composable(Screen.ConsulterBesoin.road){ MyNeed()}
+                    composable(Screen.ConsulterBesoin.road){ MyNeed(navController)}
                     composable(Screen.DetailBesoin.road){ Detal()}
 
                 }

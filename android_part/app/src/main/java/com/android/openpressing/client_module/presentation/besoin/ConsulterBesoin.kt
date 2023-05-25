@@ -46,6 +46,8 @@ import java.util.Date
 
 @Composable
 fun MyNeed(
+
+    navController: NavHostController,
     rdViewModel: RequirementViewModel = hiltViewModel(),
     clientViewModel: ClientViewModel= hiltViewModel()
 ){
@@ -109,7 +111,7 @@ fun MyNeed(
 
 
         },
-        bottomBar= {BottomBar()}
+        bottomBar= {BottomBar(navController)}
     )}
 
 
@@ -133,7 +135,7 @@ fun stock(contenu: List<RequirementData>,
 
 }
 @Composable
-fun BottomBar() {
+fun BottomBar(navController: NavHostController) {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 2.dp,
@@ -146,6 +148,7 @@ fun BottomBar() {
             label = { Text(text = "Laundry") },
             selected = (selectedIndex.value == 0),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.Home.road)
                 selectedIndex.value = 0
             })
         BottomNavigationItem(icon = {
@@ -154,15 +157,17 @@ fun BottomBar() {
             label = { Text(text = "Order") },
             selected = (selectedIndex.value == 1),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.ListCommande.road)
                 selectedIndex.value = 1
             })
 
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Chat, "")
         },
-            label = { Text(text = "Chat") },
+            label = { Text(text = "Manager") },
             selected = (selectedIndex.value == 2),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.AddBesoin.road)
                 selectedIndex.value = 2
             })
 
@@ -172,6 +177,7 @@ fun BottomBar() {
             label = { Text(text = "Profile") },
             selected = (selectedIndex.value == 3),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.Profile.road)
                 selectedIndex.value = 3
             })
     }

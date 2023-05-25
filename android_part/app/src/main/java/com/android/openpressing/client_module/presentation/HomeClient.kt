@@ -146,7 +146,7 @@ fun SectionBleue(){
                     bottomStart = 40.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = Purple500)
+            .background(Purple500)
         //shape=RoundedCornerShape(32.dp)
     ) {Column() {
         /////Ligne de l'icone de notification/////
@@ -410,7 +410,7 @@ fun CardWithContent(
                 Icon(
                     imageVector = Icons.Default.Sort,
                     contentDescription = stringResource(R.string.editer),
-                    tint = Purple,
+                    tint = Purple500,
                     modifier = Modifier
                         .size(height = 30.dp, width = 40.dp)
                         .background(Color.White)
@@ -496,7 +496,7 @@ private fun fetchPressings(
             BottomNavigationItem(icon = {
                 Icon(imageVector = Icons.Default.Chat, "")
             },
-                label = { Text(text = "Requirement") },
+                label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
                     navController.navigate(Screen.AddBesoin.road)

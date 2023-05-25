@@ -179,7 +179,7 @@ fun ListeSoustitre(navController: NavHostController) {
             Icon(
                 Icons.Rounded.List,
                 contentDescription = stringResource(R.string.liste),
-                tint = Purple
+                tint = Purple500
             )
             Spacer(Modifier.width(10.dp))
             Column(

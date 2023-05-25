@@ -72,7 +72,7 @@ fun EditerProfil(navController: NavHostController,
             ) {
 
                 item {
-                    ListBox(onImageSelected = {imageUri -> bipmap = imageUri})
+                    ListBox( navController,onImageSelected ={imageUri -> bipmap = imageUri})
                 }
             }
         },
@@ -138,7 +138,9 @@ fun FixBare(navController: NavHostController) {
 }
 
 @Composable
-fun ListBox(onImageSelected: (Uri) -> Unit) {
+fun ListBox(navController: NavHostController,
+    onImageSelected: (Uri) -> Unit
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -684,7 +686,9 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
         verticalAlignment = Alignment.Bottom
     ){
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(Screen.Login.road)
+            },
             shape = CircleShape
         ) {
             Icon(

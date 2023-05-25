@@ -117,15 +117,7 @@ fun AppTopBar(agency:agency, scrollState: LazyListState, navController: NavHostC
                         .padding( horizontal = 25.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Image(
-                        painter = agency.pressing.imageVector,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(50.dp)
-                            .border(1.dp, color = Color.White, CircleShape)
 
-                    )
                     //Spacer(Modifier.width(1.dp))
                     //////description du la photo////
                     Column(
@@ -300,39 +292,54 @@ fun Laundryline(offer: offer) {
 
     Row(
         modifier = Modifier
-            .padding(start = 15.dp, end = 15.dp)
+            .padding(start = 8.dp, end = 8.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        //horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
+        Column(
+            modifier=Modifier.weight(0.5f)
+        ){
+            Row( modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+                        ){
 
-        Image(
-            painter = offer.lingee.imageVector,
-            contentDescription = "image du service",
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(30.dp)
-                .padding(start = 5.dp)
-            ,
+                Image(
+                    painter = offer.lingee.imageVector,
+                    contentDescription = "image du service",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(30.dp)
+                        .padding(start = 5.dp)
+                    ,
 
-            )
+                    )
 
+                Text(
+                    text = offer.lingee.nom +"(FCFA)",
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(end = 5.dp)
 
-        Text(
-            text = offer.lingee.nom +"(FCFA)",
-            color = Color.DarkGray,
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(end = 5.dp)
+                )
+            }
+        }
+        Column(modifier=Modifier.weight(0.5f)){
+            Row( modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text =offer.unitPrice.toString() ,
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.width(75.dp)
 
-        )
-
-        Text(
-            text =offer.unitPrice.toString() ,
-            color = Color.DarkGray,
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.width(75.dp)
-
-        )
-
+                )
+            }
+        }
 
 
 

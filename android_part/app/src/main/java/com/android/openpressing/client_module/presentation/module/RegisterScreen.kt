@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ fun RegisterScreen(navController: NavHostController) {
     val focusManager = LocalFocusManager.current
     var nom by remember { mutableStateOf("") }
     var prenom by remember { mutableStateOf("") }
-    var date_naissance by remember { mutableStateOf("") }
+    var Ville by remember { mutableStateOf("") }
     var showDialogNom by remember { mutableStateOf(false) }
     var showDialogPrenom by remember { mutableStateOf(false) }
     var showDialogDate by remember { mutableStateOf(false) }
@@ -84,7 +85,7 @@ fun RegisterScreen(navController: NavHostController) {
                 modifier = Modifier.weight(7f),
             ) {
                 Text(
-                    text = "Sign Up",
+                    text = "",
                     style = MaterialTheme.typography.h4.copy(
                         fontWeight = FontWeight.Bold
                     )
@@ -99,6 +100,7 @@ fun RegisterScreen(navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Person,
                             contentDescription = "Nom",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -119,6 +121,7 @@ fun RegisterScreen(navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Person,
                             contentDescription = "Prenom",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -131,13 +134,14 @@ fun RegisterScreen(navController: NavHostController) {
                 )
                 AppTextField(
                     onValueChange = {
-                        date_naissance = it
+                       Ville = it
                     },
-                    hint = "Date de naissance",
+                    hint = "Ville",
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.Lock,
-                            contentDescription = "date de naissance",
+                            imageVector = Icons.Outlined.Place,
+                            contentDescription = "ville",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -146,7 +150,7 @@ fun RegisterScreen(navController: NavHostController) {
                     keyboardActions = KeyboardActions(
                         onDone = { focusManager.clearFocus() }
                     ),
-                    value = date_naissance,
+                    value = Ville,
 
                 )
                 //Button(
@@ -184,7 +188,7 @@ fun RegisterScreen(navController: NavHostController) {
                             else if (prenom.isEmpty()){
                                 showDialogPrenom=true
                             }
-                            else if(date_naissance.isEmpty()){
+                            else if(Ville.isEmpty()){
                                 showDialogDate=true
                             }
                             else{
@@ -201,7 +205,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogNom=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez entrer votre nom")},
+                            text={Text("Veuillez entrer le nom")},
                             buttons = {
                                 Button(onClick = {showDialogNom=false },
                                     modifier=Modifier.width(80.dp)
@@ -217,7 +221,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogPrenom=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez entrer votre prenom")},
+                            text={Text("Veuillez entrer le prenom")},
                             buttons = {
                                 Button(onClick = {showDialogPrenom=false },
                                     modifier=Modifier.width(80.dp)
@@ -233,7 +237,7 @@ fun RegisterScreen(navController: NavHostController) {
                         }
                         AlertDialog(onDismissRequest = { showDialogDate=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez entrer la date")},
+                            text={Text("Veuillez entrer la ville")},
                             buttons = {
                                 Button(onClick = {showDialogDate=false },
                                     modifier=Modifier.width(80.dp)
