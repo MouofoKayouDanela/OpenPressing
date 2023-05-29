@@ -1,13 +1,24 @@
 package com.android.openpressing.viewmodels.services.state
 
+import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry.LaundryData
+import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
 
 sealed class PressingState{
 
-    object Empty: PromotionState()
-    object  Loading: PromotionState()
-    class  Success(val data: MutableList<PressingData>): PromotionState()
-    class Error(val message: String): PromotionState()
+    object Empty: PressingState()
+    object  Loading: PressingState()
+
+    sealed class Success: PressingState(){
+        class  PressingsSuccess(val data: MutableList<PressingData>): Success()
+
+        class PressingSuccess(val data: Pressing) : Success()
+
+    }
+
+    class Error(val message: String): PressingState()
 }
+
 
 

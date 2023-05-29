@@ -3,6 +3,7 @@ package com.android.openpressing.client_module.presentation
 
 
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,19 +35,40 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
+import com.android.openpressing.data.models.agency.Agency
+import com.android.openpressing.data.models.agency.AgencyData
+import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.pressing.Pressing
+import com.android.openpressing.data.models.pressing.PressingData
+import com.android.openpressing.data.models.quarter.QuarterData
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.agency.AgencyViewModel
+import com.android.openpressing.viewmodels.agency.state.AgencyState
+import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import com.android.openpressing.viewmodels.pressing.PressingViewModel
+import com.android.openpressing.viewmodels.quarter.QuarterViewModel
+import com.android.openpressing.viewmodels.quarter.state.QuarterState
+import com.android.openpressing.viewmodels.services.state.LaundryState
+import com.android.openpressing.viewmodels.services.state.PressingState
+import com.android.openpressing.viewmodels.services.state.RequirementState
+import com.android.openpressing.viewmodels.user.UserViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import com.android.openpressing.client_module.presentation.CardWithContent as CardWithContent
 
-data class pressing(
+
+/*data class pressing(
     val imageVector: Painter,
     val nom:String,
-    val position:String,
-    val nomLivraison:String
+    val position:String
 )
 
 data class user(
@@ -54,55 +76,57 @@ data class user(
     val localisation: String
 )
 
-
-@Composable
-fun ScaffoldSample(navController: NavHostController) {
-    val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
-    Scaffold(
-        scaffoldState = scaffoldState,
-        //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {SectionBleue(navController)},
-        //drawerContent = { Text(text = "Drawer Menu 1") },
-        content = {
-                innerPadding->  CardContent(pressing = listOf(
+listOf(
             pressing(
                 imageVector = painterResource(R.drawable.lavage4),
                 nom = "Elegance Pressing",
-                position= "Bonamoussadi",
-                nomLivraison = "Free Delivery"
+                position= "Bonamoussadi"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage2),
                 nom = "Eco Pressing",
-                position= "Makepe",
-                nomLivraison = "Free Delivery"
+                position= "Makepe"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage1),
                 nom = "Blinding Pressing",
-                position= "Logpom",
-                nomLivraison = "Free Delivery"
+                position= "Logpom"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage3),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
             pressing(
                 imageVector = painterResource(R.drawable.lavage5),
                 nom = "Saka Pressing",
-                position= "Logbessou",
-                nomLivraison = "Free Delivery"
+                position= "Logbessou"
             ),
-        ),
+        )
+*/
+
+
+@Composable
+fun ScaffoldSample(
+    navController: NavHostController,
+    viewModel : PressingViewModel = hiltViewModel()
+) {
+    val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
+    viewModel.getAll()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        //LazyColumn(content = LazyListScope.item()->unit ),
+        topBar = {SectionBleue()},
+        //drawerContent = { Text(text = "Drawer Menu 1") },
+        content = {
+                innerPadding->  CardContent(
             innerPadding = innerPadding,
+            state=viewModel.availablePressing.collectAsState().value,
             navController
         )
                   },
@@ -111,15 +135,13 @@ fun ScaffoldSample(navController: NavHostController) {
 }
 
 @Composable
-fun SectionBleue(navController: NavHostController){
+fun SectionBleue(){
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .size(height = 160.dp, width = 300.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
-                    topStart = 0.dp,
-                    topEnd = 0.dp,
                     bottomEnd = 40.dp,
                     bottomStart = 40.dp
                 )
@@ -168,7 +190,11 @@ fun SectionBleue(navController: NavHostController){
 
             ////logo de location/////
 
-            IconButton(onClick = { navController.navigate(  Screen  .ConsulterMessage   .road   ) }) {
+            IconButton(onClick =
+            {
+                //navController.navigate(  Screen  .ConsulterMessage   .road   )
+                }
+            ) {
                 Icon(
                     Icons.Rounded.Notifications,
                     contentDescription = stringResource(R.string.notifications),
@@ -219,56 +245,64 @@ fun SectionBleue(navController: NavHostController){
 }
 
 @Composable
-fun CardWithContent(pressing: pressing, navController: NavHostController) { //navController: NavHostController
-    val paddingModifier = Modifier.padding(15.dp)
+fun CardWithContent(
+    pressing: PressingData,
+    navController: NavHostController,
+    viewModel : AgencyViewModel = hiltViewModel(),
+
+) { //navController: NavHostController
+
     Card(
         elevation = 10.dp,
         contentColor = black,
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier
             .padding(15.dp)
-            .clickable { navController.navigate(Screen.ListOffer.road) },
+            .clickable {
+                navController.navigate(Screen.ListOffer.road)
+            },
 
-    ) {
+        ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 5.dp),
-        ){
-            Row(
-                modifier=Modifier.fillMaxSize(),
-            ) {
-                Image(
-                    painter = pressing.imageVector,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(
-                            shape = RoundedCornerShape(
-                                topEnd = 10.dp,
-                                topStart = 10.dp
-                            )
+        ) {
+            Image(
+                rememberAsyncImagePainter(
+                    model = BASE_URL + pressing.attributes.logo
+                        .data
+                        .attributes
+                        .url
+                ) ,
+                contentDescription = null,
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(
+                            topEnd = 10.dp,
+                            topStart = 10.dp
                         )
-                        .fillMaxWidth()
-                        .height(200.dp),
+                    )
+                    .fillMaxWidth()
+                    .height(200.dp),
 
-                    contentScale = ContentScale.Crop
-                )
-            }
+                contentScale = ContentScale.Crop
+            )
             Row(
-                verticalAlignment=Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
 
                 Column(
-                    modifier=Modifier.weight(0.8f),
+                    modifier = Modifier.weight(0.8f),
                 ) {
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier=Modifier.padding(15.dp)
+                        modifier = Modifier.padding(15.dp)
 
                     ) {
                         Text(
-                            text = pressing.nom,
+                            text =  pressing.attributes.name,
                             color = black,
                             style = MaterialTheme.typography.body1.copy(
                                 fontSize = 20.sp,
@@ -279,43 +313,45 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                     }
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        //modifier=Modifier.padding(5.dp)
+                        modifier = Modifier.padding(
+                            horizontal = 8.dp
+                        )
                     ) {
                         Icon(
                             Icons.Rounded.LocationOn,
                             contentDescription = "position",
                             tint = Orange
                         )
-                        Text(
-                            text = pressing.position,
-                            color = black,
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 15.sp
-                            )
-                        )
+                        val quarterId = 2
+                        var agencies by remember(quarterId) { mutableStateOf<MutableList<AgencyData>?>(null) }
+                        LaunchedEffect(key1 = quarterId) {
+                            viewModel.findAll()
+                                .flowOn(Dispatchers.IO)
+                                .collect { keptAgencies ->
+                                    agencies = keptAgencies
+                                }
+                        }
+                        if(agencies != null ){
+                            val quarter = agencies!!.find { oneOfAllAgencies ->
+                                oneOfAllAgencies.attributes.quarter.data.id == quarterId &&
+                                        pressing.attributes.agencies!!.data.any{ pressingAgence ->
+                                            pressingAgence.id == oneOfAllAgencies.id
+                                        }
+                            }?.attributes?.quarter
+
+                            if(quarter!= null){
+                                Text(
+                                    text = quarter.data.attributes.name,
+                                    color = black,
+                                    style = MaterialTheme.typography.body1.copy(
+                                        fontSize = 15.sp
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier=Modifier.weight(0.3f),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_directions_bike_24),
-                        contentDescription = "position",
-                        tint = Orange,
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .size(30.dp)
-                            .height(44.dp)
-                    )
-                    Text(
-                        text = pressing.nomLivraison,
-                        color = black,
-                        style = MaterialTheme.typography.body1.copy(
-                            fontSize = 15.sp
-                        )
-                    )
-                }
+
             }
         }
 
@@ -326,9 +362,10 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
     /////////BARRE DE RECHERCHE//////////////////
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun SearchField(onSearch: (String) -> Unit) {
-
-        var searchQuery by remember { mutableStateOf("") }
+    fun SearchField(
+        searchQuery: String,
+        onSearchQuery: (String) -> Unit
+    ) {
 
         Row(
             modifier = Modifier
@@ -338,7 +375,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
         ) {
             TextField(
                 value = searchQuery,
-                onValueChange = { searchQuery = it },
+                onValueChange = { onSearchQuery(it) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
@@ -351,16 +388,17 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                 placeholder = { Text(text = "Search your laundry") },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
                     cursorColor = Color.Black,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    textColor = black
+                    textColor = black,
+                    placeholderColor = Color.LightGray,
+                    leadingIconColor = Color.LightGray
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search
                 ),
-                keyboardActions = KeyboardActions(onSearch = { onSearch(searchQuery) })
+                keyboardActions = KeyboardActions(onSearch = { onSearchQuery(searchQuery) })
             )
 
             //////icone de filtre/////
@@ -383,28 +421,49 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
     }
 
 
+
+
     ///////////card content///////////////////////
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun CardContent(
-
-        pressing: List<pressing>,
         innerPadding: PaddingValues,
+        state : PressingState,
         navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
         LazyColumn(contentPadding = innerPadding) {
             stickyHeader {
-                SearchField(onSearch = { searchText ->
+                SearchField(
+                    searchQuery = searchQuery,
+                    onSearchQuery = { searchText ->
                     // Traiter la recherche ici
                     searchQuery = searchText
-                })
+                    }
+                )
+
             }
-            items(pressing) {
-                CardWithContent(it, navController) //navController = NavHostController
+            if(state is PressingState.Success.PressingsSuccess){
+                items (fetchPressings(
+                    searchQuery = searchQuery,
+                    pressings =state.data
+                )) { pressing ->
+                    CardWithContent(pressing,navController)
+                }
             }
         }
     }
+
+private fun fetchPressings(
+    searchQuery:String,
+    pressings : MutableList<PressingData>
+): MutableList<PressingData> {
+
+    return if(searchQuery.isEmpty()) pressings else pressings.filter {
+        it.attributes.name.lowercase().contains(searchQuery.lowercase())
+    }.toMutableList()
+
+}
 
     //////////////BOTTOM BARRE/////////////////
     @Composable
@@ -421,7 +480,7 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
                 label = { Text(text = "Laundry") },
                 selected = (selectedIndex.value == 0),
                 onClick = {
-                    navController.navigate(Screen.Home.road)
+                   navController.navigate(Screen.Home.road)
                     selectedIndex.value = 0
                 })
             BottomNavigationItem(icon = {
@@ -456,10 +515,10 @@ fun CardWithContent(pressing: pressing, navController: NavHostController) { //na
         }
     }
 
-    //@Preview(showBackground = true)
-   /* @Composable
+/*@Preview(showBackground = true)
+   @Composable
     fun Preview() {
         OpenPressingTheme {
-            ScaffoldSample(navController)
+            ScaffoldSample()
         }
     }*/

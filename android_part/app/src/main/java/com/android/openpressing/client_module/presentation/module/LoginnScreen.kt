@@ -24,18 +24,37 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-
 import com.android.openpressing.R
-
+import com.android.openpressing.data.models.client.Client
+import com.android.openpressing.data.models.client.ClientData
+import com.android.openpressing.data.models.owner.OwnerData
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.client.state.ClientState
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.owner.state.OwnerState
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginnScreen(
+    navController: NavHostController,
+    userViewModel: UserViewModel = hiltViewModel(),
+    ownerViewModel: OwnerViewModel = hiltViewModel(),
+    clientViewModel: ClientViewModel = hiltViewModel()
+
+) {
+
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -125,21 +144,86 @@ fun LoginScreen(navController: NavHostController) {
                 ) {
                     Text("Forgot Password ?")
                 }
+
+
+                ////////////Variable pour la recuperation du user////////////////
+                val allUserKey = "AllUserKey"
+                val users = remember(key1 = allUserKey) {
+                    mutableStateOf<List<User>?>(null)
+                }
+                LaunchedEffect(key1 = allUserKey){
+                    userViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            users.value = it
+                        }
+                }
+
+                ////////////Variable pour la recuperation du client////////////////
+                val allClientKey = "AllClientKey"
+                val clients = remember(key1 = allClientKey) {
+                    mutableStateOf<List<ClientData>?>(null)
+                }
+                LaunchedEffect(key1 = allClientKey){
+                    clientViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            clients.value = it
+                        }
+                }
+
+                ////////////Variable pour la recuperation du proprietaire////////////////
+                val allOwnerKey = "AllOwnerKey"
+                val owners = remember(key1 = allOwnerKey) {
+                    mutableStateOf<List<OwnerData>?>(null)
+                }
+                LaunchedEffect(key1 = allOwnerKey){
+                    ownerViewModel.fineAll()
+                        .flowOn(Dispatchers.IO)
+                        .collect{
+                            owners.value = it
+                        }
+                }
+
                 Button(
                     onClick = {
+
                         val auth=Firebase.auth
                         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                             task -> showMessage = if(task.isSuccessful){
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
-                            navController.navigate(Screen.Home.road)
+
+                            if (users.value != null) {
+                                val user = users.value!!.find {
+                                    it.email == email
+                                }
+                                if(user != null){
+                                    if(
+                                        clients.value != null
+                                        &&
+                                        owners.value != null
+                                    ){
+                                        Log.i("", "${clients.value}")
+                                        Log.i("", "${owners.value}")
+                                        if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
+                                            navController.navigate(Screen.Home.road)
+                                        }
+                                        else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
+                                            navController.navigate(Screen.ClientRequirement.road)
+                                        }
+                                    }
+
+                                }
+
+                            }
                             false
                             }
                             else{
-                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                            true
+                                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                                true
+                            }
                         }
-                        }
-                       },
+                    },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(48.dp)
