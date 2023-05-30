@@ -91,7 +91,7 @@ fun MyNeed(
         content= { innerPadding ->
 
             if (client.value != null && requirements.value != null){
-                stock(
+                Stock(
                     contenu = requirements.value!!.filter { it.attributes.client.data.id == client.value!!.id },
                     innerPadding = innerPadding,
                     navController = navController
