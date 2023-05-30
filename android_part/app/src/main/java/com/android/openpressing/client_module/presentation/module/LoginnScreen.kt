@@ -27,22 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.client.state.ClientState
 import com.android.openpressing.viewmodels.owner.OwnerViewModel
-import com.android.openpressing.viewmodels.owner.state.OwnerState
-import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -165,7 +160,7 @@ fun LoginnScreen(
                     mutableStateOf<List<ClientData>?>(null)
                 }
                 LaunchedEffect(key1 = allClientKey){
-                    clientViewModel.fineAll()
+                    clientViewModel.findAll()
                         .flowOn(Dispatchers.IO)
                         .collect{
                             clients.value = it
