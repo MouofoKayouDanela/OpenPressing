@@ -9,6 +9,7 @@ import com.android.openpressing.data.models.agent.Agents
 import com.android.openpressing.data.models.message.Messages
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.quarter.Quarter
+import java.util.*
 
 data class AgencyAttributes(
     val pressing: Pressing ,
@@ -17,6 +18,9 @@ data class AgencyAttributes(
     var messages: Messages? = null ,
     var agency_services: AgencyServices? = null ,
     var agency_laundries: AgencyLaundries? = null ,
+    var createdAt: Date = Date() ,
+    var updatedAt: Date = Date() ,
+    var publishedAt: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false
 )

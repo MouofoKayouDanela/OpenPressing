@@ -7,9 +7,9 @@ import java.util.*
 
 data class ServiceTypeAttributes(
     @SerializedName("Title") var title: String ,
-    @SerializedName("createdAt") var created_at: Date ,
-    @SerializedName("updateAt") var updated_at: Date ,
-    @SerializedName("publishedAt") var published_at: Date ,
+    @SerializedName("createdAt") var created_at: Date = Date() ,
+    @SerializedName("updateAt") var updated_at: Date = Date() ,
+    @SerializedName("publishedAt") var published_at: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
     var services: Services? = null ,

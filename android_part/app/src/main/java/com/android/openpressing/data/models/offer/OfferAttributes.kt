@@ -5,6 +5,7 @@ import com.android.openpressing.data.models.agency_laundry.AgencyLaundry
 import com.android.openpressing.data.models.agency_service.AgencyService
 import com.android.openpressing.data.models.annonce.Announce
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class OfferAttributes(
     @SerializedName("UnitPrice") var unitPrice: Double ,
@@ -12,6 +13,9 @@ data class OfferAttributes(
     var agency_service: AgencyService ,
     var announce: Announce ,
     var promotion: Promotion? = null ,
+    var createdAt: Date = Date() ,
+    var updatedAt: Date = Date() ,
+    var publishedAt: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false
 )

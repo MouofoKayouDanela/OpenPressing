@@ -30,8 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.data.models.client.Client
-import com.android.openpressing.data.models.client.ClientData
-import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
 import com.android.openpressing.ui.theme.black
@@ -42,11 +40,12 @@ import com.android.openpressing.viewmodels.owner.OwnerViewModel
 import com.android.openpressing.viewmodels.owner.state.OwnerState
 import com.android.openpressing.viewmodels.services.state.UserState
 import com.android.openpressing.viewmodels.user.UserViewModel
+import com.android.openpressing.viewmodels.client.ClientViewModel
+import com.android.openpressing.viewmodels.owner.OwnerViewModel
+import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -155,45 +154,9 @@ fun LoginnScreen(
                             Text("Forgot Password ?")
                         }
 
-
-                        ////////////Variable pour la recuperation du user////////////////
-                        val allUserKey = "AllUserKey"
-                        val users = remember(key1 = allUserKey) {
-                            mutableStateOf<List<User>?>(null)
-                        }
-                        LaunchedEffect(key1 = allUserKey){
-                            userViewModel.fineAll()
-                                .flowOn(Dispatchers.IO)
-                                .collect{
-                                    users.value = it
-                                }
-                        }
-
-                        ////////////Variable pour la recuperation du client////////////////
-                        val allClientKey = "AllClientKey"
-                        val clients = remember(key1 = allClientKey) {
-                            mutableStateOf<List<ClientData>?>(null)
-                        }
-                        LaunchedEffect(key1 = allClientKey){
-                            clientViewModel.findAll()
-                                .flowOn(Dispatchers.IO)
-                                .collect{
-                                    clients.value = it
-                                }
-                        }
-
-                        ////////////Variable pour la recuperation du proprietaire////////////////
-                        val allOwnerKey = "AllOwnerKey"
-                        val owners = remember(key1 = allOwnerKey) {
-                            mutableStateOf<List<OwnerData>?>(null)
-                        }
-                        LaunchedEffect(key1 = allOwnerKey){
-                            ownerViewModel.fineAll()
-                                .flowOn(Dispatchers.IO)
-                                .collect{
-                                    owners.value = it
-                                }
-                        }
+                val userState = userViewModel.userState.collectAsState().value
+                val clientState = clientViewModel.clientState.collectAsState().value
+                val ownerState = ownerViewModel.ownerState.collectAsState().value
 
                         Button(
                             onClick = {
@@ -203,125 +166,132 @@ fun LoginnScreen(
                                         task -> showMessage = if(task.isSuccessful){
                                     Log.d(ContentValues.TAG, "signInWithEmail:success")
 
-                                    if (users.value != null) {
-                                        val user = users.value!!.find {
-                                            it.email == email
+                            userViewModel.getAll()
+                            if (userState is UserState.Success.UsersSuccess) {
+                                val user = userState.data.find {
+                                    it.email == email
+                                }
+                                if(user != null){
+                                    clientViewModel.getAll()
+                                    ownerViewModel.getAll()
+                                    if(
+                                        clientState is ClientState.Success.ClientsSuccess
+                                        &&
+                                        ownerState is OwnerState.Success.OwnersSuccess
+                                    ){
+                                        if (clientState.data.any{ it.attributes.user.data.id == user.id }){
+                                            navController.navigate(Screen.Home.road)
                                         }
-                                        if(user != null){
-                                            if(
-                                                clients.value != null
-                                                &&
-                                                owners.value != null
-                                            ){
-                                                Log.i("", "${clients.value}")
-                                                Log.i("", "${owners.value}")
-                                                if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
-                                                    navController.navigate(Screen.Home.road)
-                                                }
-                                                else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
-                                                    navController.navigate(Screen.ClientRequirement.road)
-                                                }
-                                            }
+                                        else if(ownerState.data.any{it.attributes.user.data.id == user.id}){
+                                            navController.navigate(Screen.ClientRequirement.road)
+                                        }
+                                    }
 
                                         }
 
-                                    }
-                                    false
+                            }
+                            userViewModel.getAll()
+                            if (userState is UserState.Success.UsersSuccess) {
+                                val user = userState.data.find {
+                                    it.email == email && it.password == password
                                 }
-                                else{
-                                    Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                                    true
-                                }
-                                }
-                            },
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier
-                                .height(48.dp)
-                                .fillMaxWidth(),
-                        ) {
-                            Text(
-                                text = "Se connecter", style = MaterialTheme.typography.body1
-                            )
+                                clientViewModel.getAll()
+                                ownerViewModel.getAll()
+                            }
+                            false
+                            }
+                            else{
+                                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                                true
+                            }
                         }
-                        if(showMessage){
-                            AlertDialog(onDismissRequest = { showMessage = false },
-                                title = {Text("Authentification invalide")},
-                                text = {
-                                    Text("Email ou mot de passe incorrect")
-                                },
-                                confirmButton = {
-                                    Button(
-                                        onClick = { showMessage=false },
-                                        colors = ButtonDefaults.buttonColors(
-                                            backgroundColor = Color.Blue
-                                        )
-                                    ) {
-                                        Text("OK")
-                                    }
-                                }
-                            )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Divider(
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                "OR",
-                                style = MaterialTheme.typography.body2,
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                            Divider(
-                                modifier = Modifier.weight(1f)
-                            )
-                        }
-                        OutlinedButton(
-                            onClick = {},
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier
-                                .height(48.dp)
-                                .fillMaxWidth(),
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_google),
-                                contentDescription = "",
-                                modifier = Modifier.padding(vertical = 8.dp)
-                            )
-                            Box(modifier = Modifier.width(32.dp))
-                            Text(
-                                text = "Login with Google",
-                                style = MaterialTheme.typography.body1.copy(Color.Black)
-                            )
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
-                                "Don't have an account",
-                                style = MaterialTheme.typography.body2,
-                            )
-                            Box(modifier = Modifier.width(8.dp))
-                            Text(
-                                "Register Here !",
-                                style = MaterialTheme.typography.body2.copy(
-                                    color = Blue,
-                                ),
-                                modifier = Modifier.clickable {
-                                    navController.navigate(Screen.Register.road)
-                                }
-                            )
-                        }
-                    } }
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .height(48.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Text(
+                        text = "Se connecter", style = MaterialTheme.typography.body1
+                    )
                 }
-
+                if(showMessage){
+                    AlertDialog(onDismissRequest = { showMessage = false },
+                    title = {Text("Authentification invalide")},
+                    text = {
+                        Text("Email ou mot de passe incorrect")
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { showMessage=false },
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Blue
+                            )
+                        ) {
+                            Text("OK")
+                        }
+                    }
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Divider(
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        "OR",
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                    Divider(
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                OutlinedButton(
+                    onClick = {},
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .height(48.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_google),
+                        contentDescription = "",
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    Box(modifier = Modifier.width(32.dp))
+                    Text(
+                        text = "Login with Google",
+                        style = MaterialTheme.typography.body1.copy(Color.Black)
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        "Don't have an account",
+                        style = MaterialTheme.typography.body2,
+                    )
+                    Box(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Register Here !",
+                        style = MaterialTheme.typography.body2.copy(
+                            color = Blue,
+                        ),
+                        modifier = Modifier.clickable {
+                            navController.navigate(Screen.Register.road)
+                        }
+                    )
+                }
+            }
         }
     }
 }
