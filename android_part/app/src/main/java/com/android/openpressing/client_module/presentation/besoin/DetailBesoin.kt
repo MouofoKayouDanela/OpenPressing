@@ -24,9 +24,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.agence.utils.laundries
 import com.android.openpressing.data.models.client.ClientData
-import com.android.openpressing.data.models.laundry.Laundries
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.laundry.LaundryData
+import com.android.openpressing.data.models.laundry_category.laundry.Laundries
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.LaundryData
 import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.service.ServiceData
 import com.android.openpressing.viewmodels.client.ClientViewModel

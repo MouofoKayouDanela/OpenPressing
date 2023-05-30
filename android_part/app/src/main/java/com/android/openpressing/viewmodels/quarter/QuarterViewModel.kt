@@ -6,13 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.quarter.Quarter
 import com.android.openpressing.repositories.quarter.QuarterRepository
 import com.android.openpressing.viewmodels.quarter.state.QuarterState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
-
+@HiltViewModel
 class QuarterViewModel  @Inject constructor
     (
     private val quarterRepository : QuarterRepository

@@ -1,4 +1,4 @@
-package com.android.openpressing.data.models.laundry
+package com.android.openpressing.data.models.laundry_category.laundry
 
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundries
 import com.android.openpressing.data.models.laundry_category.LaundryCategory

@@ -1,7 +1,7 @@
 package com.android.openpressing.viewmodels.services.state
 
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.laundry.LaundryData
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.LaundryData
 
 sealed class LaundryState{
 

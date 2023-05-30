@@ -19,8 +19,8 @@ import com.android.openpressing.data.models.client.Client
 import com.android.openpressing.data.models.client.Clients
 import com.android.openpressing.data.models.country.Countries
 import com.android.openpressing.data.models.country.Country
-import com.android.openpressing.data.models.laundry.Laundries
-import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.Laundries
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
 import com.android.openpressing.data.models.laundry_category.LaundryCategories
 import com.android.openpressing.data.models.laundry_category.LaundryCategory
 import com.android.openpressing.data.models.laundry_type.LaundryType
