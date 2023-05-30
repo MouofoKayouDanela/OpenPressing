@@ -1,6 +1,5 @@
 package com.android.openpressing.viewmodels.client
 
-import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.client.Client
@@ -42,7 +41,7 @@ class ClientViewModel @Inject constructor(
        }
     }
 
-    fun fineAll():Flow<MutableList<ClientData>> = flow {
+    fun findAll():Flow<MutableList<ClientData>> = flow {
         emit(clientRepository.getAll())
     }. flowOn(Dispatchers.IO)
 
