@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.android.openpressing.client_module.presentation.besoin.component.uil.MessagesLength
 import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.requirement.RequirementData
@@ -24,6 +25,7 @@ import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryColor
+import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
@@ -33,10 +35,11 @@ import kotlinx.coroutines.flow.flowOn
 
 @Composable
 fun MyNeed(
+    navController: NavController,
     rdViewModel: RequirementViewModel = hiltViewModel(),
     clientViewModel: ClientViewModel= hiltViewModel()
 ){
-    val userID = 5
+    val userID = 3
 
     val clients = remember(userID){ mutableStateOf<MutableList<ClientData>?>(null) }
     val client = remember(userID){ mutableStateOf<ClientData?>(null) }
@@ -90,7 +93,8 @@ fun MyNeed(
             if (client.value != null && requirements.value != null){
                 stock(
                     contenu = requirements.value!!.filter { it.attributes.client.data.id == client.value!!.id },
-                    innerPadding = innerPadding
+                    innerPadding = innerPadding,
+                    navController = navController
                 )
             }
 
@@ -100,11 +104,14 @@ fun MyNeed(
 }
 
 @Composable
-fun stock(contenu: List<RequirementData>,
-          innerPadding: PaddingValues){
+fun Stock(
+    contenu: List<RequirementData>,
+    innerPadding: PaddingValues,
+    navController: NavController
+){
     LazyColumn(contentPadding = innerPadding) {
         items(contenu) {
-            Consult(it)
+            Consult(it, navController)
         }
     }
 
@@ -113,6 +120,7 @@ fun stock(contenu: List<RequirementData>,
 @Composable
 fun Consult(
     affiche: RequirementData ,
+    navController: NavController,
     requiremenDetailsViewModel: RequirementDetailViewModel = hiltViewModel() ,
 ) {
 
@@ -244,7 +252,7 @@ fun Consult(
                 )
 
                 IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate("${Screen.DetailBesoin.road}/${affiche.id!!}") },
                         modifier = Modifier
                             .clip(CircleShape)
                             .background(primaryPrimeColor)
