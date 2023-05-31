@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
             //val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Login.road){
+                NavHost(navController = navController, startDestination = Screen.Splash.road){
                     composable(Screen.Login.road){ LoginnScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
                     composable(Screen.ListOffer.road){ OfferScreen(navController) }
-                    composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
+                  //  composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
                     composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                     composable(Screen.Parametre .road){ MyScreenPreview(navController) }
                     composable(Screen.ClientRequirement.road) { ClRequirementConsulting( navController) }
