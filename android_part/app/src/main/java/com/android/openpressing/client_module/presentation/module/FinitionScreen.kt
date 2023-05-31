@@ -96,6 +96,7 @@ fun FinitionScreen( navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Person,
                             contentDescription = "Username Field",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -115,6 +116,7 @@ fun FinitionScreen( navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Email,
                             contentDescription = "Email Field",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -135,12 +137,15 @@ fun FinitionScreen( navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
                             contentDescription = "Password Field",
+                            tint=Color.Black
                         )
                     },
                     trailingIcon = {
                         Icon(painter = if (passwordObscure) painterResource(id = com.android.openpressing.R.drawable.ic_outline_visibility) else painterResource(
                             id = com.android.openpressing.R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Password", modifier = Modifier.clickable {
+                        ), contentDescription = "Show Password",
+                            tint=Color.Black,
+                                    modifier = Modifier.clickable {
                             passwordObscure = !passwordObscure
                         })
                     },
@@ -162,12 +167,15 @@ fun FinitionScreen( navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
                             contentDescription = "Password Field",
+                            tint=Color.Black,
                         )
                     },
                     trailingIcon = {
                         Icon(painter = if (passwordObscure) painterResource(id = com.android.openpressing.R.drawable.ic_outline_visibility) else painterResource(
                             id = com.android.openpressing.R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Password", modifier = Modifier.clickable {
+                        ), contentDescription = "Show Password",
+                            tint=Color.Black,
+                            modifier = Modifier.clickable {
                             passwordObscure = !passwordObscure
                         })
                     },
