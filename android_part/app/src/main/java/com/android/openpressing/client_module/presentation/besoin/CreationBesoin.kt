@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.client.*
-import com.android.openpressing.client_module.presentation.client.pressing
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 import okhttp3.internal.http.HTTP_RESET_CONTENT

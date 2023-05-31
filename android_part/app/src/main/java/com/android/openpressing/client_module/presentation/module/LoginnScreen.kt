@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.flowOn
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginnScreen(
+    getConnectedUserId: (Int) -> Unit,
     navController: NavHostController,
     userViewModel: UserViewModel = hiltViewModel(),
     ownerViewModel: OwnerViewModel = hiltViewModel(),
@@ -206,9 +207,11 @@ fun LoginnScreen(
                                         Log.i("", "${clients.value}")
                                         Log.i("", "${owners.value}")
                                         if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
+                                            getConnectedUserId(user.id!!)
                                             navController.navigate(Screen.Home.road)
                                         }
                                         else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
+                                            getConnectedUserId(user.id!!)
                                             navController.navigate(Screen.ClientRequirement.road)
                                         }
                                     }

@@ -243,7 +243,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -282,7 +282,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -321,7 +321,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }

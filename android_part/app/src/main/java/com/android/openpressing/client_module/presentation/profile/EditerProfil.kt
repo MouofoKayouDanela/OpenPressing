@@ -54,8 +54,8 @@ import com.android.openpressing.viewmodels.user.UserViewModel
 var id : Int = 0
 
 @Composable
-fun EditerProfil(navController: NavHostController,
-                 userViewModel: UserViewModel = hiltViewModel()
+fun EditerProfil(navController: NavHostController
+                 //userViewModel: UserViewModel = hiltViewModel()
                  //ownerViewModel: OwnerViewModel = hiltViewModel(),
                 // clientViewModel: ClientViewModel = hiltViewModel()
 ) {
@@ -759,7 +759,7 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
-@Preview
+
 @Composable
 fun EditionView() {
     val navController = rememberNavController()
