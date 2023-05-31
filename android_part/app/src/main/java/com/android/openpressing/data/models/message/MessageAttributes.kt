@@ -12,6 +12,9 @@ data class MessageAttributes(
     var agency: Agency ,
     var requirement: Requirement ,
     var order: Order ,
+    var createdAt: Date = Date(),
+    var updatedAt: Date = Date(),
+    var publishedAt: Date = Date(),
     var confirmed: Boolean = true,
     var blocked: Boolean = false
 )
