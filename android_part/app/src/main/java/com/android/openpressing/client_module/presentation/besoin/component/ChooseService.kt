@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
+import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
 import com.android.openpressing.client_module.presentation.besoin.component.uil.services
 import com.android.openpressing.ui.theme.Purple200
 
@@ -26,14 +26,14 @@ import com.android.openpressing.ui.theme.Purple200
 fun ChooseServicesScreen(
 
     updateDialogState: (Boolean) -> Unit,
-    datas: List<Data>,
-    updateservice: (List<Data>) -> Unit
+    Services:List<Service>,
+    updateservice: (List<Service>) -> Unit
 ) {
 
-    val addedServicess = datas.toMutableList()
+    val addedServices = Services.toMutableList()
 
-    val allDatas = mutableListOf<Data>()
-        services.forEach { allDatas.add(Data(it.name, it.icon)) }
+    val allServices = mutableListOf<Service>()
+        services.forEach { allServices.add(Service(it.name, it.icon)) }
 
     AlertDialog(
         onDismissRequest = { updateDialogState(false) },
@@ -58,10 +58,10 @@ fun ChooseServicesScreen(
                     }
                 }
 
-                items(allDatas) { data ->
+                items(allServices) { Service ->
 
                     var isChecked by remember { mutableStateOf(false) }
-                    val enabled by remember { mutableStateOf(!datas.contains(data)) }
+                    val enabled by remember { mutableStateOf(!Services.contains(Service)) }
 
                     Row(
                         Modifier
@@ -74,9 +74,9 @@ fun ChooseServicesScreen(
                                 onClick = {
 
                                     if (!isChecked) {
-                                        addedServicess.add(data)
+                                        addedServices.add(Service)
                                     } else {
-                                        addedServicess.remove(data)
+                                        addedServices.remove(Service)
                                     }
                                     isChecked = !isChecked
                                 }
@@ -84,7 +84,7 @@ fun ChooseServicesScreen(
                         verticalAlignment = Alignment.CenterVertically ,
                         horizontalArrangement = Arrangement.Center ,
                     ) {
-                        data.icon?.let {
+                        Service .icon?.let {
                             Icon(
                                 it ,
                                 contentDescription = null ,
@@ -97,7 +97,7 @@ fun ChooseServicesScreen(
                         }
 
                         Text(
-                            text = data.name ,
+                            text = Service.name ,
                             modifier = Modifier
                                 .weight(0.6f),
                             style = if (enabled) MaterialTheme.typography.body1
@@ -124,7 +124,7 @@ fun ChooseServicesScreen(
         confirmButton = {
             TextButton(
                 onClick = {
-                    updateservice(addedServicess.toList())
+                    updateservice(addedServices.toList())
                     updateDialogState(false)
                 },
                 colors = ButtonDefaults.textButtonColors(

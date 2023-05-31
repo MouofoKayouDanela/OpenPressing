@@ -1,19 +1,17 @@
 package com.android.openpressing.client_module.presentation.besoin
 
-import android.annotation.SuppressLint
+import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,33 +22,30 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.agence.BodyList
-import com.android.openpressing.client_module.presentation.agence.TopNavBar
-import com.android.openpressing.client_module.presentation.agence.utils.services
-import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundryScreen
 import com.android.openpressing.client_module.presentation.besoin.component.ChooseServicesScreen
-import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Laundry
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
 import com.android.openpressing.ui.theme.*
-import com.android.openpressing.ui.theme.blanc
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.key
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundriesScreen
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
 
 
+@Preview
 @Composable
-fun AddRequirementScreen(navController: NavHostController){
+fun AddRequirementScreen(){
 
     var laundries by remember {
         mutableStateOf( listOf(
@@ -79,7 +74,7 @@ fun AddRequirementScreen(navController: NavHostController){
 
         Scaffold(
             topBar = {
-               AppBar(navController)
+               AppBar()
             },
             content = { innerPadding ->
                 ContentCardlist(
@@ -96,7 +91,7 @@ fun AddRequirementScreen(navController: NavHostController){
                   .padding(16.dp))  {
                     FloatingActionButton(
                         onClick = {
-                           navController.navigate( Screen.ConsulterBesoin.road)
+                           //navController.navigate( Screen.ConsulterBesoin.road)
                         },
                         backgroundColor = Purple500,
                         contentColor = Color.White,
@@ -129,7 +124,7 @@ fun AddRequirementScreen(navController: NavHostController){
 }
 
 @Composable
-fun AppBar(navController: NavHostController,) {
+fun AppBar() {
 
     Box(
         modifier = Modifier
@@ -157,7 +152,7 @@ fun AppBar(navController: NavHostController,) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick ={
-                     navController.navigate(Screen.Home.road)
+                     //navController.navigate(Screen.Home.road)
                 }, modifier = Modifier
                     .padding(start = 8.dp)
                     .weight(0.2f)) {
@@ -195,6 +190,7 @@ fun ContentCardlist(
     updateLaundryData: (List<Laundry>) -> Unit,
     updateServiceData: (List<Service>) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var showAddDialog1 by remember { mutableStateOf(false) }
     var showAddDialog2 by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -252,30 +248,35 @@ fun ContentCardlist(
             }
             if (showAddDialog1) {
 
-                ChooseLaundryScreen(
+                ChooseLaundriesScreen(
                     updateDialogState = { showAddDialog1 = it },
-                    datas = fetchDatas1(
-                        laundries = laundries
+                    Laundries= fetchDatas1(
+                        laundries=laundries
+
                     )
                 ) {
                     val updatedLaundries = mutableListOf<Laundry>()
-                    it.forEach { updatedData ->
+                    it.forEach { updatedLaundry ->
                         updatedLaundries.add(
                           Laundry   (
-                                updatedData.name,
-                                updatedData.icon
+                                updatedLaundry.name,
+                                updatedLaundry.icon
                             )
                         )
                     }
                     updateLaundryData(updatedLaundries .toList())
                 }
             }
+
         }
 
-        items(fetchDatas1(
+        items(
+            fetchDatas1(
             laundries = laundries
         )){
-                data ->
+
+
+               Laundry ->
 
             Card(       modifier = Modifier
                 .fillMaxWidth()
@@ -297,17 +298,13 @@ fun ContentCardlist(
                     )
                 )
                 .background(color = secondaryPrimeColor)
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onDoubleTap = {
-                            Toast
-                                .makeText(context, "xcjsjej gj", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
-                } ,
+               ,
                 onClick = {
-                    expandedState = !expandedState
+                    val toast = Toast
+                        .makeText(context, "xcjsjej gj", Toast.LENGTH_LONG)
+
+                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
 
                 },
                 elevation =10.dp
@@ -335,7 +332,7 @@ fun ContentCardlist(
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween) {
-                                data.icon?.let {
+                                Laundry.icon?.let {
                                     Icon(
                                         it,
                                         contentDescription = null,
@@ -344,7 +341,7 @@ fun ContentCardlist(
                                     )
                                 }
                                 Text(
-                                    text = data.name,
+                                    text = Laundry.name,
 
                                 )
 
@@ -353,7 +350,9 @@ fun ContentCardlist(
                         Column(
                             horizontalAlignment = Alignment.End,
                             verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.weight(0.4f).padding(end=8.dp)
+                            modifier = Modifier
+                                .weight(0.4f)
+                                .padding(end = 8.dp)
 
 
                         ) {
@@ -409,7 +408,7 @@ fun ContentCardlist(
                         }
 
                 }
-                    if (expandedState ) {
+
 
                         Row(
                             modifier = Modifier
@@ -439,26 +438,28 @@ fun ContentCardlist(
                                     .weight(0.8f)
                             )
                         }
+
                         if (showAddDialog2) {
 
                             ChooseServicesScreen(
                                 updateDialogState = { showAddDialog2 = it },
-                                datas = fetchDatas2(
+                                Services = fetchDatas2(
                                     services = services
                                 )
                             ) {
-                                val updatedService = mutableListOf<Service>()
-                                it.forEach { updatedData ->
-                                    updatedService.add(
+                                val updatedServices = mutableListOf<Service>()
+                                it.forEach { updatedService ->
+                                    updatedServices.add(
                                         Service(
-                                            updatedData.name,
-                                            updatedData.icon
+                                            updatedService.name,
+                                            updatedService.icon
                                         )
                                     )
                                 }
-                                updateServiceData(updatedService.toList())
+                                updateServiceData(updatedServices.toList())
                             }
-                        }
+
+                    }
 
                         fetchDatas2(services = services).forEach {
 
@@ -473,7 +474,8 @@ fun ContentCardlist(
                                 horizontalArrangement = Arrangement.Center,
                             ) {
 
-                                data.icon?.let {
+
+                                it.icon?.let {
                                     Icon(
                                         it,
                                         contentDescription = null,
@@ -484,18 +486,19 @@ fun ContentCardlist(
                                 }
 
                                 Text(
-                                    text = data.name,
+                                    text = it.name,
                                     modifier = Modifier
                                         .weight(0.8f)
                                 )
                                 IconButton(
                                     onClick = {
 
+
                                         val updatedServices = services.toMutableList()
                                         updatedServices.remove(
                                             Service(
-                                                data.name,
-                                                data.icon
+                                                it.name,
+                                                it.icon
                                             )
                                         )
                                         updateServiceData(updatedServices.toList())
@@ -587,34 +590,38 @@ fun ContentCardlist(
                             }
 
                         }
-                    }
+
 
                 }
         }
 
-    }
-}
+
+
+
 }
 
-@SuppressLint("SuspiciousIndentation")
+    }
+}
+
+
 fun fetchDatas1(
             laundries: List<Laundry>
-        ) : List<Data> {
-            val datas : MutableList<Data> = mutableListOf()
+        ) : List<Laundry> {
+            val Laundries : MutableList<Laundry> = mutableListOf()
                     laundries.forEach {
-                        datas.add(Data(it.name , it.icon))
+                        Laundries.add(Laundry(it.name , it.icon))
                     }
-            return datas.toList()
+            return Laundries.toList()
         }
 
 fun fetchDatas2(
    services:List<Service>
-) : List<Data> {
-    val datas : MutableList<Data> = mutableListOf()
+) : List<Service> {
+    val Services : MutableList<Service> = mutableListOf()
    services.forEach {
-        datas.add(Data(it.name   , it.icon     ))
+        Services.add(Service(it.name   , it.icon     ))
    }
-    return datas.toList()
+    return Services.toList()
 }
 
 

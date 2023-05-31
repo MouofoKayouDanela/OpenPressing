@@ -6,8 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,11 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.openpressing.client_module.presentation.agence.utils.services
-import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
+import com.android.openpressing.client_module.presentation.besoin.component.uil.Laundry
 import com.android.openpressing.client_module.presentation.besoin.component.uil.laundries
 import com.android.openpressing.ui.theme.Purple200
 
@@ -30,22 +26,17 @@ import com.android.openpressing.ui.theme.Purple200
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ChooseLaundryScreen(
+fun ChooseLaundriesScreen(
 
     updateDialogState: (Boolean) -> Unit,
-    datas: List<Data>,
-    updatelaundry: (List<Data>) -> Unit
+    Laundries:List<Laundry>,
+    updateLaundry: (List<Laundry>) -> Unit
 ) {
 
-    val addedLaundryy = datas.toMutableList()
+    val addedLaundries = Laundries.toMutableList()
 
-    val allDatas = mutableListOf<Data>()
-    laundries   .forEach { allDatas.add(
-        Data(
-            it.name,
-            it.icon
-        )
-    ) }
+    val allLaundries = mutableListOf<Laundry>()
+    laundries.forEach { allLaundries.add(Laundry(it.name, it.icon)) }
 
     AlertDialog(
         onDismissRequest = { updateDialogState(false) },
@@ -61,7 +52,7 @@ fun ChooseLaundryScreen(
                         horizontalArrangement = Arrangement.Center
                     ){
                         Text(
-                            text = "Select Laundry" ,
+                            text = "Select service(s)" ,
                             style = MaterialTheme.typography.h5.copy(
                                 fontSize = 22.sp
                             ) ,
@@ -70,10 +61,10 @@ fun ChooseLaundryScreen(
                     }
                 }
 
-                items(allDatas) { data ->
+                items(allLaundries) { Laundry ->
 
                     var isChecked by remember { mutableStateOf(false) }
-                    val enabled by remember { mutableStateOf(!datas.contains(data)) }
+                    val enabled by remember { mutableStateOf(!Laundries.contains(Laundry)) }
 
                     Row(
                         Modifier
@@ -86,9 +77,9 @@ fun ChooseLaundryScreen(
                                 onClick = {
 
                                     if (!isChecked) {
-                                        addedLaundryy.add(data)
+                                        addedLaundries.add(Laundry)
                                     } else {
-                                        addedLaundryy.remove(data)
+                                        addedLaundries.remove(Laundry)
                                     }
                                     isChecked = !isChecked
                                 }
@@ -96,7 +87,7 @@ fun ChooseLaundryScreen(
                         verticalAlignment = Alignment.CenterVertically ,
                         horizontalArrangement = Arrangement.Center ,
                     ) {
-                        data.icon?.let {
+                        Laundry.icon?.let {
                             Icon(
                                 it ,
                                 contentDescription = null ,
@@ -109,7 +100,7 @@ fun ChooseLaundryScreen(
                         }
 
                         Text(
-                            text = data.name ,
+                            text = Laundry.name ,
                             modifier = Modifier
                                 .weight(0.6f),
                             style = if (enabled) MaterialTheme.typography.body1
@@ -136,7 +127,7 @@ fun ChooseLaundryScreen(
         confirmButton = {
             TextButton(
                 onClick = {
-                    updatelaundry(addedLaundryy.toList())
+                    updateLaundry(addedLaundries.toList())
                     updateDialogState(false)
                 },
                 colors = ButtonDefaults.textButtonColors(
@@ -167,5 +158,4 @@ fun ChooseLaundryScreen(
         shape = RoundedCornerShape(10)
     )
 }
-
 
