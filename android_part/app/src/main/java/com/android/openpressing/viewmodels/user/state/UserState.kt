@@ -1,7 +1,6 @@
-package com.android.openpressing.viewmodels.services.state
+package com.android.openpressing.viewmodels.user.state
 
 import com.android.openpressing.data.models.user.User
-import com.android.openpressing.data.models.user.UserData
 
 sealed class UserState{
 
@@ -11,7 +10,7 @@ sealed class UserState{
         data class  UsersSuccess(val data: MutableList<User>): Success()
         data class UserSuccess(val data: User) : Success()
     }
-    class Error(val message: String):UserState()
+    class Error(val message: String): UserState()
 }
 
 

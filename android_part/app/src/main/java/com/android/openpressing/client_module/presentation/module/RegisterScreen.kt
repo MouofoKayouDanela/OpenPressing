@@ -1,9 +1,15 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -31,22 +37,32 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
-import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.utils.Screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.openpressing.data.models.city.CityData
 import com.android.openpressing.data.models.quarter.QuarterData
-import com.android.openpressing.ui.theme.Gris
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.viewmodels.city.CityViewModel
 import com.android.openpressing.viewmodels.city.state.CityState
 import com.android.openpressing.viewmodels.quarter.QuarterViewModel
@@ -68,6 +84,17 @@ fun RegisterScreen(
     var showDialogPrenom by remember { mutableStateOf(false) }
     var showDialogDate by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let { selectedUri ->
+                selectedImageUri.value = selectedUri
+            }
+        }
+    )
+
     cityViewModel.getAll()
     quarterViewModel.getAll()
     var quarters by remember {
@@ -76,19 +103,10 @@ fun RegisterScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = Gris,
-                elevation = 0.dp,
-            ) {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Button"
-                    )
-                }
-            }
+            TopAppBar()
         }
     ) {
+        val defaultImage = painterResource(id = R.drawable.person)
         Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,21 +114,54 @@ fun RegisterScreen(
                 .background(Gris)
                 .padding(horizontal = 24.dp)
         ) {
-            Box(modifier = Modifier.height(24.dp))
-            Image(
-                painter = painterResource(id = R.drawable.registre),
-                contentDescription = "Sign up Illustration",
-                modifier = Modifier
-                    .weight(3f)
-                    .padding(
-                        horizontal = 32.dp,
-                ),
-                contentScale = ContentScale.Fit,
-            )
+            Box(
+                contentAlignment = Alignment.BottomEnd
+            ){
+                selectedImageUri.value?.let { imageUri ->
+                    val contentResolver: ContentResolver = context.contentResolver
+                    val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+
+                    Image(
+                        bitmap = bitmapImg.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(130.dp)
+                            .border(1.dp, color = Violet, CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } ?: Image(
+                    painter = defaultImage,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(130.dp)
+                        .border(1.dp, color = primaryColor, CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+                ///////////icone de modification de l'image////////////
+                IconButton(onClick = {
+                    launcher.launch("image/*")
+                }) {
+                    Icon(
+                        Icons.Rounded.PhotoCamera,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = primaryColor,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(primaryPrimeColor)
+                            .padding(1.dp)
+                            //.padding(horizontal = 5.dp)
+                            .align(Alignment.BottomEnd)
+                    )
+                }
+            }
             Column(
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.weight(7f),
+                modifier = Modifier.weight(7f)
+                                    .padding(horizontal = 24.dp, vertical=10.dp)
             ) {
                 Text(
                     text = "",
@@ -203,17 +254,11 @@ fun RegisterScreen(
                 //  }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
-                        onClick = { navController.navigate(Screen.Login.road) },
-                        enabled = false // Griser le bouton précédent,
+                    IconButton(
 
-                    ) {
-                        Text(text = "Précédent", style = MaterialTheme.typography.body1)
-                    }
-                    Button(
                         onClick = {
                             if(nom.isEmpty()){
                                 showDialogNom=true
@@ -221,15 +266,19 @@ fun RegisterScreen(
                             else if (prenom.isEmpty()){
                                 showDialogPrenom=true
                             }
-                            else if(Ville.isEmpty()){
-                                showDialogDate=true
-                            }
                             else{
                                 navController.navigate(Screen.Finition.road)
                             }
-                        /* Gérer l'événement du bouton continuer */ }
+                        /* Gérer l'événement du bouton continuer */ },
+                        modifier = Modifier.clip(CircleShape)
+                            .background(Purple500)
+                            .size(50.dp)
                     ) {
-                        Text(text = "Continuer", style = MaterialTheme.typography.body1,
+                        Icon(
+                            Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                            modifier = Modifier
+                                    .padding(5.dp)
                         )
                     }
                     if(showDialogNom){
@@ -325,11 +374,6 @@ fun ListeVille(
     var selectedText by remember {mutableStateOf("")}
     var textfieldSize by  remember { mutableStateOf(Size.Zero) }
 
-   val icone = if (expanded)
-       Icons.Filled.KeyboardArrowUp
-    else
-        Icons.Filled.KeyboardArrowDown
-
     Column (
         modifier= Modifier
             .padding(horizontal = 24.dp)
@@ -338,12 +382,12 @@ fun ListeVille(
         OutlinedTextField(value = selectedText,
             colors= TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = Black,
-                placeholderColor = LightGray
             ),
+
             onValueChange =
         {selectedText=it},
         modifier= Modifier
-            .fillMaxWidth(),
+            .padding(horizontal = 4.dp),
             /*.onGloballyPositioned { coordinates ->
                 textfieldSize = coordinates.size.toSize()
             },*/
@@ -352,11 +396,18 @@ fun ListeVille(
         },
         enabled = false,
         trailingIcon = {
-            Icon(icone,
+            Icon(
+                if (expanded)
+                    Icons.Default.KeyboardArrowUp
+                else
+                    Icons.Default.KeyboardArrowDown,
+               tint = Black,
             contentDescription = "",
-            Modifier.clickable { expanded = !expanded})
+                modifier=Modifier.clickable { expanded = !expanded})
         })
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false },
+            modifier= Modifier
+                .fillMaxWidth()
            /* modifier=Modifier.width(with(LocalDensity.current){
                 textfieldSize.width.toDp()
             })*/
@@ -386,41 +437,39 @@ fun ListeVille(
 @Composable
 fun ListeQuartier(
     state : QuarterState,
-    quartiers: List <QuarterData>?
+    quartiers: List <QuarterData>?,
 ){
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
 
-    val icone = if (expanded)
-        Icons.Filled.KeyboardArrowUp
-    else
-        Icons.Filled.KeyboardArrowDown
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 34.dp)
             .fillMaxWidth()
     ) {
         OutlinedTextField(value = selectedText,
             colors= TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Black,
-                placeholderColor = LightGray
+                unfocusedBorderColor = Black
             ),
             onValueChange =
         { selectedText = it },
-            modifier = Modifier
-                .fillMaxWidth(),
             label = {
                 Text("Quartier")
             },
             enabled = false,
             trailingIcon = {
-                Icon(icone,
+                Icon(
+                    if (expanded)
+                    Icons.Default.KeyboardArrowUp
+                    else
+                    Icons.Default.KeyboardArrowDown,
+                    tint = Black,
                     contentDescription = "",
-                    Modifier.clickable { expanded = !expanded })
+                   modifier= Modifier.clickable { expanded = !expanded })
             })
         DropdownMenu(
-            expanded = expanded, onDismissRequest = { expanded = false },
+            expanded = expanded, onDismissRequest = { expanded = false }
 
         ) {
             if (state is QuarterState.Success.QuartersSuccess) {
@@ -434,7 +483,9 @@ fun ListeQuartier(
                     DropdownMenuItem(onClick = {
                         selectedText = label.attributes.name
                         expanded = false
-                    }) {
+                    },
+                        modifier= Modifier
+                            .fillMaxWidth()) {
                         Text(text = label.attributes.name)
                     }
                 }
@@ -443,5 +494,21 @@ fun ListeQuartier(
         }
     }
 }
+@Composable
+fun TopAppBar(){
+        Row(
+            modifier = Modifier
+                .padding(2.dp),
+            verticalAlignment = Alignment.CenterVertically
 
-
+            ) {
+                Text(
+                    text = "Sign Up",
+                    style = MaterialTheme.typography.body1.copy(
+                        color = black,
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp
+                    )
+                )
+        }
+}

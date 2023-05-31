@@ -45,8 +45,6 @@ class ClientViewModel @Inject constructor(
        }
     }
 
-    fun findAll():Flow<MutableList<ClientData>> = flow {
-        emit(clientRepository.getAll())
-    }. flowOn(Dispatchers.IO)
+
 
 }

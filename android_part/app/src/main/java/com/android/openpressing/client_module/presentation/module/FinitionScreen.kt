@@ -5,8 +5,10 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,9 +17,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.utils.Screen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -87,16 +93,25 @@ fun FinitionScreen( navController: NavHostController) {
                 modifier = Modifier.weight(7f),
             ) {
 
-                AppTextField(
+                OutlinedTextField(
+                    value = username,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         username = it
                     },
-                    hint = "Username",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Person,
-                            contentDescription = "Username Field",
+                            contentDescription = "username",
                             tint=Color.Black
+                        )
+                    },
+                    label={
+                        Text(
+                            text="username"
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -105,34 +120,44 @@ fun FinitionScreen( navController: NavHostController) {
                     keyboardActions = KeyboardActions(
                         onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = username,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    value = email,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         email = it
                     },
-                    hint = "Email Address",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Email,
-                            contentDescription = "Email Field",
+                            contentDescription = "email",
                             tint=Color.Black
                         )
                     },
+                    label={
+                        Text(
+                            text="email"
+                        )
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
+                        imeAction = ImeAction.Next,
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
+                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = email,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    //value = password,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         password = it
                     },
-                    hint = "Password",
-                    obscure = passwordObscure,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
@@ -157,17 +182,20 @@ fun FinitionScreen( navController: NavHostController) {
                     ),
                     value = password,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    //value = password,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
-                        ConfirmPassword= it
+                        ConfirmPassword = it
                     },
-                    hint = "Confirm Password",
-                    obscure = passwordObscure,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
-                            contentDescription = "Password Field",
-                            tint=Color.Black,
+                            contentDescription = "Confirm Password Field",
+                            tint=Color.Black
                         )
                     },
                     trailingIcon = {
@@ -233,9 +261,17 @@ fun FinitionScreen( navController: NavHostController) {
                 ) {
                     Button(
                         onClick = { navController.popBackStack() },
-                        modifier = Modifier.width(130.dp)
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                            .background(Purple500)
                     ) {
-                        Text("Précédent", style = MaterialTheme.typography.body1)
+                        Icon(
+                            Icons.Rounded.KeyboardArrowLeft,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(5.dp)
+                        )
                     }
                     Button(
                         onClick = {

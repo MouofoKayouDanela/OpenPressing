@@ -89,7 +89,7 @@ fun MyNeed(
         content= { innerPadding ->
 
             if (client.value != null && requirements.value != null){
-                stock(
+                Stock(
                     contenu = requirements.value!!.filter { it.attributes.client.data.id == client.value!!.id },
                     innerPadding = innerPadding,
                     navController = navController
@@ -97,7 +97,7 @@ fun MyNeed(
             }
 
         },
-        bottomBar= {BottomBar()}
+        bottomBar= {BottomBar(navController)}
     )
 }
 
@@ -266,7 +266,7 @@ fun Consult(
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: NavController) {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 2.dp,

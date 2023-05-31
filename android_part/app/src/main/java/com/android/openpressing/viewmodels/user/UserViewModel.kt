@@ -1,13 +1,11 @@
 package com.android.openpressing.viewmodels.user
 
-import android.view.WindowManager
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.user.User
-import com.android.openpressing.data.models.user.UserData
 import com.android.openpressing.repositories.user.UserRepository
-import com.android.openpressing.viewmodels.services.state.UserState
+import com.android.openpressing.viewmodels.user.state.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -46,13 +44,13 @@ class UserViewModel @Inject constructor(
             }
         }
     }
-    fun fineAll():Flow<List<User>> = flow {
+    fun findAll():Flow<List<User>> = flow {
         emit(userRepository.getAll())
     }. flowOn(Dispatchers.IO)
 
+    fun save(user:User,imageUri : Uri) = flow{
+        emit(userRepository.save(user,imageUri))
+    }.flowOn(Dispatchers.IO)
 
-    fun fineAll():Flow<List<User>> = flow {
-        emit(userRepository.getAll())
-    }. flowOn(Dispatchers.IO)
 
 }
