@@ -41,6 +41,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
+import com.android.openpressing.client_module.presentation.besoin.user
+import com.android.openpressing.client_module.presentation.profile.id
 import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.data.models.laundry_category.laundry.Laundry
@@ -48,6 +50,7 @@ import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.quarter.QuarterData
 import com.android.openpressing.data.models.user.User
+import com.android.openpressing.data.models.user.UserData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
@@ -62,6 +65,7 @@ import com.android.openpressing.viewmodels.services.state.PressingState
 import com.android.openpressing.viewmodels.services.state.RequirementState
 import com.android.openpressing.viewmodels.user.UserViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
@@ -114,15 +118,18 @@ listOf(
 
 @Composable
 fun ScaffoldSample(
+    connectedClientId: Int,
     navController: NavHostController,
     viewModel : PressingViewModel = hiltViewModel()
 ) {
+    Log.i("", "le client connecte a pour id : $connectedClientId")
+
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     viewModel.getAll()
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {SectionBleue()},
+        topBar =  {SectionBleue(connectedClientId, )},
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(
@@ -136,7 +143,23 @@ fun ScaffoldSample(
 }
 
 @Composable
-fun SectionBleue(){
+fun SectionBleue(
+   connectedClientId: Int,
+   userViewModel: UserViewModel = hiltViewModel(),
+){
+
+    val user = remember {
+        mutableStateOf<User?>(null)
+    }
+    LaunchedEffect(key1 = connectedClientId){
+        userViewModel.getById(connectedClientId)
+            .flowOn(Dispatchers.IO)
+            .collect{
+                user.value = it
+            }
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -147,7 +170,7 @@ fun SectionBleue(){
                     bottomStart = 40.dp
                 )
             )//////forme arrondie de la box/////
-            .background(Purple500)
+            .background(color = primaryColor)
         //shape=RoundedCornerShape(32.dp)
     ) {Column() {
         /////Ligne de l'icone de notification/////
@@ -162,15 +185,21 @@ fun SectionBleue(){
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.homme),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(40.dp)
-                        .border(1.dp, color = Color.White, CircleShape)
+                if (user.value != null){
+                    Image(
+                        rememberAsyncImagePainter(
+                            model = BASE_URL + user.value!!.profile_picture
+                                .url
+                        ),
+                        //painter = painterResource(id = R.drawable.homme),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(40.dp)
+                            .border(1.dp, color = Color.White, CircleShape)
 
-                )
+                    )
+                }
                 Spacer(Modifier.width(1.dp))
                 //////description du la photo////
 
@@ -180,12 +209,14 @@ fun SectionBleue(){
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
                 )
-                Text(
-                    "Emmanuel Zipar",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                )
+                if (user.value != null){
+                    Text(
+                        text = user.value!!.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                    )
+                }
                 //Spacer(Modifier.height(5.dp))
             }
 
@@ -231,14 +262,16 @@ fun SectionBleue(){
             Icon(
                 Icons.Rounded.LocationOn,
                 contentDescription = stringResource(R.string.location),
-                tint = Orange
+                tint = secondaryColor
             )
-            Text(
-                "Douala,Nyalla Rue225",
-                fontWeight = FontWeight.Normal,
-                fontSize = 11.sp,
-                color = Color.White,
-            )
+            if (user.value != null){
+                Text(
+                    text = user.value!!.quarter.data.attributes.name,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 11.sp,
+                    color = Color.White,
+                )
+            }
 
         }
     }

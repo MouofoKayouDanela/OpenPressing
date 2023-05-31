@@ -247,9 +247,5 @@ fun Default(navController: NavHostController) {
                publier = "15/08/2022")),
            navController = navController
        )
-
-
-
-
     }
 }

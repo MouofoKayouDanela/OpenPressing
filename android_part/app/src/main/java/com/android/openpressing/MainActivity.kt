@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,11 +17,13 @@ import com.android.openpressing.client_module.presentation.agence.ServicesNLaund
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
 import com.android.openpressing.client_module.presentation.besoin.DetailBesoin
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
+import com.android.openpressing.client_module.presentation.client.LesAnnonces
 import com.android.openpressing.client_module.presentation.client.MySMS
-import com.android.openpressing.client_module.presentation.client.OfferScreen
 import com.android.openpressing.client_module.presentation.module.*
+import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.client_module.presentation.profile.EditerProfil
+import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
@@ -33,11 +37,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            var id by remember { mutableStateOf<Int?>(null) }
 
             //val pressingModel : PressingViewModel = viewModel()
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Splash.road){
+                NavHost(navController = navController, startDestination = Screen.Login.road){
                     composable(Screen.Login.road){ LoginnScreen(navController) }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
@@ -45,16 +50,23 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
                     composable(Screen.Home.road){
                         ScaffoldSample(navController)
+
+                        //pressingModel.getAll()
+
+                       /* CardWithContent(
+                        pressingState=pressingModel.pressingState.collectAsState().value
+                        )*/
+
                     }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
-                    composable(Screen.EditScreen.road){ EditerProfil(navController) }
+                    composable(Screen.EditScreen.road){ EditionView() }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
                     composable(Screen.AddService.road){ ServicesNLaundriesManager(navController) }
                     composable(Screen.ListBesoin.road){ Default(navController) }
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
                     composable(Screen.ListOffer.road){ OfferScreen(navController) }
-                  //  composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
+                    composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
                     composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                     composable(Screen.Parametre .road){ MyScreenPreview(navController) }
                     composable(Screen.ClientRequirement.road) { ClRequirementConsulting( navController) }
