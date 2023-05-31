@@ -69,7 +69,7 @@ fun Detal(
         clientViewModel.findAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
-    }*/
+    }
 
     if (Laundries.value != null){
 

@@ -51,8 +51,5 @@ class UserViewModel @Inject constructor(
     }. flowOn(Dispatchers.IO)
 
 
-    fun fineAll():Flow<List<User>> = flow {
-        emit(userRepository.getAll())
-    }. flowOn(Dispatchers.IO)
 
 }

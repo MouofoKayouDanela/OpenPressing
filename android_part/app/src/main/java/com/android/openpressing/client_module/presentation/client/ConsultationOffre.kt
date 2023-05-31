@@ -143,7 +143,7 @@ fun AppBar() { //navController: NavHostController
                             .padding( horizontal = 25.dp)
                     ) {
                         Text(
-                            text = agency.pressing.nom,
+                            text ="...",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -168,7 +168,7 @@ fun AppBar() { //navController: NavHostController
         }
     }
 
-}
+
 
 @Composable
 fun ContainerBox(
@@ -321,7 +321,7 @@ fun BottomBar(navController: NavHostController) {
             })
 
                 Text(
-                    text = offer.lingee.nom +"(FCFA)",
+                    text = "jui",   //offer.lingee.nom +"(FCFA)"
                     color = Color.DarkGray,
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(end = 5.dp)
@@ -335,7 +335,7 @@ fun BottomBar(navController: NavHostController) {
                 .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically){
                 Text(
-                    text =offer.unitPrice.toString() ,
+                    text = "offre", //offer.unitPrice.toString()
                     color = Color.DarkGray,
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.width(75.dp)

@@ -219,7 +219,7 @@ fun ListBox(navController: NavHostController,
                             .clip(CircleShape)
                             .size(130.dp)
                             .border(1.dp, color = primaryColor, CircleShape),
-                        contentScale = ContentScale.FillHeight
+                        contentScale = ContentScale.Crop
                     )
 
                 ///////////icone de modification de l'image////////////

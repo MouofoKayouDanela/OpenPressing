@@ -63,7 +63,7 @@ fun MyNeed(
         clientViewModel.findAll()
             .flowOn(Dispatchers.IO)
             .collect{ clients.value = it }
-    }*/
+    }
 
     if (clients.value != null){
 

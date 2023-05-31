@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,7 +32,6 @@ import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
-import com.android.openpressing.ui.theme.black
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.client.state.ClientState
@@ -82,79 +79,72 @@ fun LoginnScreen(
                     ),
                 contentScale = ContentScale.Fit,
             )
-            LazyColumn{
-                items(1){
-                    Column(
-                        verticalArrangement = Arrangement.SpaceAround,
-                        horizontalAlignment = Alignment.Start,
-                        modifier = Modifier
-                            .weight(7f)
-                    ) {
-                        Text(
-                            text = "", style = MaterialTheme.typography.h4.copy(
-                                fontWeight = FontWeight.Bold
-                            )
+            Column(
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .weight(7f)
+            ) {
+                Text(
+                    text = "", style = MaterialTheme.typography.h4.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                AppTextField(
+                    onValueChange = {
+                        email = it
+                    },
+                    hint = "Email Address",
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Email,
+                            contentDescription = "Email Field",
                         )
-                        AppTextField(
-                            onValueChange = {
-                                email = it
-                            },
-
-                            hint = "Email Address",
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Outlined.Email,
-                                    contentDescription = "Email Field",
-                                    tint=Color.Black
-                                )
-
-                            },
-
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done,
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = { focusManager.clearFocus() }
-                            ),
-                            value = email,
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
+                    ),
+                    value = email,
+                )
+                AppTextField(
+                    onValueChange = {
+                        password = it
+                    },
+                    hint = "Password",
+                    obscure = passwordObscure,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Lock,
+                            contentDescription = "Password Field",
                         )
-                        AppTextField(
-                            onValueChange = {
-                                password = it
-                            },
-                            hint = "Password",
-                            obscure = passwordObscure,
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Outlined.Lock,
-                                    contentDescription = "Password Field",
-                                    tint=Color.Black
-                                )
-                            },
-                            trailingIcon = {
-                                Icon(painter = if (passwordObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
-                                    id = R.drawable.ic_outline_visibility_off
-                                ), contentDescription = "Show Password", modifier = Modifier.clickable {
-                                    passwordObscure = !passwordObscure
-                                }
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Done,
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = { focusManager.clearFocus() }
-                            ),
-                            value = password,
-                        )
-                        TextButton(
-                            onClick = {
-                                navController.navigate(Screen.ForgotPassword.road)
-                            },
-                            modifier = Modifier.align(Alignment.End)
-                        ) {
-                            Text("Forgot Password ?")
+                    },
+                    trailingIcon = {
+                        Icon(painter = if (passwordObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
+                            id = R.drawable.ic_outline_visibility_off
+                        ), contentDescription = "Show Password", modifier = Modifier.clickable {
+                            passwordObscure = !passwordObscure
                         }
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
+                    ),
+                    value = password,
+                )
+                TextButton(
+                    onClick = {
+                        navController.navigate(Screen.ForgotPassword.road)
+                    },
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text("Forgot Password ?")
+                }
 
 
                 ////////////Variable pour la recuperation du user////////////////
@@ -162,10 +152,10 @@ fun LoginnScreen(
                 val users = remember(key1 = allUserKey) {
                     mutableStateOf<List<User>?>(null)
                 }
-                LaunchedEffect(key1 = allUserKey){
+                LaunchedEffect(key1 = allUserKey) {
                     userViewModel.fineAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             users.value = it
                         }
                 }
@@ -175,10 +165,10 @@ fun LoginnScreen(
                 val clients = remember(key1 = allClientKey) {
                     mutableStateOf<List<ClientData>?>(null)
                 }
-                LaunchedEffect(key1 = allClientKey){
+                LaunchedEffect(key1 = allClientKey) {
                     clientViewModel.fineAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             clients.value = it
                         }
                 }
@@ -188,54 +178,57 @@ fun LoginnScreen(
                 val owners = remember(key1 = allOwnerKey) {
                     mutableStateOf<List<OwnerData>?>(null)
                 }
-                LaunchedEffect(key1 = allOwnerKey){
+                LaunchedEffect(key1 = allOwnerKey) {
                     ownerViewModel.fineAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             owners.value = it
                         }
                 }
 
-                        Button(
-                            onClick = {
+                Button(
+                    onClick = {
 
-                                val auth=Firebase.auth
-                                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                                        task -> showMessage = if(task.isSuccessful){
+                        val auth = Firebase.auth
+                        auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+                                showMessage = if (task.isSuccessful) {
                                     Log.d(ContentValues.TAG, "signInWithEmail:success")
 
-                            if (users.value != null) {
-                                val user = users.value!!.find {
-                                    it.email == email
-                                }
-                                if(user != null){
-                                    if(
-                                        clients.value != null
-                                        &&
-                                        owners.value != null
-                                    ){
-                                        Log.i("", "${clients.value}")
-                                        Log.i("", "${owners.value}")
-                                        if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
-                                            getConnectedUserId(user.id!!)
-                                            navController.navigate(Screen.Home.road)
+                                    if (users.value != null) {
+                                        val user = users.value!!.find {
+                                            it.email == email
                                         }
-                                        else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
-                                            getConnectedUserId(user.id!!)
-                                            navController.navigate(Screen.ClientRequirement.road)
+                                        if (user != null) {
+                                            if (
+                                                clients.value != null
+                                                &&
+                                                owners.value != null
+                                            ) {
+                                                Log.i("", "${clients.value}")
+                                                Log.i("", "${owners.value}")
+                                                if (clients.value!!.any { it.attributes.user.data.id == user.id }) {
+                                                    getConnectedUserId(user.id!!)
+                                                    navController.navigate(Screen.Home.road)
+                                                } else if (owners.value!!.any { it.attributes.user.data.id == user.id }) {
+                                                    getConnectedUserId(user.id!!)
+                                                    navController.navigate(Screen.ClientRequirement.road)
+                                                }
+                                            }
+
                                         }
+
                                     }
-
-                                        }
-
+                                    false
+                                } else {
+                                    Log.w(
+                                        ContentValues.TAG,
+                                        "signInWithEmail:failure",
+                                        task.exception
+                                    )
+                                    true
+                                }
                             }
-                            false
-                            }
-                            else{
-                                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                                true
-                            }
-                        }
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -246,22 +239,22 @@ fun LoginnScreen(
                         text = "Se connecter", style = MaterialTheme.typography.body1
                     )
                 }
-                if(showMessage){
+                if (showMessage) {
                     AlertDialog(onDismissRequest = { showMessage = false },
-                    title = {Text("Authentification invalide")},
-                    text = {
-                        Text("Email ou mot de passe incorrect")
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = { showMessage=false },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.Blue
-                            )
-                        ) {
-                            Text("OK")
+                        title = { Text("Authentification invalide") },
+                        text = {
+                            Text("Email ou mot de passe incorrect")
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = { showMessage = false },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.Blue
+                                )
+                            ) {
+                                Text("OK")
+                            }
                         }
-                    }
                     )
                 }
                 Row(

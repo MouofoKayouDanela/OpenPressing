@@ -125,15 +125,22 @@ fun ScaffoldSample(
 
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     viewModel.getAll()
+    var quarterId by remember { mutableStateOf(0) }
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar =  {SectionBleue(connectedClientId, )},
+        topBar =  {
+            SectionBleue(
+                connectedClientId,
+                getConnectedUserQuarter = { quarterId = it }
+            )
+        },
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(
             innerPadding = innerPadding,
             state=viewModel.availablePressing.collectAsState().value,
+            quarterId = quarterId,
             navController
         )
                   },
@@ -144,6 +151,7 @@ fun ScaffoldSample(
 @Composable
 fun SectionBleue(
    connectedClientId: Int,
+   getConnectedUserQuarter: (Int) -> Unit,
    userViewModel: UserViewModel = hiltViewModel(),
 ){
 
@@ -194,9 +202,10 @@ fun SectionBleue(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(40.dp)
-                            .border(1.dp, color = Color.White, CircleShape)
+                            .size(45.dp)
+                            .border(1.dp, color = Color.White, CircleShape),
 
+                        contentScale = ContentScale.Crop
                     )
                 }
                 Spacer(Modifier.width(1.dp))
@@ -204,7 +213,7 @@ fun SectionBleue(
 
                 Text(
                     " Hello, ",
-                    fontSize = 12.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
                 )
@@ -265,11 +274,12 @@ fun SectionBleue(
             )
             if (user.value != null){
                 Text(
-                    text = user.value!!.quarter.data.attributes.name,
+                    text = user.value!!.quarter.name,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 11.sp,
+                    fontSize = 13.sp,
                     color = Color.White,
                 )
+                getConnectedUserQuarter(user.value!!.quarter.id!!)
             }
 
         }
@@ -280,6 +290,7 @@ fun SectionBleue(
 @Composable
 fun CardWithContent(
     pressing: PressingData,
+    quarterId: Int,
     navController: NavHostController,
     viewModel : AgencyViewModel = hiltViewModel(),
 
@@ -355,7 +366,6 @@ fun CardWithContent(
                             contentDescription = "position",
                             tint = Orange
                         )
-                        val quarterId = 2
                         var agencies by remember(quarterId) { mutableStateOf<MutableList<AgencyData>?>(null) }
                         LaunchedEffect(key1 = quarterId) {
                             viewModel.findAll()
@@ -462,6 +472,7 @@ fun CardWithContent(
     fun CardContent(
         innerPadding: PaddingValues,
         state : PressingState,
+        quarterId: Int,
         navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
@@ -481,7 +492,11 @@ fun CardWithContent(
                     searchQuery = searchQuery,
                     pressings =state.data
                 )) { pressing ->
-                    CardWithContent(pressing,navController)
+                    CardWithContent(
+                        pressing,
+                        quarterId,
+                        navController
+                    )
                 }
             }
         }
