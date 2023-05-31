@@ -74,7 +74,7 @@ fun EditerProfil(navController: NavHostController
             ) {
 
                 item {
-                    ListBox(onImageSelected = {imageUri -> bipmap = imageUri})
+                    ListBox( navController,onImageSelected ={imageUri -> bipmap = imageUri})
                 }
             }
         },
@@ -140,7 +140,9 @@ fun FixBare(navController: NavHostController) {
 }
 
 @Composable
-fun ListBox(onImageSelected: (Uri) -> Unit) {
+fun ListBox(navController: NavHostController,
+    onImageSelected: (Uri) -> Unit
+) {
     var name by remember {
         mutableStateOf("")
     }

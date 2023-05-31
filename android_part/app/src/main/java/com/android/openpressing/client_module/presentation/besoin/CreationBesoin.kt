@@ -86,7 +86,7 @@ data class linge(
 
 
 @Composable
-fun AddRequirementScreen(navController: NavHostController) {
+fun AddRequirement(navController: NavHostController) {
 
     val scrollState = rememberLazyListState()
     Scaffold(

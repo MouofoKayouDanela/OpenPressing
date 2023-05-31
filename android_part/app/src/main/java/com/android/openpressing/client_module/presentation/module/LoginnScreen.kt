@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,6 +34,7 @@ import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.ui.theme.black
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.client.state.ClientState
@@ -79,72 +82,79 @@ fun LoginnScreen(
                     ),
                 contentScale = ContentScale.Fit,
             )
-            Column(
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .weight(7f)
-            ) {
-                Text(
-                    text = "", style = MaterialTheme.typography.h4.copy(
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                AppTextField(
-                    onValueChange = {
-                        email = it
-                    },
-                    hint = "Email Address",
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Email,
-                            contentDescription = "Email Field",
+            LazyColumn{
+                items(1){
+                    Column(
+                        verticalArrangement = Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .weight(7f)
+                    ) {
+                        Text(
+                            text = "", style = MaterialTheme.typography.h4.copy(
+                                fontWeight = FontWeight.Bold
+                            )
                         )
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    value = email,
-                )
-                AppTextField(
-                    onValueChange = {
-                        password = it
-                    },
-                    hint = "Password",
-                    obscure = passwordObscure,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Lock,
-                            contentDescription = "Password Field",
+                        AppTextField(
+                            onValueChange = {
+                                email = it
+                            },
+
+                            hint = "Email Address",
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Email,
+                                    contentDescription = "Email Field",
+                                    tint=Color.Black
+                                )
+
+                            },
+
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done,
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }
+                            ),
+                            value = email,
                         )
-                    },
-                    trailingIcon = {
-                        Icon(painter = if (passwordObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
-                            id = R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Password", modifier = Modifier.clickable {
-                            passwordObscure = !passwordObscure
+                        AppTextField(
+                            onValueChange = {
+                                password = it
+                            },
+                            hint = "Password",
+                            obscure = passwordObscure,
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Lock,
+                                    contentDescription = "Password Field",
+                                    tint=Color.Black
+                                )
+                            },
+                            trailingIcon = {
+                                Icon(painter = if (passwordObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
+                                    id = R.drawable.ic_outline_visibility_off
+                                ), contentDescription = "Show Password", modifier = Modifier.clickable {
+                                    passwordObscure = !passwordObscure
+                                }
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                imeAction = ImeAction.Done,
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }
+                            ),
+                            value = password,
+                        )
+                        TextButton(
+                            onClick = {
+                                navController.navigate(Screen.ForgotPassword.road)
+                            },
+                            modifier = Modifier.align(Alignment.End)
+                        ) {
+                            Text("Forgot Password ?")
                         }
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    value = password,
-                )
-                TextButton(
-                    onClick = {
-                        navController.navigate(Screen.ForgotPassword.road)
-                    },
-                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    Text("Forgot Password ?")
-                }
 
 
                 ////////////Variable pour la recuperation du user////////////////
@@ -186,13 +196,13 @@ fun LoginnScreen(
                         }
                 }
 
-                Button(
-                    onClick = {
+                        Button(
+                            onClick = {
 
-                        val auth=Firebase.auth
-                        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                            task -> showMessage = if(task.isSuccessful){
-                            Log.d(ContentValues.TAG, "signInWithEmail:success")
+                                val auth=Firebase.auth
+                                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                                        task -> showMessage = if(task.isSuccessful){
+                                    Log.d(ContentValues.TAG, "signInWithEmail:success")
 
                             if (users.value != null) {
                                 val user = users.value!!.find {
@@ -216,7 +226,7 @@ fun LoginnScreen(
                                         }
                                     }
 
-                                }
+                                        }
 
                             }
                             false

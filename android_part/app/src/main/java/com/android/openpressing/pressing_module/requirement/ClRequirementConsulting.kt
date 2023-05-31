@@ -27,6 +27,7 @@ import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.user.User
+import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryPrimeColor
@@ -56,7 +57,7 @@ fun ClRequirementConsulting(
     requirementViewModel.getAll()
 
     Scaffold(
-            topBar = { TopAppBar() } ,
+            topBar = { TopAppBar( navController) } ,
             content = { innerPadding ->
                 RequirementList(
                         innerPadding = innerPadding,
@@ -77,7 +78,7 @@ fun ClRequirementConsulting(
 }
 
 @Composable
-private fun TopAppBar() {
+private fun TopAppBar( navController: NavController) {
     Column {
         Row(
                 Modifier
@@ -88,7 +89,7 @@ private fun TopAppBar() {
                             )
                     )
                     .fillMaxWidth()
-                    .background(primaryColor)
+                    .background(Purple500)
                     .padding(
                             horizontal = 8.dp ,
                             vertical = 4.dp
@@ -96,7 +97,9 @@ private fun TopAppBar() {
                 verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                    onClick = { },
+                    onClick = {
+                         navController.navigate(Screen.AddService.road)
+                    },
                     modifier = Modifier.weight(0.1f)
             ) {
                 Icon(

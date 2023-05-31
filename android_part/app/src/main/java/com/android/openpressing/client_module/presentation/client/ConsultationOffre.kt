@@ -124,12 +124,46 @@ fun AppBar() { //navController: NavHostController
                     )
                 }
 
-                Text(
-                    text = "Ads",
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
+
+                }
+
+                ////////////Image +nom//////////////
+                Row(
+                    modifier = Modifier
+                        .padding( horizontal = 25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+
+                    //Spacer(Modifier.width(1.dp))
+                    //////description du la photo////
+                    Column(
+                        verticalArrangement  =Arrangement.spacedBy(10.dp),
+                        horizontalAlignment=Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .padding( horizontal = 25.dp)
+                    ) {
+                        Text(
+                            text = agency.pressing.nom,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                        )
+                        Spacer(Modifier.height(5.dp))
+                        ////logo de location/////
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            Text(
+                                "",
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 11.sp,
+                                color = Color.White,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -248,6 +282,14 @@ fun BottomBar(navController: NavHostController) {
         elevation = 2.dp,
         backgroundColor = blanc
     ) {
+        Column(
+            modifier=Modifier.weight(0.5f)
+        ){
+            Row( modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+                        ){
 
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
@@ -278,15 +320,32 @@ fun BottomBar(navController: NavHostController) {
                 selectedIndex.value = 2
             })
 
-        BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person, "")
-        },
-            label = { Text(text = "Profile") },
-            selected = (selectedIndex.value == 3),
-            onClick = {
-                navController.navigate(Screen.Profile.road)
-                selectedIndex.value = 3
-            })
+                Text(
+                    text = offer.lingee.nom +"(FCFA)",
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(end = 5.dp)
+
+                )
+            }
+        }
+        Column(modifier=Modifier.weight(0.5f)){
+            Row( modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text =offer.unitPrice.toString() ,
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.width(75.dp)
+
+                )
+            }
+        }
+
+
+
     }
 }
 

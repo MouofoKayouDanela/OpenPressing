@@ -21,6 +21,8 @@ import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.module.*
 import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
+import com.android.openpressing.client_module.presentation.profile.EditerProfil
+import com.android.openpressing.client_module.presentation.profile.MyScreen
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
@@ -86,8 +88,9 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                         )
                     }
-                    composable(Screen.ConsulterBesoin.road){ MyNeed()}
+                    composable(Screen.ConsulterBesoin.road){ MyNeed(navController)}
                     composable(Screen.DetailBesoin.road){ Detal()}
+
                 }
             }
         }

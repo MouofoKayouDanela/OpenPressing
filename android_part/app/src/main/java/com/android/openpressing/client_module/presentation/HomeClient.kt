@@ -443,7 +443,7 @@ fun CardWithContent(
                 Icon(
                     imageVector = Icons.Default.Sort,
                     contentDescription = stringResource(R.string.editer),
-                    tint = Purple,
+                    tint = Purple500,
                     modifier = Modifier
                         .size(height = 30.dp, width = 40.dp)
                         .background(Color.White)
@@ -532,7 +532,7 @@ private fun fetchPressings(
                 label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
-                    navController.navigate(Screen.AddService.road)
+                    navController.navigate(Screen.AddBesoin.road)
                     selectedIndex.value = 2
                 })
 
