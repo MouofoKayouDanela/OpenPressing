@@ -3,7 +3,7 @@ package com.android.openpressing.viewmodels.pressing
 import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.repositories.pressing.PressingRepository
 import com.android.openpressing.viewmodels.services.state.LaundryState

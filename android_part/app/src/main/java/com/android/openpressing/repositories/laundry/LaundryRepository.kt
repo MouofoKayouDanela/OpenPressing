@@ -1,8 +1,8 @@
 package com.android.openpressing.repositories.laundry
 
 import com.android.openpressing.data.OpenPressingStrapiApi
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.laundry.LaundryData
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.LaundryData
 import javax.inject.Inject
 
 class LaundryRepository @Inject constructor(

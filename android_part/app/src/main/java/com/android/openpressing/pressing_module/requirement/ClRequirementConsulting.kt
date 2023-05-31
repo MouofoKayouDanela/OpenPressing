@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.data.models.client.Client
-import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
 import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.service.Service

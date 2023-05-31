@@ -340,6 +340,7 @@ fun createUser(
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                     task ->if(task.isSuccessful){
+
                         Log.d(TAG,"createUserWithEmail:success")
                         navController.navigate(Screen.Login.road)
             }

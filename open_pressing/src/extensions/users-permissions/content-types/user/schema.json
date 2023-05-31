@@ -73,22 +73,6 @@
     "surname": {
       "type": "string"
     },
-    "birthday": {
-      "type": "date"
-    },
-    "gender": {
-      "type": "string",
-      "unique": false,
-      "required": true
-    },
-    "phoneNumber": {
-      "type": "string",
-      "required": true,
-      "minLength": 9
-    },
-    "registerDate": {
-      "type": "date"
-    },
     "profilePicture": {
       "type": "media",
       "multiple": false,

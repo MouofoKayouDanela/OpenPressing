@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -42,7 +43,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
 import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency.AgencyData
-import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.quarter.QuarterData
@@ -349,6 +350,26 @@ fun CardWithContent(
                                 )
                             }
                         }
+                    }
+                }
+                Column(){
+                    Row(){
+                        Image(
+                            painter= painterResource(R.drawable.baseline_directions_bike_24),
+                            contentDescription="livraison ",
+
+                        )
+                    }
+                    Row(){
+                        Text(
+                            text ="Free Delevry",
+                            modifier=Modifier.padding(3.dp),
+                            color = black,
+                            style = MaterialTheme.typography.body1.copy(
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                     }
                 }
 

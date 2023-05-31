@@ -686,9 +686,7 @@ fun ListBox(navController: NavHostController,
         verticalAlignment = Alignment.Bottom
     ){
         TextButton(
-            onClick = {
-                navController.navigate(Screen.Login.road)
-            },
+            onClick = { /*TODO*/ },
             shape = CircleShape
         ) {
             Icon(
