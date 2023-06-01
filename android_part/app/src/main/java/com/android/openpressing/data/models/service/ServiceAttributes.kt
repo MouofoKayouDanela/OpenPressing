@@ -3,14 +3,14 @@ package com.android.openpressing.data.models.service
 import com.android.openpressing.data.models.service_category.ServiceCategory
 import com.android.openpressing.data.models.agency_service.AgencyServices
 import com.android.openpressing.data.models.service_type.ServiceType
-import com.android.openpressing.data.models.utils.images.ImageInfoData
+import com.android.openpressing.data.models.utils.images.ImageInformation
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 data class ServiceAttributes(
     var category: ServiceCategory,
     var type: ServiceType,
-    var serviceImage: ImageInfoData,
+    var serviceImage: ImageInformation,
     var agency_services: AgencyServices? = null,
     @SerializedName("createdAt") var created_at: Date = Date() ,
     @SerializedName("updateAt") var updated_at: Date = Date() ,
