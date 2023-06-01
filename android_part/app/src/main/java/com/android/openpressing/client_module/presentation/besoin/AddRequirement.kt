@@ -1,58 +1,76 @@
 package com.android.openpressing.client_module.presentation.besoin
 
 import android.annotation.SuppressLint
+import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.agence.BodyList
-import com.android.openpressing.client_module.presentation.agence.TopNavBar
-import com.android.openpressing.client_module.presentation.agence.utils.services
-import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundryScreen
 import com.android.openpressing.client_module.presentation.besoin.component.ChooseServicesScreen
-import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Laundry
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
 import com.android.openpressing.ui.theme.*
-import com.android.openpressing.ui.theme.blanc
-import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.laundries.LaundryViewModel
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundriesScreen
+import com.android.openpressing.data.models.laundry_category.laundry.LaundryData
+import com.android.openpressing.data.models.service.ServiceData
+import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import com.android.openpressing.viewmodels.requirement.RequirementViewModel
+import com.android.openpressing.viewmodels.services.ServiceViewModel
+import com.android.openpressing.viewmodels.services.state.LaundryState
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
 
 
-@Composable
-fun AddRequirementScreen(navController: NavHostController){
 
-    var laundries by remember {
+@Composable
+fun AddRequirementScreen( requirementViewModel: RequirementViewModel){
+
+
+    val laundryviewModel: LaundryViewModel= hiltViewModel()
+    val  serviceViewModel: ServiceViewModel= hiltViewModel()
+
+
+    laundryviewModel.getAll()
+    serviceViewModel.getAll()
+
+    v: LaundryState
+    when(state){
+        is  LaundryState.Success.LaundriesSuccess ->{
+
+            var laundries= state.data
+
+        }
+        else ->{}
+
+    }
+
+
+
+
+    var lauundries by remember {
         mutableStateOf( listOf(
             Laundry("Pantalon jean", Icons.Rounded.LocalLaundryService) ,
             Laundry("Culotte jean", Icons.Rounded.LocalLaundryService) ,
@@ -75,51 +93,51 @@ fun AddRequirementScreen(navController: NavHostController){
             Service("Blanchissage" , Icons.Rounded.Wash) ,
             Service("Amidonnage" , Icons.Rounded.Wash)
         ))
-        }
+    }
 
-        Scaffold(
-            topBar = {
-               AppBar(navController)
-            },
-            content = { innerPadding ->
-                ContentCardlist(
-                    innerPadding = innerPadding,
-                    laundries = laundries,
-                    services = services,
-                    updateLaundryData = { laundries = it },
-                    updateServiceData = { services = it }
-                    )
-    },
-            bottomBar ={
-              Row(modifier = Modifier
-                  .background(color = Color.White)
-                  .padding(16.dp))  {
-                    FloatingActionButton(
-                        onClick = {
-                           navController.navigate( Screen.ConsulterBesoin.road)
-                        },
-                        backgroundColor = Purple500,
-                        contentColor = Color.White,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .fillMaxWidth()
+    Scaffold(
+        topBar = {
+            AppBar()
+        },
+        content = { innerPadding ->
+            ContentCardlist(
+                innerPadding = innerPadding,
+                laundries = laundries,
+                services = services,
+                updateLaundryData = { laundries = it },
+                updateServiceData = { services = it }
+            )
+        },
+        bottomBar ={
+            Row(modifier = Modifier
+                .background(color = Color.White)
+                .padding(16.dp))  {
+                FloatingActionButton(
+                    onClick = {
+                        // navController.navigate( Screen.ConsulterBesoin.road)
+                    },
+                    backgroundColor = Purple500,
+                    contentColor = Color.White,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .fillMaxWidth()
 
-                    ) {
-                        Text(
-                            text = "Add requirement",
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 22.sp
-                            )
+                ) {
+                    Text(
+                        text = "Add requirement",
+                        style = MaterialTheme.typography.body1.copy(
+                            fontSize = 22.sp
                         )
-                    }
+                    )
                 }
+            }
 
-            },
-            floatingActionButtonPosition = FabPosition.Center,
-            backgroundColor = Color.White
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        backgroundColor = Color.White
 
 
-        )
+    )
 
 
 
@@ -129,7 +147,7 @@ fun AddRequirementScreen(navController: NavHostController){
 }
 
 @Composable
-fun AppBar(navController: NavHostController,) {
+fun AppBar() {
 
     Box(
         modifier = Modifier
@@ -145,41 +163,41 @@ fun AppBar(navController: NavHostController,) {
             .background(color = Purple500)
     ) {
         Column {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-
-        ){
             Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick ={
-                     navController.navigate(Screen.Home.road)
-                }, modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(0.2f)) {
-
-                    Icon(
-                        Icons.Rounded.ArrowBackIos,
-                        contentDescription =null,
-                    )
-                }
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Text(text ="Besoin",
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .weight(0.8f),
-                    color = Color.White,
+                    .padding(horizontal = 15.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+
+            ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick ={
+                        //navController.navigate(Screen.Home.road)
+                    }, modifier = Modifier
+                        .padding(start = 8.dp)
+                        .weight(0.2f)) {
+
+                        Icon(
+                            Icons.Rounded.ArrowBackIos,
+                            contentDescription =null,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Text(text ="Besoin",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.8f),
+                        color = Color.White,
 
 
-                )
+                        )
 
+                }
             }
-        }
         }
     }
 
@@ -195,6 +213,7 @@ fun ContentCardlist(
     updateLaundryData: (List<Laundry>) -> Unit,
     updateServiceData: (List<Service>) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var showAddDialog1 by remember { mutableStateOf(false) }
     var showAddDialog2 by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -228,7 +247,7 @@ fun ContentCardlist(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
 
-            ) {
+                ) {
 
 
                 Icon(
@@ -252,30 +271,35 @@ fun ContentCardlist(
             }
             if (showAddDialog1) {
 
-                ChooseLaundryScreen(
+                ChooseLaundriesScreen(
                     updateDialogState = { showAddDialog1 = it },
-                    datas = fetchDatas1(
-                        laundries = laundries
+                    Laundries= fetchDatas1(
+                        laundries=laundries
+
                     )
                 ) {
                     val updatedLaundries = mutableListOf<Laundry>()
-                    it.forEach { updatedData ->
+                    it.forEach { updatedLaundry ->
                         updatedLaundries.add(
-                          Laundry   (
-                                updatedData.name,
-                                updatedData.icon
+                            Laundry   (
+                                updatedLaundry.name,
+                                updatedLaundry.icon
                             )
                         )
                     }
                     updateLaundryData(updatedLaundries .toList())
                 }
             }
+
         }
 
-        items(fetchDatas1(
-            laundries = laundries
-        )){
-                data ->
+        items(
+            fetchDatas1(
+                laundries = laundries
+            )){
+
+
+                Laundry ->
 
             Card(       modifier = Modifier
                 .fillMaxWidth()
@@ -297,17 +321,13 @@ fun ContentCardlist(
                     )
                 )
                 .background(color = secondaryPrimeColor)
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onDoubleTap = {
-                            Toast
-                                .makeText(context, "xcjsjej gj", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    )
-                } ,
+                ,
                 onClick = {
-                    expandedState = !expandedState
+                    val toast = Toast
+                        .makeText(context, "xcjsjej gj", Toast.LENGTH_LONG)
+
+                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
 
                 },
                 elevation =10.dp
@@ -335,7 +355,7 @@ fun ContentCardlist(
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween) {
-                                data.icon?.let {
+                                Laundry.icon?.let {
                                     Icon(
                                         it,
                                         contentDescription = null,
@@ -344,23 +364,25 @@ fun ContentCardlist(
                                     )
                                 }
                                 Text(
-                                    text = data.name,
+                                    text = Laundry.name,
 
-                                )
+                                    )
 
                             }
                         }
                         Column(
                             horizontalAlignment = Alignment.End,
                             verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.weight(0.4f).padding(end=8.dp)
+                            modifier = Modifier
+                                .weight(0.4f)
+                                .padding(end = 8.dp)
 
 
                         ) {
                             Row (verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(20.dp)
 
-                                    ){
+                            ){
 
                                 IconButton(
                                     onClick = { value++ },
@@ -382,7 +404,7 @@ fun ContentCardlist(
                                     "$value",
                                     fontWeight = FontWeight.Bold,
 
-                                )
+                                    )
                                 IconButton(
                                     onClick = {
                                         if (value > 0) {
@@ -408,215 +430,235 @@ fun ContentCardlist(
                             }
                         }
 
-                }
-                    if (expandedState ) {
+                    }
+
+
+                    Row(
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 4.dp,
+                                vertical = 16.dp
+                            )
+                            .clickable { showAddDialog2 = !showAddDialog2 },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            Icons.Rounded.Add,
+                            contentDescription = null,
+                            tint = Purple200,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .weight(0.2f)
+                        )
+                        Text(
+                            text = "Add services",
+                            color = Purple200,
+                            style = MaterialTheme.typography.body1.copy(
+                                fontSize = 18.sp
+                            ),
+                            modifier = Modifier
+                                .weight(0.8f)
+                        )
+                    }
+
+                    if (showAddDialog2) {
+
+                        ChooseServicesScreen(
+                            updateDialogState = { showAddDialog2 = it },
+                            Services = fetchDatas2(
+                                services = services
+                            )
+                        ) {
+                            val updatedServices = mutableListOf<Service>()
+                            it.forEach { updatedService ->
+                                updatedServices.add(
+                                    Service(
+                                        updatedService.name,
+                                        updatedService.icon
+                                    )
+                                )
+                            }
+                            updateServiceData(updatedServices.toList())
+                        }
+
+                    }
+
+                    fetchDatas2(services = services).forEach {
 
                         Row(
-                            modifier = Modifier
+                            Modifier
                                 .padding(
                                     horizontal = 4.dp,
-                                    vertical = 16.dp
+                                    vertical = 8.dp
                                 )
-                                .clickable { showAddDialog2 = !showAddDialog2 },
+                                .clickable { },
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.Center,
                         ) {
-                            Icon(
-                                Icons.Rounded.Add,
-                                contentDescription = null,
-                                tint = Purple200,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .weight(0.2f)
-                            )
+
+
+                            it.icon?.let {
+                                Icon(
+                                    it,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .weight(0.2f)
+                                )
+                            }
+
                             Text(
-                                text = "Add services",
-                                color = Purple200,
-                                style = MaterialTheme.typography.body1.copy(
-                                    fontSize = 18.sp
-                                ),
+                                text = it.name,
                                 modifier = Modifier
                                     .weight(0.8f)
                             )
-                        }
-                        if (showAddDialog2) {
+                            IconButton(
+                                onClick = {
 
-                            ChooseServicesScreen(
-                                updateDialogState = { showAddDialog2 = it },
-                                datas = fetchDatas2(
-                                    services = services
-                                )
-                            ) {
-                                val updatedService = mutableListOf<Service>()
-                                it.forEach { updatedData ->
-                                    updatedService.add(
+
+                                    val updatedServices = services.toMutableList()
+                                    updatedServices.remove(
                                         Service(
-                                            updatedData.name,
-                                            updatedData.icon
+                                            it.name,
+                                            it.icon
                                         )
                                     )
-                                }
-                                updateServiceData(updatedService.toList())
-                            }
-                        }
+                                    updateServiceData(updatedServices.toList())
+                                },
 
-                        fetchDatas2(services = services).forEach {
-
-                            Row(
-                                Modifier
-                                    .padding(
-                                        horizontal = 4.dp,
-                                        vertical = 8.dp
-                                    )
-                                    .clickable { },
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .weight(0.2f)
                             ) {
-
-                                data.icon?.let {
-                                    Icon(
-                                        it,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(48.dp)
-                                            .weight(0.2f)
-                                    )
-                                }
-
-                                Text(
-                                    text = data.name,
-                                    modifier = Modifier
-                                        .weight(0.8f)
+                                Icon(
+                                    Icons.Rounded.Delete,
+                                    contentDescription = null,
+                                    tint = Purple200
                                 )
-                                IconButton(
-                                    onClick = {
+                            }
 
-                                        val updatedServices = services.toMutableList()
-                                        updatedServices.remove(
-                                            Service(
-                                                data.name,
-                                                data.icon
-                                            )
+                        }
+                        Row(
+                            modifier = Modifier.padding(5.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Prix unitaire (FCFA):",
+                                fontWeight = FontWeight.W300,
+                                modifier = Modifier
+                                    .padding(start = 8.dp, end = 8.dp)
+                                    .clickable {
+
+                                        showDialog = !showDialog
+                                    }
+                            )
+                            if (!showDialog) {
+                                AlertDialog(
+
+                                    onDismissRequest = { showDialog= !showDialog},
+                                    title = { Text("Entrer le prix unitaire de votre linge") },
+                                    text = {
+                                        TextField(
+                                            value = texte,
+                                            onValueChange = { texte=it},
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                            singleLine = true,
+                                            placeholder = {Text(text = "000000")},
                                         )
-                                        updateServiceData(updatedServices.toList())
                                     },
 
-                                    modifier = Modifier
-                                        .size(24.dp)
-                                        .weight(0.2f)
-                                ) {
-                                    Icon(
-                                        Icons.Rounded.Delete,
-                                        contentDescription = null,
-                                        tint = Purple200
-                                    )
-                                }
+                                    confirmButton = {
+                                        Button(
+                                            onClick = {
+                                                defaultPrice = texte.toInt()
+                                                showDialog=!showDialog
+                                            },
+                                            modifier = Modifier.padding(end = 15.dp)
 
-                            }
-                            Row(
-                                modifier = Modifier.padding(5.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    "Prix unitaire (FCFA):",
-                                    fontWeight = FontWeight.W300,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                        .clickable {
 
-                                            showDialog = !showDialog
+                                        ) {
+                                            Text("Confirmer")
                                         }
-                                )
-                                    if (!showDialog) {
-                                        AlertDialog(
-
-                                            onDismissRequest = { showDialog= !showDialog},
-                                            title = { Text("Entrer le prix unitaire de votre linge") },
-                                            text = {
-                                                TextField(
-                                                    value = texte,
-                                                    onValueChange = { texte=it},
-                                                    modifier = Modifier
-                                                        .fillMaxWidth(),
-                                                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                    singleLine = true,
-                                                    placeholder = {Text(text = "000000")},
-                                                )
-                                            },
-
-                                            confirmButton = {
-                                                Button(
-                                                    onClick = {
-                                                        defaultPrice = texte.toInt()
-                                                        showDialog=!showDialog
-                                                    },
-                                                    modifier = Modifier.padding(end = 15.dp)
-
-
-                                                ) {
-                                                    Text("Confirmer")
-                                                }
-                                            },
-                                            dismissButton = {
-                                                Button(
-                                                    modifier = Modifier.padding(end = 55.dp),
-                                                    onClick = {
-                                                        showDialog=!showDialog
-                                                    }
-                                                ) {
-                                                    Text("Annuler")
-                                                }
+                                    },
+                                    dismissButton = {
+                                        Button(
+                                            modifier = Modifier.padding(end = 55.dp),
+                                            onClick = {
+                                                showDialog=!showDialog
                                             }
-                                        )
-                                    }
-                                val priceFormat = DecimalFormat("#,##0", DecimalFormatSymbols.getInstance())
-                                val formattedPrice = priceFormat.format(defaultPrice)
-
-                                Text(
-                                    formattedPrice,
-                                    fontWeight = FontWeight.W300,
-                                    modifier = Modifier
-                                        .padding(start = 8.dp, end = 8.dp)
-                                        .clickable {
-
-                                            showDialog = !showDialog
+                                        ) {
+                                            Text("Annuler")
                                         }
+                                    }
                                 )
-
                             }
+                            val priceFormat = DecimalFormat("#,##0", DecimalFormatSymbols.getInstance())
+                            val formattedPrice = priceFormat.format(defaultPrice)
+
+                            Text(
+                                formattedPrice,
+                                fontWeight = FontWeight.W300,
+                                modifier = Modifier
+                                    .padding(start = 8.dp, end = 8.dp)
+                                    .clickable {
+
+                                        showDialog = !showDialog
+                                    }
+                            )
 
                         }
+
                     }
 
+
                 }
+            }
+
+
+
+
         }
 
     }
 }
-}
+
 
 @SuppressLint("SuspiciousIndentation")
 fun fetchDatas1(
-            laundries: List<Laundry>
-        ) : List<Data> {
-            val datas : MutableList<Data> = mutableListOf()
-                    laundries.forEach {
-                        datas.add(Data(it.name , it.icon))
-                    }
-            return datas.toList()
+
+    state: LaundryState,
+    viewModel: LaundryViewModel
+) : List<LaundryData> {
+    viewModel.getAll()
+
+    var Laundries: MutableList<LaundryData>()
+    when(state){
+        is LaundryState.Success.LaundriesSuccess ->{
+            var laundries= state.data
+          laundries.forEach { Laundries.add(LaundryData(it.id, it.attributes))}
         }
+         else ->{
+             return
+         }
+    }
+
+    }
+
+
 
 fun fetchDatas2(
-   services:List<Service>
-) : List<Data> {
-    val datas : MutableList<Data> = mutableListOf()
-   services.forEach {
-        datas.add(Data(it.name   , it.icon     ))
-   }
-    return datas.toList()
+    services:List<ServiceData>
+) : List<ServiceData> {
+    val Services : MutableList<ServiceData> = mutableListOf()
+    services.forEach {
+        Services.add(ServiceData(it.id   , it.attributes    ))
+    }
+    return Services.toList()
 }
-
 
 
 
