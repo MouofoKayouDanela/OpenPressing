@@ -28,6 +28,7 @@ import com.android.openpressing.client_module.presentation.besoin.component.uil.
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
 import com.android.openpressing.ui.theme.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.key
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -214,6 +215,7 @@ fun ContentCardlist(
     updateServiceData: (List<Service>) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     var showAddDialog1 by remember { mutableStateOf(false) }
     var showAddDialog2 by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -272,13 +274,18 @@ fun ContentCardlist(
             if (showAddDialog1) {
 
                 ChooseLaundriesScreen(
+                ChooseLaundriesScreen(
                     updateDialogState = { showAddDialog1 = it },
+                    Laundries= fetchDatas1(
+                        laundries=laundries
+
                     Laundries= fetchDatas1(
                         laundries=laundries
 
                     )
                 ) {
                     val updatedLaundries = mutableListOf<Laundry>()
+                    it.forEach { updatedLaundry ->
                     it.forEach { updatedLaundry ->
                         updatedLaundries.add(
                             Laundry   (
@@ -290,6 +297,7 @@ fun ContentCardlist(
                     updateLaundryData(updatedLaundries .toList())
                 }
             }
+
 
         }
 
@@ -328,6 +336,11 @@ fun ContentCardlist(
 
                     toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
                     toast.show()
+                    val toast = Toast
+                        .makeText(context, "xcjsjej gj", Toast.LENGTH_LONG)
+
+                    toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 0)
+                    toast.show()
 
                 },
                 elevation =10.dp
@@ -356,6 +369,7 @@ fun ContentCardlist(
                             Row(verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween) {
                                 Laundry.icon?.let {
+                                Laundry.icon?.let {
                                     Icon(
                                         it,
                                         contentDescription = null,
@@ -365,6 +379,7 @@ fun ContentCardlist(
                                 }
                                 Text(
                                     text = Laundry.name,
+                                    text = Laundry.name,
 
                                     )
 
@@ -373,6 +388,9 @@ fun ContentCardlist(
                         Column(
                             horizontalAlignment = Alignment.End,
                             verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .weight(0.4f)
+                                .padding(end = 8.dp)
                             modifier = Modifier
                                 .weight(0.4f)
                                 .padding(end = 8.dp)

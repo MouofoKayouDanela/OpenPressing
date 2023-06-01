@@ -29,6 +29,7 @@ import com.android.openpressing.viewmodels.services.state.LaundryState
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChooseLaundriesScreen(
+fun ChooseLaundriesScreen(
 
     updateDialogState: (Boolean) -> Unit,
     Laundries:List<LaundryData>,

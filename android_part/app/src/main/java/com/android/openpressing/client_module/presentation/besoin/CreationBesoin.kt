@@ -296,8 +296,6 @@ fun LaundryLines(LaundryTitle:String,  @DrawableRes LaundryImage:Int ) {
             ) {
 
                 Image(painter = painterResource(id = R.drawable.plus), contentDescription = "plus")
-
-
             }
             Text(
                 "$value",
@@ -320,11 +318,7 @@ fun LaundryLines(LaundryTitle:String,  @DrawableRes LaundryImage:Int ) {
                     painter = painterResource(id = R.drawable.minus),
                     contentDescription = "minus"
                 )
-
-
             }
-
-
         }
         Row(
             modifier = Modifier.padding(5.dp),

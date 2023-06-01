@@ -44,6 +44,7 @@ import com.google.firebase.ktx.Firebase
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginnScreen(
+    getConnectedUserId: (Int) -> Unit,
     navController: NavHostController,
     userViewModel: UserViewModel = hiltViewModel(),
     ownerViewModel: OwnerViewModel = hiltViewModel(),
@@ -196,23 +197,30 @@ fun LoginnScreen(
 
                                                 }
 
-                                            }
-                                            userViewModel.getAll()
-                                            if (userState is UserState.Success.UsersSuccess) {
-                                                val user = userState.data.find {
-                                                    it.email == email && it.password == password
-                                                }
-                                                clientViewModel.getAll()
-                                                ownerViewModel.getAll()
-                                            }
-                                            false
-                                        } else {
-                                            Log.w(
-                                                ContentValues.TAG,
-                                                "signInWithEmail:failure",
-                                                task.exception
-                                            )
-                                            true
+                        val auth=Firebase.auth
+                        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                            task -> showMessage = if(task.isSuccessful){
+                            Log.d(ContentValues.TAG, "signInWithEmail:success")
+
+                            if (users.value != null) {
+                                val user = users.value!!.find {
+                                    it.email == email
+                                }
+                                if(user != null){
+                                    if(
+                                        clients.value != null
+                                        &&
+                                        owners.value != null
+                                    ){
+                                        Log.i("", "${clients.value}")
+                                        Log.i("", "${owners.value}")
+                                        if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
+                                            getConnectedUserId(user.id!!)
+                                            navController.navigate(Screen.Home.road)
+                                        }
+                                        else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
+                                            getConnectedUserId(user.id!!)
+                                            navController.navigate(Screen.ClientRequirement.road)
                                         }
                                     }
                             },

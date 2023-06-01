@@ -403,7 +403,7 @@ private fun FetchService(
     viewModel: ServiceViewModel = hiltViewModel()
 ) {
 
-    var service by remember(id) { mutableStateOf<Service?>(null) }
+    var service  by remember(id) { mutableStateOf<Service?>(null) }
 
     LaunchedEffect(key1 = id) {
         viewModel.getById(id)
