@@ -1,5 +1,6 @@
 package com.android.openpressing.client_module.presentation.besoin
 
+import android.annotation.SuppressLint
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
@@ -37,15 +38,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundriesScreen
+import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
 
 
-@Preview
+
 @Composable
-fun AddRequirementScreen(){
+fun AddRequirementScreen( requirementViewModel: RequirementViewModel){
 
     var laundries by remember {
         mutableStateOf( listOf(
@@ -604,6 +606,7 @@ fun ContentCardlist(
 }
 
 
+@SuppressLint("SuspiciousIndentation")
 fun fetchDatas1(
             laundries: List<Laundry>
         ) : List<Laundry> {

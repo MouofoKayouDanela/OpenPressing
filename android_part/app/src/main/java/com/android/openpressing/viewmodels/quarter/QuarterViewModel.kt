@@ -3,13 +3,15 @@ package com.android.openpressing.viewmodels.quarter
 import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.data.models.quarter.Quarter
+import com.android.openpressing.data.models.quarter.QuarterData
+import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.repositories.quarter.QuarterRepository
 import com.android.openpressing.viewmodels.quarter.state.QuarterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -44,7 +46,7 @@ class QuarterViewModel  @Inject constructor
 
     }
 
-    fun getById(id: Int) {
+    fun findById(id: Int) {
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 val quarter = quarterRepository.getById( id)
@@ -53,6 +55,12 @@ class QuarterViewModel  @Inject constructor
 
         }
     }
+    fun findAll(): Flow <MutableList<QuarterData> > = flow {
+        emit(quarterRepository.getAll())
+    }.flowOn(Dispatchers.IO)
+    fun getById(id: Int) : Flow<Quarter > = flow {
+        emit(quarterRepository .getById(id))
+    }.flowOn(Dispatchers.IO)
 
     fun save(quarter : Quarter) {
         try {

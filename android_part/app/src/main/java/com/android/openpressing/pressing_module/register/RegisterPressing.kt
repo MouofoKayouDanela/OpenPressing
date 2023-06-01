@@ -40,13 +40,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.openpressing.R
+import com.android.openpressing.data.models.city.CityData
+import com.android.openpressing.data.models.pressing.Pressing
+import com.android.openpressing.data.models.quarter.Quarter
+import com.android.openpressing.data.models.quarter.QuarterData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.city.CityViewModel
+import com.android.openpressing.viewmodels.city.state.CityState
+import com.android.openpressing.viewmodels.country.CountryViewModel
+import com.android.openpressing.viewmodels.pressing.PressingViewModel
+import com.android.openpressing.viewmodels.quarter.QuarterViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
 @Preview
 @Composable
-fun RegisterPressingScreen(){
+fun RegisterPressingScreen(
+
+){
 
 
     var bipmap  : Uri
@@ -107,7 +121,7 @@ fun RegisterPressingScreen(){
 }
 
 @Composable
-fun RegisterPressingContent(innerPadding: PaddingValues) {
+fun RegisterPressingContent(innerPadding: PaddingValues, viewModel: PressingViewModel = hiltViewModel()) {
     var selectedText1 by remember { mutableStateOf("") }
     var selectedText2 by remember { mutableStateOf("") }
     var nom by remember { mutableStateOf("") }
@@ -298,6 +312,7 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
                             Modifier.clickable { expanded = !expanded })
                     }
                 )
+
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
@@ -331,6 +346,10 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
                     if (selectedText2.isEmpty()){
                         showDialog3=true
                     }
+                    else{
+
+
+                    }
 
                 },
                 modifier = Modifier.width(130.dp)
@@ -347,7 +366,8 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
                     text={Text("Please enter your pressing's name")},
                     confirmButton = {
                         Button(onClick = {showDialog=false },
-                            modifier=Modifier.width(80.dp)
+                            modifier= Modifier
+                                .width(80.dp)
                                 .padding(horizontal = 12.dp)) {
                             Text("ok")
                         }
@@ -364,7 +384,8 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
                     text={Text("Please choose a ciy for your agency")},
                     confirmButton = {
                         Button(onClick = {showDialog2=false },
-                            modifier=Modifier.width(80.dp)
+                            modifier= Modifier
+                                .width(80.dp)
                                 .padding(horizontal = 12.dp)) {
                             Text("ok")
                         }
@@ -384,7 +405,8 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
                     text={Text("Please choose a quarter for your agency")},
                     confirmButton = {
                         Button(onClick = {showDialog3=false },
-                            modifier=Modifier.width(80.dp)
+                            modifier= Modifier
+                                .width(80.dp)
                                 .padding(horizontal = 12.dp)) {
                             Text("ok")
                         }
@@ -405,3 +427,49 @@ fun RegisterPressingContent(innerPadding: PaddingValues) {
 
 
 }
+
+
+/*
+fun fetchCities(
+    id: Int,
+    viewModel: CountryViewModel
+
+){
+
+    var cities by remember(id) { mutableStateOf<MutableList<CityData>?>(null) }
+
+    LaunchedEffect(key1 =id ){
+
+        viewModel  .findAll()
+            .flowOn(    Dispatchers.IO)
+            .collect{keptcities ->
+                cities =keptcities
+            }
+    }
+    if(cities!=null){
+        val
+    }
+
+
+
+}
+@Composable
+private fun fetchQuarters(
+    id:Int,
+    viewModel: QuarterViewModel= hiltViewModel()
+
+){
+
+    var quarters by remember(id) { mutableStateOf<MutableList<QuarterData>?>(null) }
+
+    LaunchedEffect(key1 =id ){
+
+        viewModel  .findAll()
+            .flowOn(    Dispatchers.IO)
+            .collect{keptQuarters ->
+                quarters =keptQuarters
+            }
+    }
+
+
+}*/
