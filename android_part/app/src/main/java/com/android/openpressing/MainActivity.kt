@@ -14,20 +14,19 @@ import androidx.navigation.navArgument
 import com.android.openpressing.client_module.presentation.*
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
-import com.android.openpressing.client_module.presentation.besoin.Detal
+import com.android.openpressing.client_module.presentation.besoin.DetailBesoin
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.LesAnnonces
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.module.*
 import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
-import com.android.openpressing.client_module.presentation.profile.MyScreen
+import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
 import com.android.openpressing.pressing_module.requirement.RequirementDetail
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -13,4 +13,6 @@ data class RequirementAttributes(
     var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
     val createdAt: Date = Date(),
+    var updatedAt: Date = Date(),
+    var publishedAt: Date = Date(),
 )

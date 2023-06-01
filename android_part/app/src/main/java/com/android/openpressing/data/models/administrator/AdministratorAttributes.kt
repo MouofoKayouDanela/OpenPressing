@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 data class AdministratorAttributes(
-    var createdAt: Date,
-    var updatedAt: Date,
-    var publishedAt: Date,
+    var createdAt: Date = Date(),
+    var updatedAt: Date = Date(),
+    var publishedAt: Date = Date(),
     @SerializedName("users_permissions_user") val user: UserPermission
 )

@@ -10,8 +10,6 @@ data class User (
     var id: Int? = null ,
     var name: String ,
     var surname: String ,
-    var birthday: Date ,
-    var gender: String ,
     @SerializedName("phoneNumber") var phone_number: String ,
     @SerializedName("profilePicture") var profile_picture: ImageInfo ,
     var username: String ,
