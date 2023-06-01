@@ -4,6 +4,7 @@ import android.view.WindowManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry.LaundryData
 import com.android.openpressing.repositories.laundry.LaundryRepository
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +44,10 @@ class LaundryViewModel @Inject constructor
         }
 
     }
+
+    fun findAll() : Flow<List<LaundryData>> = flow {
+        emit(laundryRepository.getAll())
+    }.flowOn(Dispatchers.IO)
 
     fun getById(id: Int) : Flow<Laundry> = flow {
         emit(laundryRepository.getById(id))

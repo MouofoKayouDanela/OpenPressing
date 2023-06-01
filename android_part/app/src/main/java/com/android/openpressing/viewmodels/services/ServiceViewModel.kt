@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.data.models.service.ServiceData
 import com.android.openpressing.viewmodels.services.state.ServicesStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,10 @@ val serviceState: StateFlow<ServicesStates> = _serviceState
             }
 
         }
+
+         fun findAll() : Flow<List<ServiceData>> = flow {
+             emit(serviceRepository.getAll())
+         }.flowOn(Dispatchers.IO)
 
          fun getById(id: Int) : Flow<Service> = flow {
              emit(serviceRepository.getById(id))
