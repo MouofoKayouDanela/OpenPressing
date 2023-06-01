@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.android.openpressing.client_module.presentation.*
+import com.android.openpressing.client_module.presentation.agence.AgencyList
+import com.android.openpressing.client_module.presentation.agence.AgencyOption
 import com.android.openpressing.client_module.presentation.agence.ServicesNLaundriesManager
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
 import com.android.openpressing.client_module.presentation.besoin.DetailBesoin
@@ -67,7 +69,15 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
                     composable(Screen.EditScreen.road){ EditionView() }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
-                    composable(Screen.AddService.road){ ServicesNLaundriesManager(navController) }
+                    composable(
+                            route = "${Screen.AddService.road}/{agencyId}",
+                            arguments = listOf(navArgument("agencyId") { type = NavType.IntType })
+                    ){
+                        ServicesNLaundriesManager(
+                                agencyId = it.arguments?.getInt("agencyId")!!,
+                                navController = navController
+                        )
+                    }
                     composable(Screen.ListBesoin.road){ Default(navController) }
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
@@ -86,9 +96,34 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                         )
                     }
-                    composable(Screen.ConsulterBesoin.road){ MyNeed(navController)}
-                    composable(Screen.DetailBesoin.road){ Detal()}
+                    composable(Screen.ConsulterBesoin.road){
+                        MyNeed(
+                                navController = navController
+                        )
+                    }
+                    composable(
+                            route ="${Screen.DetailBesoin.road}/{requirementId}",
+                            arguments = listOf(navArgument("requirementId") { type = NavType.IntType })
+                    ){
+                        DetailBesoin(
+                                requirementId = it.arguments?.getInt("requirementId")!!,
+                                navController = navController
+                        )
+                    }
 
+                    composable(Screen.AgencyList.road) {
+                        AgencyList(navController = navController)
+                    }
+
+                    composable(
+                            route = "${Screen.AgencyOption.road}/{agencyId}",
+                            arguments = listOf(navArgument("agencyId") { type = NavType.IntType })
+                    ) {
+                        AgencyOption(
+                                agencyId = it.arguments?.getInt("agencyId")!! ,
+                                navController = navController
+                        )
+                    }
                 }
             }
         }

@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
+import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.repositories.pressing.PressingRepository
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -43,6 +42,9 @@ class PressingViewModel @Inject constructor(
         }
     }
 
+    fun findAll() : Flow<List<PressingData>> = flow {
+        emit(pressingRepository.getAll())
+    }.flowOn(Dispatchers.IO)
 
     fun getById(id: Int){
         try {

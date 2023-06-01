@@ -3,9 +3,8 @@ package com.android.openpressing.data.models.laundry
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundries
 import com.android.openpressing.data.models.laundry_category.LaundryCategory
 import com.android.openpressing.data.models.laundry_type.LaundryType
-import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.requirement_detail.RequirementDetails
-import com.android.openpressing.data.models.utils.images.ImageInfo
+import com.android.openpressing.data.models.utils.images.ImageInformation
 import java.util.*
 
 data class LaundryAttributes(
@@ -13,7 +12,7 @@ data class LaundryAttributes(
     var type: LaundryType ,
     var agency_laundries: AgencyLaundries? = null ,
     var requirement_details: RequirementDetails? = null ,
-    var laundryImage: ImageInfo ,
+    var laundryImage: ImageInformation ,
     var createdAt: Date = Date() ,
     var updatedAt: Date = Date() ,
     var publishedAt: Date = Date() ,

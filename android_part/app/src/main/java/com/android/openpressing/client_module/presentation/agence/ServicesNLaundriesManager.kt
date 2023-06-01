@@ -1,12 +1,14 @@
 package com.android.openpressing.client_module.presentation.agence
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
@@ -15,24 +17,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.client_module.presentation.agence.components.AddPrestationScreen
 import com.android.openpressing.client_module.presentation.agence.utils.AgenceInfo
-import com.android.openpressing.client_module.presentation.agence.utils.Data
 import com.android.openpressing.client_module.presentation.agence.utils.Laundry
 import com.android.openpressing.client_module.presentation.agence.utils.Service
+import com.android.openpressing.data.models.agency.Agency
+import com.android.openpressing.data.models.agency_laundry.AgencyLaundryData
+import com.android.openpressing.data.models.agency_service.AgencyServiceData
+import com.android.openpressing.data.models.laundry.LaundryData
+import com.android.openpressing.data.models.pressing.PressingData
+import com.android.openpressing.data.models.service.ServiceData
+import com.android.openpressing.data.models.utils.IntermediaryData
 import com.android.openpressing.ui.theme.*
+import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.agency.AgencyViewModel
+import com.android.openpressing.viewmodels.agency_laundry.AgencyLaundryViewModel
+import com.android.openpressing.viewmodels.agency_service.AgencyServiceViewModel
+import com.android.openpressing.viewmodels.laundries.LaundryViewModel
+import com.android.openpressing.viewmodels.pressing.PressingViewModel
+import com.android.openpressing.viewmodels.services.ServiceViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
 
 @Composable
-fun ServicesNLaundriesManager(navController: NavHostController) {
+fun ServicesNLaundriesManager(
+    agencyId: Int,
+    navController: NavHostController
+) {
 
-    val agenceInfo = AgenceInfo(
+    /*val agenceInfo = AgenceInfo(
             "Elegance Pressing",
             Icons.Rounded.LocalLaundryService,
             "Bonamoussadi"
@@ -59,7 +82,7 @@ fun ServicesNLaundriesManager(navController: NavHostController) {
                 Service("Blanchissage" , Icons.Rounded.Wash) ,
                 Service("Amidonnage" , Icons.Rounded.Wash)
         ))
-    }
+    }*/
 
     Scaffold(
             topBar = {
@@ -67,13 +90,8 @@ fun ServicesNLaundriesManager(navController: NavHostController) {
             },
             content = { innerPadding ->
                       BodyList(
+                              agencyId = agencyId,
                               innerPadding = innerPadding,
-                              agenceInfo = agenceInfo,
-                              laundries = laundries,
-                              services = services,
-                              updateLaundryData = { laundries = it },
-                              updateServiceData = { services = it },
-
                       )
 
             },
@@ -172,13 +190,14 @@ fun TopNavBar(navController: NavHostController) {
     ) {
 
         IconButton(
-                onClick = { navController.navigate(Screen.Home.road) },
+                onClick = { navController.popBackStack() },
                 modifier = Modifier
                     .weight(0.2f)
         ) {
                 Icon(
-                        Icons.Rounded.ArrowBack,
-                        contentDescription = null
+                        Icons.Rounded.KeyboardArrowLeft,
+                        contentDescription = null,
+                        modifier = Modifier.size(32.dp)
                 )
         }
 
@@ -202,14 +221,11 @@ fun TopNavBar(navController: NavHostController) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BodyList(
+    agencyId: Int,
     innerPadding: PaddingValues ,
-    agenceInfo: AgenceInfo ,
-    laundries: List<Laundry> ,
-    services: List<Service> ,
-    updateLaundryData: (List<Laundry>) -> Unit,
-    updateServiceData: (List<Service>) -> Unit
 ) {
 
+    var datas by remember { mutableStateOf<List<IntermediaryData>?>(null) }
     var selectedIndex by remember { mutableStateOf(0) }
     
     LazyColumn(contentPadding = innerPadding) {
@@ -217,79 +233,39 @@ fun BodyList(
         item { Spacer(modifier = Modifier.height(8.dp)) }
         
         stickyHeader {
+
             Column(
-                    modifier = Modifier.background(Color.White),
-                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.background(Color.White) ,
+                    verticalArrangement = Arrangement.Center ,
                     horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Row(
-                        modifier = Modifier
-                            .padding(
-                                    horizontal = 4.dp,
-                                    vertical = 16.dp
-                            ),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                ) {
-
-                    Icon(
-                            agenceInfo.icon ,
-                            contentDescription = agenceInfo.name,
-                            tint = SoftPurple200,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .weight(0.2f)
-                    )
-
-                    Column(
-                            modifier = Modifier
-                                .weight(0.8f)
-                                .padding(vertical = 4.dp)
-                    ) {
-
-                        Text(
-                                agenceInfo.name,
-                                style = MaterialTheme.typography.h4.copy(
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 28.sp
-                                ),
-                        )
-
-                        Text(
-                                agenceInfo.quarter,
-                                style = MaterialTheme.typography.body1.copy(
-                                        fontSize = 20.sp
-                                )
-                        )
-                    }
-
-                }
+                FetchAgency(agencyId = agencyId)
 
                 val tabTitles = listOf(
-                        "Services",
+                        "Services" ,
                         "Laundries"
                 )
 
                 TabRow(
-                        selectedTabIndex = selectedIndex,
-                        backgroundColor = Color.White,
+                        selectedTabIndex = selectedIndex ,
+                        backgroundColor = Color.White ,
                         contentColor = SoftPurple200
                 ) {
 
-                    tabTitles.forEachIndexed { index, title ->
+                    tabTitles.forEachIndexed { index , title ->
                         Tab(
                                 text = {
                                     Text(
-                                            title,
-                                            color = if (selectedIndex == index) Purple200 else VerySoftPurple200,
+                                            title ,
+                                            color = if (selectedIndex == index) Purple200 else VerySoftPurple200 ,
                                             style = MaterialTheme.typography.body1.copy(
                                                     fontSize = 18.sp
                                             )
                                     )
-                                },
-                                selected = index == selectedIndex,
-                                onClick = { selectedIndex = index },
+                                } ,
+                                selected = index == selectedIndex ,
+                                onClick = { selectedIndex = index } ,
                                 selectedContentColor = Purple200
                         )
                     }
@@ -305,25 +281,25 @@ fun BodyList(
                                     horizontal = 4.dp ,
                                     vertical = 8.dp
                             )
-                            .background(Color.White),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+                            .background(Color.White) ,
+                        verticalAlignment = Alignment.CenterVertically ,
+                        horizontalArrangement = Arrangement.Center ,
                 ) {
                     Icon(
-                            Icons.Rounded.Add,
-                            contentDescription = null,
-                            tint = Purple200,
+                            Icons.Rounded.Add ,
+                            contentDescription = null ,
+                            tint = Purple200 ,
                             modifier = Modifier
                                 .size(48.dp)
                                 .weight(0.2f)
                     )
 
                     Text(
-                            text = "Add new ${if (selectedIndex == 0) "service" else "laundry"}",
-                            color = Purple200,
+                            text = "Add new ${if (selectedIndex == 0) "service" else "laundry"}" ,
+                            color = Purple200 ,
                             style = MaterialTheme.typography.body1.copy(
                                     fontSize = 18.sp
-                            ),
+                            ) ,
                             modifier = Modifier
                                 .weight(0.8f)
                     )
@@ -332,32 +308,39 @@ fun BodyList(
                 if (showAddDialog) {
 
                     AddPrestationScreen(
-                            selectedIndex = selectedIndex,
-                            updateDialogState = { showAddDialog = it },
-                            datas = fetchDatas(
-                                    selectedIndex = selectedIndex,
-                                    services = services,
-                                    laundries = laundries
-                            )
-                    ) {
-                        if (selectedIndex == 0) {
+                            selectedIndex = selectedIndex ,
+                            updateDialogState = { showAddDialog = it } ,
+                            datas = datas ,
+                            updateData = {
+                                if (selectedIndex == 0) {
 
-                            val updatedServices = mutableListOf<Service>()
-                            it.forEach { updatedData ->
-                                updatedServices.add(Service(updatedData.name , updatedData.icon))
+//                                    val updatedServices = mutableListOf<Service>()
+//                                    it.forEach { updatedData ->
+//                                        updatedServices.add(
+//                                                Service(
+//                                                        updatedData.name ,
+//                                                        updatedData.icon
+//                                                )
+//                                        )
+//                                    }
+
+//                                    updateServiceData(updatedServices.toList())
+                                } else {
+
+//                                    val updatedLaundries = mutableListOf<Laundry>()
+//                                    it.forEach { updatedData ->
+//                                        updatedLaundries.add(
+//                                                Laundry(
+//                                                        updatedData.name ,
+//                                                        updatedData.icon
+//                                                )
+//                                        )
+//                                    }
+
+//                                    updateLaundryData(updatedLaundries.toList())
+                                }
                             }
-
-                            updateServiceData(updatedServices.toList())
-                        } else {
-
-                            val updatedLaundries = mutableListOf<Laundry>()
-                            it.forEach { updatedData ->
-                                updatedLaundries.add(Laundry(updatedData.name , updatedData.icon))
-                            }
-
-                            updateLaundryData(updatedLaundries.toList())
-                        }
-                    }
+                    )
 
                 }
 
@@ -365,63 +348,73 @@ fun BodyList(
             }
         }
 
-        items (
-                fetchDatas(
-                selectedIndex = selectedIndex,
-                laundries = laundries,
-                services = services
-        )
-        ) { data ->
+        item {
 
-            Row(
-                    Modifier
-                        .padding(
-                                horizontal = 4.dp ,
-                                vertical = 8.dp
-                        )
-                        .clickable { },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-            ) {
-                data.icon?.let {
-                    Icon(
-                            it ,
+            FetchDatas(
+                    selectedIndex = selectedIndex,
+                    agencyId = agencyId,
+                    getData = {
+                        datas = it
+                    }
+            )
+
+        }
+
+        if(datas != null) {
+            items(datas!!) { data ->
+
+                Row(
+                        Modifier
+                            .padding(
+                                    horizontal = 4.dp ,
+                                    vertical = 8.dp
+                            )
+                            .clickable { } ,
+                        verticalAlignment = Alignment.CenterVertically ,
+                        horizontalArrangement = Arrangement.Center ,
+                ) {
+
+                    Image(
+                            painter = rememberAsyncImagePainter(
+                                    model = BASE_URL + data.imageUrl
+                            ) ,
                             contentDescription = null ,
                             modifier = Modifier
-                                .size(48.dp)
+                                .clip(CircleShape)
+                                .size(56.dp)
+                            ,
+                            contentScale = ContentScale.Crop
+                    )
+
+                    Text(
+                            text = data.title ,
+                            modifier = Modifier
+                                .weight(0.8f)
+                    )
+
+                    IconButton(
+                            onClick = {
+                                if (selectedIndex == 0) {
+//                                    val updatedServices = services.toMutableList()
+//                                    updatedServices.remove(Service(data.name , data.icon))
+//                                    updateServiceData(updatedServices.toList())
+                                } else {
+//                                    val updatedLaundries = laundries.toMutableList()
+//                                    updatedLaundries.remove(Laundry(data.name , data.icon))
+//                                    updateLaundryData(updatedLaundries.toList())
+                                }
+
+                            } ,
+                            modifier = Modifier
+                                .size(24.dp)
                                 .weight(0.2f)
-                    )
-                }
-
-                Text(
-                        text = data.name ,
-                        modifier = Modifier
-                            .weight(0.8f)
-                )
-
-                IconButton(
-                        onClick = {
-                           if (selectedIndex == 0) {
-                               val updatedServices = services.toMutableList()
-                               updatedServices.remove(Service(data.name , data.icon))
-                               updateServiceData(updatedServices.toList())
-                           }
-                           else {
-                               val updatedLaundries = laundries.toMutableList()
-                               updatedLaundries.remove(Laundry(data.name , data.icon))
-                               updateLaundryData(updatedLaundries.toList())
-                           }
-
-                        },
-                        modifier = Modifier
-                            .size(24.dp)
-                            .weight(0.2f)
-                ){
-                    Icon(
-                            Icons.Rounded.Delete ,
-                            contentDescription = null,
-                            tint = Purple200
-                    )
+                    ) {
+                        Icon(
+                                Icons.Rounded.Delete ,
+                                contentDescription = null ,
+                                tint = Purple200
+                        )
+                    }
                 }
             }
         }
@@ -430,37 +423,195 @@ fun BodyList(
     
 }
 
-fun fetchDatas(
-    selectedIndex: Int ,
-    laundries: List<Laundry> ,
-    services: List<Service>
-) : List<Data> {
-
-    val datas : MutableList<Data> = mutableListOf()
-
-    when (selectedIndex) {
-
-        0 -> {
-
-            services.forEach {
-                datas.add(Data(it.name , it.icon))
+@Composable
+private fun FetchAgency(
+    agencyId: Int,
+    agencyViewModel: AgencyViewModel = hiltViewModel(),
+    pressingViewModel: PressingViewModel = hiltViewModel()
+){
+    val agency = remember(agencyId) { mutableStateOf<Agency?>(null) }
+    val pressing = remember(agencyId) { mutableStateOf<PressingData?>(null)}
+    LaunchedEffect(key1 = agencyId) {
+        agencyViewModel.findById(agencyId)
+            .flowOn(Dispatchers.IO)
+            .collect{ keptAgency ->
+                agency.value = keptAgency
             }
-
+        if(agency.value != null) {
+            pressingViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect { allPressings ->
+                    pressing.value = allPressings.find { oneOfAllPressings ->
+                        oneOfAllPressings.attributes.agencies!!.data.any { agencyId == it.id }
+                    }
+                }
         }
-
-        1 -> {
-
-            laundries.forEach {
-                datas.add(Data(it.name , it.icon))
-            }
-
-        }
-
-        else -> {}
-
     }
 
-    return datas.toList()
+    if(
+        agency.value != null &&
+        pressing.value != null
+    ) {
+        Row(
+                modifier = Modifier
+                    .padding(
+                            horizontal = 4.dp ,
+                            vertical = 16.dp
+                    ) ,
+                verticalAlignment = Alignment.CenterVertically ,
+                horizontalArrangement = Arrangement.Center
+        ) {
+
+            Image(
+                    painter = rememberAsyncImagePainter(
+                            model = BASE_URL + pressing.value!!.attributes
+                                .logo.data.attributes
+                                .url
+                    ) ,
+                    contentDescription = pressing.value!!.attributes.name ,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(20))
+                        .size(100.dp),
+                    contentScale = ContentScale.Crop
+            )
+
+            Column(
+                    modifier = Modifier
+                        .weight(0.8f)
+                        .padding(vertical = 4.dp)
+            ) {
+
+                Text(
+                        pressing.value!!.attributes.name ,
+                        style = MaterialTheme.typography.h4.copy(
+                                fontWeight = FontWeight.SemiBold ,
+                                fontSize = 28.sp
+                        ) ,
+                )
+
+                Text(
+                        agency.value!!.data.attributes.quarter
+                            .data.attributes.name ,
+                        style = MaterialTheme.typography.body1.copy(
+                                fontSize = 20.sp
+                        )
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun FetchDatas(
+    selectedIndex: Int ,
+    agencyId: Int,
+    getData: (List<IntermediaryData>) -> Unit,
+    aLViewModel: AgencyLaundryViewModel = hiltViewModel(),
+    laundryViewModel: LaundryViewModel = hiltViewModel(),
+    aSViewModel: AgencyServiceViewModel = hiltViewModel(),
+    serviceViewModel: ServiceViewModel = hiltViewModel()
+) {
+    val allALs = remember(agencyId) { mutableStateOf<List<AgencyLaundryData>?>(null) }
+    val allASs = remember(agencyId) { mutableStateOf<List<AgencyServiceData>?>(null) }
+    val datas : MutableList<IntermediaryData> = mutableListOf()
+    LaunchedEffect(key1 = agencyId) {
+        if(selectedIndex == 0) {
+            datas.clear()
+
+            aSViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect{ keptAgencyServices ->
+                    allASs.value = keptAgencyServices.filter { agencyId == it.attributes.agency.data.id }
+                }
+
+            if(allASs.value != null) {
+                var services : List<ServiceData>? = listOf()
+
+                serviceViewModel.findAll()
+                    .flowOn(Dispatchers.IO)
+                    .collect{ services = it }
+
+                if(services != null){
+                    allASs.value!!.forEach { agencyService ->
+                        val service = services!!.find {
+                            agencyService.attributes.service.data.id == it.id
+                        }
+                        if(service != null) {
+                            datas.add(
+                                    IntermediaryData(
+                                            title = service.attributes.type.data.attributes.title + " " +
+                                                    service.attributes.category.data.attributes.name ,
+                                            imageUrl = service.attributes.serviceImage.data.attributes.url
+                                    )
+                            )
+                        }
+                    }
+                }
+
+                getData(datas)
+            }
+        } else {
+            datas.clear()
+
+            aLViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect{ keptAgencyLaundries ->
+                    allALs.value = keptAgencyLaundries.filter { agencyId == it.attributes.agency.data.id }
+                }
+
+            if(allALs.value != null) {
+                var laundries : List<LaundryData>? = listOf()
+                laundryViewModel.findAll()
+                    .flowOn(Dispatchers.IO)
+                    .collect{ laundries = it }
+                if(laundries != null){
+                    allALs.value!!.forEach { agencyLaundry ->
+                        val laundry = laundries!!.find {
+                            agencyLaundry.attributes.laundry.data.id == it.id
+                        }
+                        if(laundry != null) {
+                            datas.add(
+                                    IntermediaryData(
+                                            title = laundry.attributes.type.data.attributes.title + " " +
+                                                    laundry.attributes.category.data.attributes.name ,
+                                            imageUrl = laundry.attributes.laundryImage.data.attributes.url
+                                    )
+                            )
+                        }
+                    }
+                }
+
+                getData(datas)
+            }
+        }
+    }
+
+
+//    when (selectedIndex) {
+//
+//        0 -> {
+//
+//            services.forEach {
+//                datas.add(IntermediaryData(it.name , it.icon))
+//            }
+//
+//        }
+//
+//        1 -> {
+//
+//            laundries.forEach {
+//                datas.add(Data(it.name , it.icon))
+//            }
+//
+//        }
+//
+//        else -> {}
+//
+//    }
+//
+//    return datas.toList()
 
 }
 
