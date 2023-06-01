@@ -69,51 +69,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 
-/*data class pressing(
-    val imageVector: Painter,
-    val nom:String,
-    val position:String
-)
-
-data class user(
-    val name: String,
-    val localisation: String
-)
-
-listOf(
-            pressing(
-                imageVector = painterResource(R.drawable.lavage4),
-                nom = "Elegance Pressing",
-                position= "Bonamoussadi"
-            ),
-            pressing(
-                imageVector = painterResource(R.drawable.lavage2),
-                nom = "Eco Pressing",
-                position= "Makepe"
-            ),
-            pressing(
-                imageVector = painterResource(R.drawable.lavage1),
-                nom = "Blinding Pressing",
-                position= "Logpom"
-            ),
-            pressing(
-                imageVector = painterResource(R.drawable.lavage3),
-                nom = "Saka Pressing",
-                position= "Logbessou"
-            ),
-            pressing(
-                imageVector = painterResource(R.drawable.lavage3),
-                nom = "Saka Pressing",
-                position= "Logbessou"
-            ),
-            pressing(
-                imageVector = painterResource(R.drawable.lavage5),
-                nom = "Saka Pressing",
-                position= "Logbessou"
-            ),
-        )
-*/
-
 
 @Composable
 fun ScaffoldSample(
@@ -523,7 +478,7 @@ private fun fetchPressings(
         ) {
 
             BottomNavigationItem(icon = {
-                Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+                Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = primaryColor)
             },
                 label = { Text(text = "Laundry") },
                 selected = (selectedIndex.value == 0),

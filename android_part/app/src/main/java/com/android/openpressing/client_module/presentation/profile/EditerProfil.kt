@@ -688,7 +688,7 @@ fun ListBox(navController: NavHostController,
         verticalAlignment = Alignment.Bottom
     ){
         TextButton(
-            onClick = { /*navController.navigate(Screen.Login.road)*/},
+            onClick = { navController.navigate(Screen.Login.road)},
             shape = CircleShape
         ) {
             Icon(
@@ -723,7 +723,7 @@ fun BottomBar(navController: NavHostController) {
     ) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = primaryColor)
+            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
         },
             label = { Text(text = "Laundry") },
             selected = (selectedIndex.value == 0),
@@ -737,15 +737,17 @@ fun BottomBar(navController: NavHostController) {
             label = { Text(text = "Order") },
             selected = (selectedIndex.value == 1),
             onClick = {
+                navController.navigate(Screen.ListCommande.road)
                 selectedIndex.value = 1
             })
 
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Chat, "")
         },
-            label = { Text(text = "Chat") },
+            label = { Text(text = "Manager") },
             selected = (selectedIndex.value == 2),
             onClick = {
+                navController.navigate(Screen.AddBesoin.road)
                 selectedIndex.value = 2
             })
 
