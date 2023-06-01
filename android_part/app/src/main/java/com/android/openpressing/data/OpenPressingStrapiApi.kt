@@ -54,6 +54,7 @@ import com.android.openpressing.data.models.service_type.ServiceTypes
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.utils.*
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -639,9 +640,11 @@ sealed interface OpenPressingStrapiApi{
         @GET("$USER_FEATURES/{id}$INCLUSION_FEATURES")
         suspend fun getById(@Path("id") id: Int) : User
 
+        @Multipart
         @POST(USER_FEATURES)
         suspend fun save(
-            @Body user: User
+            @Body user: User,
+            @Part image : MultipartBody.Part
         )
 
         @PUT("$USER_FEATURES/{id}")

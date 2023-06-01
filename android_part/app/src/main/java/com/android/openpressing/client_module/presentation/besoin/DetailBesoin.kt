@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.laundry_category.laundry.Laundry
 import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData

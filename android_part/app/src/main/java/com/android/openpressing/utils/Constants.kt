@@ -1,6 +1,6 @@
 package com.android.openpressing.utils
 
-const val BASE_URL = "http://192.168.91.23:1337"
+const val BASE_URL = "http://192.168.52.218:1337"
 const val API_FEATURES = "/api"
 const val INCLUSION_FEATURES = "?filters[blocked][\$eq]=false&filters[confirmed][\$eq]=true&populate=*"
 const val POPULATE = "?populate=*"
