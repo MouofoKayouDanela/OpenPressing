@@ -35,7 +35,8 @@ import kotlinx.coroutines.flow.flowOn
 
 @Composable
 fun MyNeed(
-    navController: NavController,
+
+    navController: NavHostController,
     rdViewModel: RequirementViewModel = hiltViewModel(),
     clientViewModel: ClientViewModel= hiltViewModel()
 ){
@@ -63,8 +64,6 @@ fun MyNeed(
                 .collect { requirements.value = it }
         }
     }
-
-
 
     Scaffold(
         topBar = {
@@ -99,9 +98,17 @@ fun MyNeed(
             }
 
         },
-        bottomBar= {BottomBar()}
-    )
-}
+        bottomBar= {BottomBar(navController)}
+    )}
+
+
+
+
+data class Contenu(
+    val Description: String,
+    val prix: String,
+    val date: String,
+)
 
 @Composable
 fun Stock(
@@ -268,7 +275,7 @@ fun Consult(
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(navController: NavHostController) {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 2.dp,
@@ -281,6 +288,7 @@ fun BottomBar() {
             label = { Text(text = "Laundry") },
             selected = (selectedIndex.value == 0),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.Home.road)
                 selectedIndex.value = 0
             })
         BottomNavigationItem(icon = {
@@ -289,15 +297,17 @@ fun BottomBar() {
             label = { Text(text = "Order") },
             selected = (selectedIndex.value == 1),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.ListCommande.road)
                 selectedIndex.value = 1
             })
 
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Chat, "")
         },
-            label = { Text(text = "Chat") },
+            label = { Text(text = "Manager") },
             selected = (selectedIndex.value == 2),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.AddBesoin.road)
                 selectedIndex.value = 2
             })
 
@@ -307,6 +317,7 @@ fun BottomBar() {
             label = { Text(text = "Profile") },
             selected = (selectedIndex.value == 3),
             onClick = {
+                navController.navigate(com.android.openpressing.utils.Screen.Profile.road)
                 selectedIndex.value = 3
             })
     }

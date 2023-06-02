@@ -37,6 +37,6 @@ class CreateNotification (
         notificationBuilder.setContentTitle(title)
         notificationBuilder.setContentText(msg)
         notificationBuilder.setAutoCancel(true)
-       // notificationManager.notify(100 , notificationBuilder.build())
+        notificationManager.notify(100 , notificationBuilder.build())
     }
 }

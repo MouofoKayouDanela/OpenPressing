@@ -43,6 +43,7 @@ import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import com.android.openpressing.viewmodels.services.state.PressingState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 
@@ -94,20 +95,30 @@ listOf(
 
 @Composable
 fun ScaffoldSample(
+    connectedClientId: Int,
     navController: NavHostController,
     viewModel : PressingViewModel = hiltViewModel()
 ) {
+    Log.i("", "le client connecte a pour id : $connectedClientId")
+
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     viewModel.getAll()
+    var quarterId by remember { mutableStateOf(0) }
     Scaffold(
         scaffoldState = scaffoldState,
         //LazyColumn(content = LazyListScope.item()->unit ),
-        topBar = {SectionBleue()},
+        topBar =  {
+            SectionBleue(
+                connectedClientId,
+                getConnectedUserQuarter = { quarterId = it }
+            )
+        },
         //drawerContent = { Text(text = "Drawer Menu 1") },
         content = {
                 innerPadding->  CardContent(
             innerPadding = innerPadding,
             state=viewModel.availablePressing.collectAsState().value,
+            quarterId = quarterId,
             navController
         )
                   },
@@ -116,7 +127,24 @@ fun ScaffoldSample(
 }
 
 @Composable
-fun SectionBleue(){
+fun SectionBleue(
+   connectedClientId: Int,
+   getConnectedUserQuarter: (Int) -> Unit,
+   userViewModel: UserViewModel = hiltViewModel(),
+){
+
+    val user = remember {
+        mutableStateOf<User?>(null)
+    }
+    LaunchedEffect(key1 = connectedClientId){
+        userViewModel.getById(connectedClientId)
+            .flowOn(Dispatchers.IO)
+            .collect{
+                user.value = it
+            }
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -127,7 +155,7 @@ fun SectionBleue(){
                     bottomStart = 40.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = Purple500)
+            .background(color = primaryColor)
         //shape=RoundedCornerShape(32.dp)
     ) {Column() {
         /////Ligne de l'icone de notification/////
@@ -142,30 +170,39 @@ fun SectionBleue(){
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.homme),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(40.dp)
-                        .border(1.dp, color = Color.White, CircleShape)
+                if (user.value != null){
+                    Image(
+                        rememberAsyncImagePainter(
+                            model = BASE_URL + user.value!!.profile_picture
+                                .url
+                        ),
+                        //painter = painterResource(id = R.drawable.homme),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(45.dp)
+                            .border(1.dp, color = Color.White, CircleShape),
 
-                )
+                        contentScale = ContentScale.Crop
+                    )
+                }
                 Spacer(Modifier.width(1.dp))
                 //////description du la photo////
 
                 Text(
                     " Hello, ",
-                    fontSize = 12.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
                 )
-                Text(
-                    "Emmanuel Zipar",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                )
+                if (user.value != null){
+                    Text(
+                        text = user.value!!.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                    )
+                }
                 //Spacer(Modifier.height(5.dp))
             }
 
@@ -211,14 +248,17 @@ fun SectionBleue(){
             Icon(
                 Icons.Rounded.LocationOn,
                 contentDescription = stringResource(R.string.location),
-                tint = Orange
+                tint = secondaryColor
             )
-            Text(
-                "Douala,Nyalla Rue225",
-                fontWeight = FontWeight.Normal,
-                fontSize = 11.sp,
-                color = Color.White,
-            )
+            if (user.value != null){
+                Text(
+                    text = user.value!!.quarter.name,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 13.sp,
+                    color = Color.White,
+                )
+                getConnectedUserQuarter(user.value!!.quarter.id!!)
+            }
 
         }
     }
@@ -303,7 +343,6 @@ fun CardWithContent(
                             contentDescription = "position",
                             tint = Orange
                         )
-                        val quarterId = 2
                         var agencies by remember(quarterId) { mutableStateOf<MutableList<AgencyData>?>(null) }
                         LaunchedEffect(key1 = quarterId) {
                             viewModel.findAll()
@@ -391,7 +430,7 @@ fun CardWithContent(
                 Icon(
                     imageVector = Icons.Default.Sort,
                     contentDescription = stringResource(R.string.editer),
-                    tint = Purple,
+                    tint = Purple500,
                     modifier = Modifier
                         .size(height = 30.dp, width = 40.dp)
                         .background(Color.White)
@@ -410,6 +449,7 @@ fun CardWithContent(
     fun CardContent(
         innerPadding: PaddingValues,
         state : PressingState,
+        quarterId: Int,
         navController: NavHostController
     ) {
         var searchQuery by remember { mutableStateOf("") }
@@ -429,7 +469,11 @@ fun CardWithContent(
                     searchQuery = searchQuery,
                     pressings =state.data
                 )) { pressing ->
-                    CardWithContent(pressing,navController)
+                    CardWithContent(
+                        pressing,
+                        quarterId,
+                        navController
+                    )
                 }
             }
         }
@@ -480,7 +524,7 @@ private fun fetchPressings(
                 label = { Text(text = "Manager") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
-                    navController.navigate(Screen.AddService.road)
+                    navController.navigate(Screen.AddBesoin.road)
                     selectedIndex.value = 2
                 })
 

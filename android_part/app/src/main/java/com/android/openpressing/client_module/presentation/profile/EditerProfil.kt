@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -52,8 +54,8 @@ import com.android.openpressing.viewmodels.user.UserViewModel
 var id : Int = 0
 
 @Composable
-fun EditerProfil(navController: NavHostController,
-                 userViewModel: UserViewModel = hiltViewModel()
+fun EditerProfil(navController: NavHostController
+                 //userViewModel: UserViewModel = hiltViewModel()
                  //ownerViewModel: OwnerViewModel = hiltViewModel(),
                 // clientViewModel: ClientViewModel = hiltViewModel()
 ) {
@@ -72,7 +74,7 @@ fun EditerProfil(navController: NavHostController,
             ) {
 
                 item {
-                    ListBox(onImageSelected = {imageUri -> bipmap = imageUri})
+                    ListBox( navController,onImageSelected ={imageUri -> bipmap = imageUri})
                 }
             }
         },
@@ -138,7 +140,9 @@ fun FixBare(navController: NavHostController) {
 }
 
 @Composable
-fun ListBox(onImageSelected: (Uri) -> Unit) {
+fun ListBox(navController: NavHostController,
+    onImageSelected: (Uri) -> Unit
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -215,7 +219,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                             .clip(CircleShape)
                             .size(130.dp)
                             .border(1.dp, color = primaryColor, CircleShape),
-                        contentScale = ContentScale.FillHeight
+                        contentScale = ContentScale.Crop
                     )
 
                 ///////////icone de modification de l'image////////////
@@ -757,7 +761,7 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
-@Preview
+
 @Composable
 fun EditionView() {
     val navController = rememberNavController()

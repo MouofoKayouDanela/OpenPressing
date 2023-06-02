@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -179,7 +180,7 @@ fun ListeSoustitre(navController: NavHostController) {
             Icon(
                 Icons.Rounded.List,
                 contentDescription = stringResource(R.string.liste),
-                tint = Purple
+                tint = Purple500
             )
             Spacer(Modifier.width(10.dp))
             Column(
@@ -242,7 +243,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -281,7 +282,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -320,7 +321,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
