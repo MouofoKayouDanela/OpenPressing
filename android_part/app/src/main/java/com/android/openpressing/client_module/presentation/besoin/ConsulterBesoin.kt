@@ -35,12 +35,11 @@ import kotlinx.coroutines.flow.flowOn
 
 @Composable
 fun MyNeed(
-
-    navController: NavHostController,
+    userID: Int,
+    navController: NavController,
     rdViewModel: RequirementViewModel = hiltViewModel(),
     clientViewModel: ClientViewModel= hiltViewModel()
 ){
-    val userID = 3
 
     val clients = remember(userID){ mutableStateOf<MutableList<ClientData>?>(null) }
     val client = remember(userID){ mutableStateOf<ClientData?>(null) }
@@ -275,7 +274,7 @@ fun Consult(
 }
 
 @Composable
-fun BottomBar(navController: NavHostController) {
+fun BottomBar(navController: NavController) {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 2.dp,

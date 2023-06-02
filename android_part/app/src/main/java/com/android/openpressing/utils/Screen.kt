@@ -31,6 +31,8 @@ sealed class Screen(val road: String){
 
     object AgencyOption: Screen("/AgencyOption")
 
+    object ListPromo: Screen("/ListPromo")
+
     object AddReq : Screen("/AddReq")
 
 }

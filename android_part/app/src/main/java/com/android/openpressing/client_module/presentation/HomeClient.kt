@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
@@ -470,7 +471,7 @@ private fun fetchPressings(
 
     //////////////BOTTOM BARRE/////////////////
     @Composable
-    fun BottomBar(navController: NavHostController) {
+    fun BottomBar(navController: NavController) {
         val selectedIndex = remember { mutableStateOf(0) }
         BottomNavigation(
             elevation = 2.dp,
@@ -497,12 +498,12 @@ private fun fetchPressings(
                 })
 
             BottomNavigationItem(icon = {
-                Icon(imageVector = Icons.Default.Chat, "")
+                Icon(imageVector = Icons.Default.Notes, "")
             },
-                label = { Text(text = "Manager") },
+                label = { Text(text = "Needs") },
                 selected = (selectedIndex.value == 2),
                 onClick = {
-                    navController.navigate(Screen.AddBesoin.road)
+                    navController.navigate(Screen.ConsulterBesoin.road)
                     selectedIndex.value = 2
                 })
 

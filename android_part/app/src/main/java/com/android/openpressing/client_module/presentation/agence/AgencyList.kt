@@ -38,11 +38,11 @@ import kotlinx.coroutines.flow.flowOn
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AgencyList(
+    userId: Int,
     navController: NavController ,
     ownerViewModel: OwnerViewModel = hiltViewModel() ,
     pressingViewModel: PressingViewModel = hiltViewModel()
 ) {
-    val userId = 2
     val owner = remember(userId) { mutableStateOf<OwnerData?>(null) }
     LaunchedEffect(key1 = userId) {
         ownerViewModel.fineAll()

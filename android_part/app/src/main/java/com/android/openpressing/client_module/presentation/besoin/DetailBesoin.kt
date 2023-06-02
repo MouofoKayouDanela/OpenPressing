@@ -45,19 +45,10 @@ fun DetailBesoin(
     LaunchedEffect(key1 = requirementId) {
         requirementViewModel.getById(requirementId)
             .flowOn(Dispatchers.IO)
-            .collect{ clients.value = it }
+            .collect{ keptRequirement ->
+                requirement.value = keptRequirement }
     }
 
-    if (Laundries.value != null){
-
-        //Laundry.value = Laundries.value!!.find { it.attributes.requirement_details.data.i== userID }
-
-        LaunchedEffect(key1 = rdkey) {
-            rdViewModel.findAll()
-                .flowOn(Dispatchers.IO)
-                .collect { requirements.value = it }
-        }
-    }
 
     Scaffold(
         topBar ={

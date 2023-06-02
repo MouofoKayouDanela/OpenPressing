@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.LocalLaundryService
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Reorder
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.NavigateBefore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
@@ -47,7 +45,7 @@ fun ListPromotion(
     Scaffold(
         scaffoldState = scaffoldState,
 
-        topBar = { TopAppBar()},
+        topBar = { TopAppBar(navController)},
 
         content = { innerPadding ->
             LazyColumn(
@@ -67,7 +65,7 @@ fun ListPromotion(
 }
 
 @Composable
-fun TopAppBar() { //navController: NavHostController
+fun TopAppBar(navController: NavHostController) { //navController: NavHostController
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,7 +93,7 @@ fun TopAppBar() { //navController: NavHostController
             ){
                 IconButton(
                     onClick = {
-                        //navController.navigate(Screen.Home.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(
@@ -281,12 +279,12 @@ fun BottomNavBar(navController: NavHostController) {
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Chat, "")
+            Icon(imageVector = Icons.Default.Notes, "")
         },
-            label = { Text(text = "Manager") },
+            label = { Text(text = "Needs") },
             selected = (selectedIndex.value == 2),
             onClick = {
-                navController.navigate(Screen.AddBesoin.road)
+                navController.navigate(Screen.ConsulterBesoin.road)
                 selectedIndex.value = 2
             })
 

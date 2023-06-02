@@ -85,7 +85,7 @@ fun BlueSection(navController: NavHostController) {
             ){
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.Home.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(

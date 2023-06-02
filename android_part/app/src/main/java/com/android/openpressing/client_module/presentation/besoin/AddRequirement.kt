@@ -47,8 +47,6 @@ import androidx.navigation.NavHostController
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-
-
 @Composable
 fun AddRequirementScreen(navController: NavHostController){
 

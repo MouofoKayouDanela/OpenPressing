@@ -117,7 +117,7 @@ fun FixBare(navController: NavHostController) {
             ){
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.Profile.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(

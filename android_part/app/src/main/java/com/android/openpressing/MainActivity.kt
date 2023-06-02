@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,11 +20,11 @@ import com.android.openpressing.client_module.presentation.besoin.AddRequirement
 import com.android.openpressing.client_module.presentation.besoin.DetailBesoin
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.LesAnnonces
+import com.android.openpressing.client_module.presentation.client.ListPromotion
 import com.android.openpressing.client_module.presentation.client.MySMS
 import com.android.openpressing.client_module.presentation.module.*
 import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
-import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
@@ -39,8 +40,6 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             var id by remember { mutableStateOf<Int?>(null) }
 
-            //val pressingModel : PressingViewModel = viewModel()
-
             OpenPressingTheme{
                 NavHost(navController = navController, startDestination = Screen.Login.road){
                     composable(Screen.Login.road){
@@ -53,6 +52,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
+                    composable(Screen.ListPromo.road){ ListPromotion(navController) }
                     composable(Screen.Home.road){
                         ScaffoldSample(
                             connectedClientId = id!!,
@@ -98,6 +98,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.ConsulterBesoin.road){
                         MyNeed(
+                                userID = id!!,
                                 navController = navController
                         )
                     }
@@ -112,7 +113,10 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(Screen.AgencyList.road) {
-                        AgencyList(navController = navController)
+                        AgencyList(
+                            userId = id!!,
+                            navController = navController
+                        )
                     }
 
                     composable(

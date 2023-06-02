@@ -16,10 +16,7 @@ import androidx.compose.material.icons.filled.LocalLaundryService
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,19 +36,25 @@ import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.CardContent
 import com.android.openpressing.client_module.presentation.profile.ListBox
+import com.android.openpressing.client_module.presentation.profile.id
 import com.android.openpressing.data.models.annonce.AnnounceAttributes
 import com.android.openpressing.data.models.annonce.AnnounceData
+import com.android.openpressing.data.models.pressing.Pressing
+import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.Annonce.AnnonceViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 
 
 @Composable
 fun LesAnnonces(
-    navController: NavHostController
+    isIdSelected : Int,
+    navController: NavHostController,
+    pressingData: PressingData
     //viewModel : AnnonceViewModel = hiltViewModel()
 ){
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
@@ -59,7 +62,11 @@ fun LesAnnonces(
     Scaffold(
         scaffoldState = scaffoldState,
 
-        topBar = { AppBar()},
+        topBar = { AppBar(
+            id,
+            navController,
+            pressingData
+        )},
 
         content = { innerPadding ->
             LazyColumn(
@@ -69,7 +76,7 @@ fun LesAnnonces(
             ) {
 
                 item {
-                    ContainerBox()
+                    ContainerBox(navController)
                 }
             }
         },
@@ -86,11 +93,27 @@ fun LesAnnonces(
 
 
 @Composable
-fun AppBar() { //navController: NavHostController
+fun AppBar(
+    isIdSelected : Int,
+    navController: NavHostController,
+    pressingData: PressingData,
+    pressingviewModel : PressingViewModel = hiltViewModel()
+) { //navController: NavHostController
+
+    val pressing = remember{
+            mutableStateOf<Pressing?>(null)
+    }
+    LaunchedEffect(key1 = isIdSelected){
+        pressingviewModel.getById(isIdSelected)
+            .flowOn(Dispatchers.IO)
+            .collect{
+                pressing.value = it
+            }
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .size(height = 50.dp, width = 230.dp) /////taille du box bleue/////
+            .size(height = 10.dp, width = 230.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
@@ -99,7 +122,7 @@ fun AppBar() { //navController: NavHostController
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = primaryColor)
+            .background(color = primaryPrimeColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -114,7 +137,7 @@ fun AppBar() { //navController: NavHostController
             ){
                 IconButton(
                     onClick = {
-                        //navController.navigate(Screen.Home.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(
@@ -124,46 +147,59 @@ fun AppBar() { //navController: NavHostController
                     )
                 }
 
-
-                }
-
-                ////////////Image +nom//////////////
                 Row(
                     modifier = Modifier
                         .padding( horizontal = 25.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
 
-                    //Spacer(Modifier.width(1.dp))
-                    //////description du la photo////
-                    Column(
-                        verticalArrangement  =Arrangement.spacedBy(10.dp),
-                        horizontalAlignment=Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding( horizontal = 25.dp)
+                    Spacer(Modifier.height(5.dp))
+                    ////logo de location/////
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text ="...",
-                            fontSize = 16.sp,
+                            text ="Welcome to ",
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                         )
-                        Spacer(Modifier.height(5.dp))
-                        ////logo de location/////
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
 
-                            Text(
-                                "",
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 11.sp,
-                                color = Color.White,
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                        }
+                        Text(
+                            text = pressingData.attributes.name,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 16.sp,
+                            color = Color.White,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
                     }
+
                 }
+            }
+
+            Row() {
+                Icon(
+                    Icons.Rounded.LocationOn,
+                    contentDescription = stringResource(R.string.location),
+                    tint = secondaryColor
+                )
+                Text(
+                    text = "On " ,                  //announceData.attributes.description
+                    color = primaryColor,
+                    style = MaterialTheme.typography.body1.copy(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                )
+                Text(
+                    text = "Quartier " ,                  //announceData.attributes.description
+                    color = primaryColor,
+                    style = MaterialTheme.typography.body1.copy(
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                )
+            }
             }
         }
     }
@@ -172,7 +208,7 @@ fun AppBar() { //navController: NavHostController
 
 @Composable
 fun ContainerBox(
-
+    navController: NavHostController
 ){
     val announceData: AnnounceData
     val defaultImage = painterResource(id = R.drawable.satis1)
@@ -257,7 +293,7 @@ fun ContainerBox(
 
                 Spacer(Modifier.width(10.dp))
                 IconButton(onClick = {
-                    //navController.navigate(Screen.EditScreen.road)
+                    navController.navigate(Screen.ListPromo.road)
                 }) {
                     Icon(
                         Icons.Rounded.Star,
@@ -350,10 +386,15 @@ fun BottomBar(navController: NavHostController) {
 }
 
 
-@Preview
+
 @Composable
-fun OffreView() {
+fun OffreView(
+
+    pressingData: PressingData
+) {
+    //val pressingData = mutableListOf<PressingData>()
     val navController = rememberNavController()
+
     //val announceData = AnnounceData(id  = Int, attributes = AnnounceAttributes())
-    LesAnnonces(navController)
+    LesAnnonces(id,navController, pressingData)
 }
