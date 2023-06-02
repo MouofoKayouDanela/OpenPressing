@@ -54,7 +54,7 @@ import kotlinx.coroutines.flow.flowOn
 fun LesAnnonces(
     isIdSelected : Int,
     navController: NavHostController,
-    pressingData: PressingData
+    //pressingData: PressingData
     //viewModel : AnnonceViewModel = hiltViewModel()
 ){
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
@@ -65,7 +65,7 @@ fun LesAnnonces(
         topBar = { AppBar(
             id,
             navController,
-            pressingData
+            //pressingData
         )},
 
         content = { innerPadding ->
@@ -96,7 +96,7 @@ fun LesAnnonces(
 fun AppBar(
     isIdSelected : Int,
     navController: NavHostController,
-    pressingData: PressingData,
+    //pressingData: PressingData,
     pressingviewModel : PressingViewModel = hiltViewModel()
 ) { //navController: NavHostController
 
@@ -166,7 +166,7 @@ fun AppBar(
                         )
 
                         Text(
-                            text = pressingData.attributes.name,
+                            text = "",
                             fontWeight = FontWeight.Normal,
                             fontSize = 16.sp,
                             color = Color.White,
@@ -390,11 +390,11 @@ fun BottomBar(navController: NavHostController) {
 @Composable
 fun OffreView(
 
-    pressingData: PressingData
+
 ) {
     //val pressingData = mutableListOf<PressingData>()
     val navController = rememberNavController()
 
     //val announceData = AnnounceData(id  = Int, attributes = AnnounceAttributes())
-    LesAnnonces(id,navController, pressingData)
+    LesAnnonces(id,navController)
 }

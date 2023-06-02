@@ -22,11 +22,13 @@ import com.android.openpressing.client_module.presentation.besoin.MyNeed
 import com.android.openpressing.client_module.presentation.client.LesAnnonces
 import com.android.openpressing.client_module.presentation.client.ListPromotion
 import com.android.openpressing.client_module.presentation.client.MySMS
+import com.android.openpressing.client_module.presentation.client.OffreView
 import com.android.openpressing.client_module.presentation.module.*
 import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
+import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
 import com.android.openpressing.pressing_module.requirement.RequirementDetail
 import com.android.openpressing.utils.Screen
@@ -38,6 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val pressingData : PressingData
             var id by remember { mutableStateOf<Int?>(null) }
 
             OpenPressingTheme{
@@ -81,7 +84,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ListBesoin.road){ Default(navController) }
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
-                    composable(Screen.ListOffer.road){ LesAnnonces(navController) }
+                    composable(Screen.ListOffer.road){ OffreView() }
                     composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
                     composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                     composable(Screen.Parametre .road){ MyScreenPreview(navController) }
