@@ -1,7 +1,6 @@
 package com.android.openpressing.data.models.quarter
 
 import com.android.openpressing.data.models.agency.Agencies
-import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.city.City
 import com.android.openpressing.data.models.order.Orders
 import com.android.openpressing.data.models.user.Users

@@ -18,22 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
-import com.android.openpressing.data.models.agency.Agency
-import com.android.openpressing.ui.theme.Orange
 import com.android.openpressing.ui.theme.Purple500
-import com.android.openpressing.ui.theme.Vert
 import com.android.openpressing.ui.theme.black
 import com.android.openpressing.utils.Screen
 

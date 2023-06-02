@@ -1,5 +1,6 @@
 package com.android.openpressing.client_module.presentation.agence
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,26 +20,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.client_module.presentation.agence.components.AddPrestationScreen
-import com.android.openpressing.client_module.presentation.agence.utils.AgenceInfo
-import com.android.openpressing.client_module.presentation.agence.utils.Laundry
-import com.android.openpressing.client_module.presentation.agence.utils.Service
 import com.android.openpressing.data.models.agency.Agency
-import com.android.openpressing.data.models.agency_laundry.AgencyLaundryData
-import com.android.openpressing.data.models.agency_service.AgencyServiceData
+import com.android.openpressing.data.models.agency_laundry.*
+import com.android.openpressing.data.models.agency_service.*
 import com.android.openpressing.data.models.laundry.LaundryData
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.service.ServiceData
+import com.android.openpressing.data.models.laundry.Laundry
+import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.utils.IntermediaryData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
-import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.agency_laundry.AgencyLaundryViewModel
 import com.android.openpressing.viewmodels.agency_service.AgencyServiceViewModel
@@ -52,7 +50,11 @@ import kotlinx.coroutines.flow.flowOn
 @Composable
 fun ServicesNLaundriesManager(
     agencyId: Int,
-    navController: NavHostController
+    navController: NavHostController,
+    aLViewModel: AgencyLaundryViewModel = hiltViewModel(),
+    laundryViewModel: LaundryViewModel = hiltViewModel(),
+    aSViewModel: AgencyServiceViewModel = hiltViewModel(),
+    serviceViewModel: ServiceViewModel = hiltViewModel()
 ) {
 
     /*val agenceInfo = AgenceInfo(
@@ -84,50 +86,111 @@ fun ServicesNLaundriesManager(
         ))
     }*/
 
+    var agencyLaundriesData by remember(agencyId) { mutableStateOf<List<IntermediaryData>?>(null) }
+    var fetchLaundriesData by remember { mutableStateOf(true) }
+    if(fetchLaundriesData) {
+        LaunchedEffect(key1 = agencyId) {
+            var allALs: List<AgencyLaundryData>? = null
+            aLViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect { keptAgencyLaundries ->
+                    allALs = keptAgencyLaundries.filter { agencyId == it.attributes.agency.data.id }
+                }
+            if (allALs != null) {
+                var laundries: List<LaundryData>? = null
+                laundryViewModel.findAll()
+                    .flowOn(Dispatchers.IO)
+                    .collect { laundries = it }
+                if (laundries != null) {
+                    val pickedData: MutableList<IntermediaryData> = mutableListOf()
+                    allALs!!.forEach { agencyLaundry ->
+                        val laundry = laundries!!.find {
+                            agencyLaundry.attributes.laundry.data.id == it.id
+                        }
+                        if (laundry != null) {
+                            pickedData.add(
+                                    IntermediaryData(
+                                            id = laundry.id!! ,
+                                            idType = laundry.attributes.type.data.id!! ,
+                                            idCategory = laundry.attributes.category.data.id!! ,
+                                            title = laundry.attributes.type.data.attributes.title + " " +
+                                                    laundry.attributes.category.data.attributes.name ,
+                                            imageUrl = laundry.attributes.laundryImage.data.attributes.url
+                                    )
+                            )
+                        }
+                    }
+                    agencyLaundriesData = pickedData
+                }
+            }
+        }
+    }
+
+    var agencyServicesData by remember(agencyId) { mutableStateOf<List<IntermediaryData>?>(null) }
+    var fetchServicesData by remember { mutableStateOf(true) }
+    if(fetchServicesData) {
+        LaunchedEffect(key1 = agencyId) {
+            var allASs: List<AgencyServiceData>? = null
+            aSViewModel.findAll()
+                .flowOn(Dispatchers.IO)
+                .collect { keptAgencyServices ->
+                    allASs = keptAgencyServices.filter { agencyId == it.attributes.agency.data.id }
+                }
+            if (allASs != null) {
+                var services: List<ServiceData>? = null
+                serviceViewModel.findAll()
+                    .flowOn(Dispatchers.IO)
+                    .collect { services = it }
+                if (services != null) {
+                    val pickedData: MutableList<IntermediaryData> = mutableListOf()
+                    allASs!!.forEach { agencyService ->
+                        val service = services!!.find {
+                            agencyService.attributes.service.data.id == it.id
+                        }
+                        if (service != null) {
+                            pickedData.add(
+                                    IntermediaryData(
+                                            id = service.id!! ,
+                                            idType = service.attributes.type.data.id!! ,
+                                            idCategory = service.attributes.category.data.id!! ,
+                                            title = service.attributes.type.data.attributes.title + " " +
+                                                    service.attributes.category.data.attributes.name ,
+                                            imageUrl = service.attributes.serviceImage.data.attributes.url
+                                    )
+                            )
+                        }
+                    }
+                    agencyServicesData = pickedData
+                }
+            }
+        }
+    }
+
     Scaffold(
             topBar = {
                  TopNavBar(navController)
             },
             content = { innerPadding ->
-                      BodyList(
-                              agencyId = agencyId,
-                              innerPadding = innerPadding,
-                      )
+                if(
+                    agencyLaundriesData != null &&
+                    agencyServicesData != null
+                ){
+                    BodyList(
+                            agencyId = agencyId ,
+                            innerPadding = innerPadding ,
+                            agencyLaundriesData = agencyLaundriesData!!,
+                            agencyServicesData = agencyServicesData!!,
+                            canFetchLaundriesData = { fetchLaundriesData = it },
+                            canFetchServicesData = { fetchServicesData = it }
+                    )
+                    fetchLaundriesData = false
+                    fetchServicesData = false
+                }
 
             },
-            bottomBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-
-                    TextButton(
-                        onClick = {  },
-                        colors = ButtonDefaults.textButtonColors(
-                            backgroundColor = Purple200,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Save",
-                            style = MaterialTheme.typography.body1.copy(
-                                fontSize = 22.sp
-                            )
-                        )
-                    }
-                }
-
-                }
     )
                 //BottomBar(navController)
-            }
+}
 
 
 
@@ -222,10 +285,12 @@ fun TopNavBar(navController: NavHostController) {
 @Composable
 fun BodyList(
     agencyId: Int,
-    innerPadding: PaddingValues ,
+    innerPadding: PaddingValues,
+    agencyLaundriesData: List<IntermediaryData>,
+    agencyServicesData: List<IntermediaryData>,
+    canFetchLaundriesData: (Boolean) -> Unit,
+    canFetchServicesData: (Boolean) -> Unit
 ) {
-
-    var datas by remember { mutableStateOf<List<IntermediaryData>?>(null) }
     var selectedIndex by remember { mutableStateOf(0) }
     
     LazyColumn(contentPadding = innerPadding) {
@@ -305,116 +370,95 @@ fun BodyList(
                     )
                 }
 
-                if (showAddDialog) {
+                var addedData by remember { mutableStateOf<List<IntermediaryData>?>(null) }
 
+                if (showAddDialog) {
                     AddPrestationScreen(
                             selectedIndex = selectedIndex ,
                             updateDialogState = { showAddDialog = it } ,
-                            datas = datas ,
+                            datas = if(selectedIndex == 0) agencyServicesData else agencyLaundriesData ,
                             updateData = {
-                                if (selectedIndex == 0) {
-
-//                                    val updatedServices = mutableListOf<Service>()
-//                                    it.forEach { updatedData ->
-//                                        updatedServices.add(
-//                                                Service(
-//                                                        updatedData.name ,
-//                                                        updatedData.icon
-//                                                )
-//                                        )
-//                                    }
-
-//                                    updateServiceData(updatedServices.toList())
-                                } else {
-
-//                                    val updatedLaundries = mutableListOf<Laundry>()
-//                                    it.forEach { updatedData ->
-//                                        updatedLaundries.add(
-//                                                Laundry(
-//                                                        updatedData.name ,
-//                                                        updatedData.icon
-//                                                )
-//                                        )
-//                                    }
-
-//                                    updateLaundryData(updatedLaundries.toList())
-                                }
+                                addedData = it
                             }
                     )
+                }
 
+                if(addedData != null) {
+                    SaveData(
+                            agencyId = agencyId ,
+                            selectedIndex = selectedIndex ,
+                            datas = addedData!!,
+                            updateData = { addedData = it },
+                            canFetchServicesData = { canFetchServicesData(it) },
+                            canFetchLaundriesData = { canFetchLaundriesData(it) }
+                    )
                 }
 
 
             }
         }
 
-        item {
+        items(
+                if(selectedIndex == 0)
+                    agencyServicesData
+                else
+                    agencyLaundriesData
+        ) { data ->
 
-            FetchDatas(
-                    selectedIndex = selectedIndex,
-                    agencyId = agencyId,
-                    getData = {
-                        datas = it
-                    }
-            )
+            Row(
+                    Modifier
+                        .padding(
+                                horizontal = 4.dp ,
+                                vertical = 8.dp
+                        )
+                        .clickable { } ,
+                    verticalAlignment = Alignment.CenterVertically ,
+                    horizontalArrangement = Arrangement.Center ,
+            ) {
 
-        }
+                Image(
+                        painter = rememberAsyncImagePainter(
+                                model = BASE_URL + data.imageUrl
+                        ) ,
+                        contentDescription = null ,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(56.dp)
+                        ,
+                        contentScale = ContentScale.Crop
+                )
 
-        if(datas != null) {
-            items(datas!!) { data ->
-
-                Row(
-                        Modifier
+                Text(
+                        text = data.title ,
+                        modifier = Modifier
+                            .weight(0.8f)
                             .padding(
-                                    horizontal = 4.dp ,
-                                    vertical = 8.dp
+                                    start = 16.dp
                             )
-                            .clickable { } ,
-                        verticalAlignment = Alignment.CenterVertically ,
-                        horizontalArrangement = Arrangement.Center ,
-                ) {
+                )
 
-                    Image(
-                            painter = rememberAsyncImagePainter(
-                                    model = BASE_URL + data.imageUrl
-                            ) ,
-                            contentDescription = null ,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(56.dp)
-                            ,
-                            contentScale = ContentScale.Crop
-                    )
-
-                    Text(
-                            text = data.title ,
-                            modifier = Modifier
-                                .weight(0.8f)
-                    )
-
-                    IconButton(
-                            onClick = {
-                                if (selectedIndex == 0) {
+                IconButton(
+                        onClick = {
+                            if (selectedIndex == 0) {
 //                                    val updatedServices = services.toMutableList()
 //                                    updatedServices.remove(Service(data.name , data.icon))
 //                                    updateServiceData(updatedServices.toList())
-                                } else {
+                            } else {
 //                                    val updatedLaundries = laundries.toMutableList()
 //                                    updatedLaundries.remove(Laundry(data.name , data.icon))
 //                                    updateLaundryData(updatedLaundries.toList())
-                                }
+                            }
 
-                            } ,
-                            modifier = Modifier
-                                .size(24.dp)
-                                .weight(0.2f)
-                    ) {
-                        Icon(
-                                Icons.Rounded.Delete ,
-                                contentDescription = null ,
-                                tint = Purple200
-                        )
-                    }
+                        } ,
+                        modifier = Modifier
+                            .size(24.dp)
+                            .weight(0.2f)
+                ) {
+                    Icon(
+                            Icons.Rounded.Delete ,
+                            contentDescription = null ,
+                            tint = Purple200
+                    )
                 }
             }
         }
@@ -504,114 +548,76 @@ private fun FetchAgency(
 }
 
 @Composable
-fun FetchDatas(
-    selectedIndex: Int ,
+private fun SaveData(
     agencyId: Int,
-    getData: (List<IntermediaryData>) -> Unit,
-    aLViewModel: AgencyLaundryViewModel = hiltViewModel(),
+    selectedIndex: Int,
+    datas: List<IntermediaryData>,
+    canFetchLaundriesData: (Boolean) -> Unit,
+    canFetchServicesData: (Boolean) -> Unit,
+    updateData: (List<IntermediaryData>?) -> Unit,
+    agencyViewModel: AgencyViewModel = hiltViewModel(),
+    laundryAgencyViewModel: AgencyLaundryViewModel = hiltViewModel(),
     laundryViewModel: LaundryViewModel = hiltViewModel(),
-    aSViewModel: AgencyServiceViewModel = hiltViewModel(),
+    serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel(),
     serviceViewModel: ServiceViewModel = hiltViewModel()
 ) {
-    val allALs = remember(agencyId) { mutableStateOf<List<AgencyLaundryData>?>(null) }
-    val allASs = remember(agencyId) { mutableStateOf<List<AgencyServiceData>?>(null) }
-    val datas : MutableList<IntermediaryData> = mutableListOf()
-    LaunchedEffect(key1 = agencyId) {
-        if(selectedIndex == 0) {
-            datas.clear()
-
-            aSViewModel.findAll()
+    val agency = remember (agencyId) { mutableStateOf<Agency?>(null) }
+    if(selectedIndex == 1) {
+        val laundry = remember(agencyId) { mutableStateOf<Laundry?>(null) }
+        LaunchedEffect(key1 = agencyId) {
+            agencyViewModel.findById(agencyId)
                 .flowOn(Dispatchers.IO)
-                .collect{ keptAgencyServices ->
-                    allASs.value = keptAgencyServices.filter { agencyId == it.attributes.agency.data.id }
-                }
-
-            if(allASs.value != null) {
-                var services : List<ServiceData>? = listOf()
-
-                serviceViewModel.findAll()
-                    .flowOn(Dispatchers.IO)
-                    .collect{ services = it }
-
-                if(services != null){
-                    allASs.value!!.forEach { agencyService ->
-                        val service = services!!.find {
-                            agencyService.attributes.service.data.id == it.id
-                        }
-                        if(service != null) {
-                            datas.add(
-                                    IntermediaryData(
-                                            title = service.attributes.type.data.attributes.title + " " +
-                                                    service.attributes.category.data.attributes.name ,
-                                            imageUrl = service.attributes.serviceImage.data.attributes.url
-                                    )
-                            )
-                        }
+                .collect { agency.value = it }
+            if(agency.value != null) {
+                datas.forEach { data ->
+                    laundryViewModel.getById(data.id)
+                        .flowOn(Dispatchers.IO)
+                        .collect{ laundry.value = it }
+                    if(laundry.value != null) {
+                        laundryAgencyViewModel.save(
+                                AgencyLaundryInfo(
+                                        AgencyLaundryInfoData(
+                                                laundry = laundry.value!!.data.id!!,
+                                                agency = agency.value!!.data.id!!
+                                        )
+                                )
+                        )
                     }
                 }
-
-                getData(datas)
             }
-        } else {
-            datas.clear()
-
-            aLViewModel.findAll()
+        }
+    } else {
+        val service = remember(agencyId) { mutableStateOf<Service?>(null) }
+        LaunchedEffect(key1 = agencyId) {
+            agencyViewModel.findById(agencyId)
                 .flowOn(Dispatchers.IO)
-                .collect{ keptAgencyLaundries ->
-                    allALs.value = keptAgencyLaundries.filter { agencyId == it.attributes.agency.data.id }
-                }
-
-            if(allALs.value != null) {
-                var laundries : List<LaundryData>? = listOf()
-                laundryViewModel.findAll()
-                    .flowOn(Dispatchers.IO)
-                    .collect{ laundries = it }
-                if(laundries != null){
-                    allALs.value!!.forEach { agencyLaundry ->
-                        val laundry = laundries!!.find {
-                            agencyLaundry.attributes.laundry.data.id == it.id
-                        }
-                        if(laundry != null) {
-                            datas.add(
-                                    IntermediaryData(
-                                            title = laundry.attributes.type.data.attributes.title + " " +
-                                                    laundry.attributes.category.data.attributes.name ,
-                                            imageUrl = laundry.attributes.laundryImage.data.attributes.url
-                                    )
-                            )
-                        }
+                .collect { agency.value = it }
+            if(agency.value != null) {
+                datas.forEach { data ->
+                    serviceViewModel.getById(data.id)
+                        .flowOn(Dispatchers.IO)
+                        .collect { service.value = it }
+                    if(service.value != null) {
+                        serviceAgencyViewModel.save(
+                                AgencyServiceInfo(
+                                        AgencyServiceInfoData(
+                                                agency = agency.value!!.data.id!!,
+                                                service = service.value!!.data.id!!
+                                        )
+                                )
+                        )
                     }
                 }
-
-                getData(datas)
             }
         }
     }
 
 
-//    when (selectedIndex) {
-//
-//        0 -> {
-//
-//            services.forEach {
-//                datas.add(IntermediaryData(it.name , it.icon))
-//            }
-//
-//        }
-//
-//        1 -> {
-//
-//            laundries.forEach {
-//                datas.add(Data(it.name , it.icon))
-//            }
-//
-//        }
-//
-//        else -> {}
-//
-//    }
-//
-//    return datas.toList()
 
+    if(selectedIndex == 0)
+        canFetchServicesData(true)
+    else
+        canFetchLaundriesData(true)
+    updateData(null)
 }
 

@@ -3,6 +3,7 @@ package com.android.openpressing.repositories.agency_laundry
 import com.android.openpressing.data.OpenPressingStrapiApi
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundry
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundryData
+import com.android.openpressing.data.models.agency_laundry.AgencyLaundryInfo
 import javax.inject.Inject
 
 class AgencyLaundryRepository @Inject constructor(
@@ -12,9 +13,11 @@ class AgencyLaundryRepository @Inject constructor(
 
     suspend fun getById(id:Int) =agencyLaundryApi.getById(id)
 
-    suspend fun save(agencyLaundry : AgencyLaundry) = agencyLaundryApi.save(agencyLaundry)
+    suspend fun save(
+        agencyLaundry : AgencyLaundryInfo
+    ) = agencyLaundryApi.save(agencyLaundry)
 
-    suspend fun update(id : Int, agencyLaundry : AgencyLaundry) : AgencyLaundry=agencyLaundryApi.update(id, agencyLaundry)
+    suspend fun update(id : Int, agencyLaundry : AgencyLaundry) : AgencyLaundry =agencyLaundryApi.update(id , agencyLaundry)
 
     suspend fun delete(id : Int){
         val deletingAgencyLaundry=getById(id)

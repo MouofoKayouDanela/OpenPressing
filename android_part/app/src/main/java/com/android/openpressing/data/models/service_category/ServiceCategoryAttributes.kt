@@ -11,6 +11,6 @@ data class ServiceCategoryAttributes (
     @SerializedName("createdAt") var created_at: Date = Date() ,
     @SerializedName("updateAt") var updated_at: Date = Date() ,
     @SerializedName("publishedAt") var published_at: Date = Date() ,
-    var confirmed: Boolean = true,
+    var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
 )

@@ -7,7 +7,9 @@ import com.android.openpressing.data.models.agency.Agencies
 import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundries
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundry
+import com.android.openpressing.data.models.agency_laundry.AgencyLaundryInfo
 import com.android.openpressing.data.models.agency_service.AgencyService
+import com.android.openpressing.data.models.agency_service.AgencyServiceInfo
 import com.android.openpressing.data.models.agency_service.AgencyServices
 import com.android.openpressing.data.models.agent.Agent
 import com.android.openpressing.data.models.agent.Agents
@@ -53,8 +55,6 @@ import com.android.openpressing.data.models.service_type.ServiceType
 import com.android.openpressing.data.models.service_type.ServiceTypes
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.utils.*
-import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import retrofit2.http.*
 
 sealed interface OpenPressingStrapiApi{
@@ -119,7 +119,7 @@ sealed interface OpenPressingStrapiApi{
 
         @POST(AGENCY_LAUNDRY_FEATURES)
         suspend fun save(
-            @Body agencyLaundry: AgencyLaundry
+            @Body agencyLaundry: AgencyLaundryInfo
         )
 
         @PUT("$AGENCY_LAUNDRY_FEATURES/{id}")
@@ -142,7 +142,7 @@ sealed interface OpenPressingStrapiApi{
 
         @POST(AGENCY_SERVICE_FEATURES)
         suspend fun save(
-            @Body agencyService: AgencyService
+            @Body agencyService: AgencyServiceInfo
         )
 
         @PUT("$AGENCY_SERVICE_FEATURES/{id}")

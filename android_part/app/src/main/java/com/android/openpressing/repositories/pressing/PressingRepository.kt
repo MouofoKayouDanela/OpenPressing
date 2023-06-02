@@ -16,7 +16,7 @@ class PressingRepository @Inject constructor(
 
     suspend fun save(pressing: Pressing) = pressingApi.save(pressing)
 
-    suspend fun update(id: Int,pressing: Pressing) : Pressing = pressingApi.update(id, pressing)
+    suspend fun update(id: Int,pressing: Pressing) : Pressing = pressingApi.update(id , pressing)
 
     suspend fun delete(id: Int) {
 
