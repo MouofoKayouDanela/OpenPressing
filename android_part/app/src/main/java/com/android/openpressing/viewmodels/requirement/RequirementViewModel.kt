@@ -70,7 +70,7 @@ import javax.inject.Inject
             emit(requirementRepository.getById(id))
         }.flowOn(Dispatchers.IO)
 
-        fun save(requirement:Requirement ) {
+        fun save(requirement: Requirement) {
             try {
 
                 viewModelScope.launch(Dispatchers.IO) {

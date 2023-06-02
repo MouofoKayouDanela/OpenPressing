@@ -11,11 +11,11 @@ data class AgencyServiceAttributes(
     var service: Service ,
     @SerializedName("AddingDate") var addingDate: Date = Date() ,
     @SerializedName("RetireDate") var retireDate: Date? = null ,
-    @SerializedName("Status") var status: String ,
+    @SerializedName("Status") var status: String = "" ,
     var offers: Offers? = null ,
-    var createdAt: Date = Date(),
-    var updatedAt: Date = Date(),
-    var publishedAt: Date = Date(),
+    var createdAt: Date = Date() ,
+    var updatedAt: Date = Date() ,
+    var publishedAt: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false
 )

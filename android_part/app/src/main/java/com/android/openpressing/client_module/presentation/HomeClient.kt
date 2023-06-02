@@ -3,14 +3,12 @@ package com.android.openpressing.client_module.presentation
 
 
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,48 +23,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.besoin.user
-import com.android.openpressing.client_module.presentation.profile.id
-import com.android.openpressing.data.models.agency.Agency
 import com.android.openpressing.data.models.agency.AgencyData
-import com.android.openpressing.data.models.laundry.Laundry
-import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
-import com.android.openpressing.data.models.quarter.QuarterData
-import com.android.openpressing.data.models.user.User
-import com.android.openpressing.data.models.user.UserData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
-import com.android.openpressing.viewmodels.agency.state.AgencyState
-import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
-import com.android.openpressing.viewmodels.quarter.QuarterViewModel
-import com.android.openpressing.viewmodels.quarter.state.QuarterState
-import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
-import com.android.openpressing.viewmodels.services.state.RequirementState
-import com.android.openpressing.viewmodels.user.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 
 
 /*data class pressing(
@@ -289,12 +267,11 @@ fun SectionBleue(
 
 @Composable
 fun CardWithContent(
-    pressing: PressingData,
-    quarterId: Int,
-    navController: NavHostController,
-    viewModel : AgencyViewModel = hiltViewModel(),
+    pressing: PressingData ,
+    navController: NavHostController ,
+    viewModel : AgencyViewModel = hiltViewModel() ,
 
-) { //navController: NavHostController
+    ) { //navController: NavHostController
 
     Card(
         elevation = 10.dp,

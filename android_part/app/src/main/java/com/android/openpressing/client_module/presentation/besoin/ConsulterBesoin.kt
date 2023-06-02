@@ -112,8 +112,8 @@ data class Contenu(
 
 @Composable
 fun Stock(
-    contenu: List<RequirementData>,
-    innerPadding: PaddingValues,
+    contenu: List<RequirementData> ,
+    innerPadding: PaddingValues ,
     navController: NavController
 ){
     LazyColumn(contentPadding = innerPadding) {
@@ -127,7 +127,7 @@ fun Stock(
 @Composable
 fun Consult(
     affiche: RequirementData ,
-    navController: NavController,
+    navController: NavController ,
     requiremenDetailsViewModel: RequirementDetailViewModel = hiltViewModel() ,
 ) {
 

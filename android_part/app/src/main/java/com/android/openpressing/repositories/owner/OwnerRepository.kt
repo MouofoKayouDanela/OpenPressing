@@ -14,7 +14,7 @@ class OwnerRepository @Inject constructor(
 
     suspend fun save(owner : Owner) = ownerApi.save(owner)
 
-    suspend fun update(id: Int,owner : Owner) : Owner = ownerApi.update(id, owner)
+    suspend fun update(id: Int,owner : Owner) : Owner = ownerApi.update(id , owner)
 
     suspend fun delete(id: Int) {
 

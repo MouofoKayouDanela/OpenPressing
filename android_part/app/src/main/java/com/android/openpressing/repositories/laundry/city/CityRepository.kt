@@ -10,11 +10,11 @@ class CityRepository @Inject constructor(
 ) {
     suspend fun getAll() : MutableList<CityData> = cityApi.getAll().data
 
-    suspend fun getById(id:Int) : City= cityApi.getById(id)
+    suspend fun getById(id:Int) : City = cityApi.getById(id)
 
     suspend fun save(city : City) = cityApi.save(city)
 
-    suspend fun update(id : Int,city : City) : City= cityApi.update(id, city)
+    suspend fun update(id : Int,city : City) : City = cityApi.update(id , city)
 
     suspend fun delete(id : Int){
         val deletingCity = getById(id)

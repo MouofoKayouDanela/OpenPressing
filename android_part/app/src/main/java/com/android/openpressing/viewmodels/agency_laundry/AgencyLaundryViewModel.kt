@@ -1,14 +1,17 @@
 package com.android.openpressing.viewmodels.agency_laundry
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.android.openpressing.data.models.agency_laundry.AgencyLaundry
+import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundryData
+import com.android.openpressing.data.models.agency_laundry.AgencyLaundryInfo
 import com.android.openpressing.repositories.agency_laundry.AgencyLaundryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +23,13 @@ class AgencyLaundryViewModel @Inject constructor(
         emit(repository.getAll())
     }.flowOn(Dispatchers.IO)
 
-    fun save(agencyLaundry: AgencyLaundry) = flow{
-        emit(repository.save(agencyLaundry))
+    fun save(agencyLaundry: AgencyLaundryInfo) {
+        viewModelScope.launch {
+            repository.save(agencyLaundry)
+        }
+    }
+
+    fun delete(id: Int) = flow {
+        emit(repository.delete(id))
     }.flowOn(Dispatchers.IO)
 }

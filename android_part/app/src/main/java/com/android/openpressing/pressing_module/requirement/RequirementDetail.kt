@@ -245,8 +245,8 @@ private fun TopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RequirementContent(
-    innerPadding: PaddingValues,
-    requirementDetails: List<RequirementDetailData>,
+    innerPadding: PaddingValues ,
+    requirementDetails: List<RequirementDetailData> ,
     viewModel: RequirementDetailViewModel = hiltViewModel()
 ) {
     val allRdKey = "allRd"

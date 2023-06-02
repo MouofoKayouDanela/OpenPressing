@@ -12,9 +12,9 @@ class OfferRepository @Inject constructor(
 
     suspend fun getById(id: Int) : Offer = offerApi.getById(id)
 
-    suspend fun save(offer : Offer ) = offerApi.save(offer)
+    suspend fun save(offer : Offer) = offerApi.save(offer)
 
-    suspend fun update(id: Int,offer : Offer) : Offer = offerApi.update(id, offer)
+    suspend fun update(id: Int,offer : Offer) : Offer = offerApi.update(id , offer)
 
     suspend fun delete(id: Int) {
 
