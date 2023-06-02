@@ -29,8 +29,10 @@ class AgencyServiceViewModel @Inject constructor(
         }
     }
 
-    fun delete(id: Int) = flow {
-        emit(repository.delete(id))
-    }.flowOn(Dispatchers.IO)
+    fun delete(id: Int) {
+        viewModelScope.launch {
+            repository.delete(id)
+        }
+    }
 
 }

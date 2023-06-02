@@ -125,8 +125,8 @@ sealed interface OpenPressingStrapiApi{
         @PUT("$AGENCY_LAUNDRY_FEATURES/{id}")
         suspend fun update(
             @Path("id") id: Int,
-            @Body agencyLaundry: AgencyLaundry
-        ) : AgencyLaundry
+            @Body agencyLaundry: AgencyLaundryInfo
+        ) : AgencyLaundryInfo
 
 //        @DELETE(AGENCY_LAUNDRY_FEATURES)
 //        suspend fun delete(agencyLaundry: AgencyLaundry)
@@ -148,8 +148,8 @@ sealed interface OpenPressingStrapiApi{
         @PUT("$AGENCY_SERVICE_FEATURES/{id}")
         suspend fun update(
             @Path("id") id: Int,
-            @Body agencyService: AgencyService
-        ) : AgencyService
+            @Body agencyService: AgencyServiceInfo
+        ) : AgencyServiceInfo
 
 //        @DELETE(AGENCY_SERVICE_FEATURES)
 //        suspend fun delete(agencyService: AgencyService)
