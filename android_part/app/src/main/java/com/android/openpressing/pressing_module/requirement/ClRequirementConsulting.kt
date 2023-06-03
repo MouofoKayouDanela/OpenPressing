@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,9 +27,7 @@ import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.user.User
-import com.android.openpressing.ui.theme.primaryColor
-import com.android.openpressing.ui.theme.primaryPrimeColor
-import com.android.openpressing.ui.theme.secondaryPrimeColor
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
@@ -53,7 +52,7 @@ fun ClRequirementConsulting(
     requirementViewModel.getAll()
 
     Scaffold(
-            topBar = { TopAppBar() } ,
+            topBar = { TopAppBar( navController) } ,
             content = { innerPadding ->
                 RequirementList(
                         innerPadding = innerPadding,
@@ -67,33 +66,36 @@ fun ClRequirementConsulting(
                 BottomAppBar(
                         actualPage = actualPage,
                         pageSize = pageSize,
-                        updateActualPage = { actualPage = it }
+                        updateActualPage = { actualPage = it },
+                        navController = navController
                 )
             }
     )
 }
 
 @Composable
-private fun TopAppBar() {
+private fun TopAppBar( navController: NavController) {
     Column {
         Row(
-                Modifier
-                    .clip(
-                            RoundedCornerShape(
-                                    bottomStart = 10.dp ,
-                                    bottomEnd = 10.dp
-                            )
+            Modifier
+                .clip(
+                    RoundedCornerShape(
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp
                     )
-                    .fillMaxWidth()
-                    .background(primaryColor)
-                    .padding(
-                            horizontal = 8.dp ,
-                            vertical = 4.dp
-                    ),
+                )
+                .fillMaxWidth()
+                .background(Purple500)
+                .padding(
+                    horizontal = 8.dp,
+                    vertical = 4.dp
+                ),
                 verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                    onClick = { },
+                    onClick = {
+                         navController.navigate(Screen.AddService.road)
+                    },
                     modifier = Modifier.weight(0.1f)
             ) {
                 Icon(
@@ -151,7 +153,7 @@ fun RequirementList(
                             backgroundColor = Color.White ,
                             border = BorderStroke(
                                     1.dp ,
-                                    secondaryPrimeColor
+                                    thirdColor
                             ) ,
                             shape = RoundedCornerShape(if (isExpanded) 10 else 20)
                     ) {
@@ -223,19 +225,19 @@ fun RequirementList(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .border(
-                                                        width = 1.dp ,
-                                                        brush = Brush.linearGradient(
-                                                                listOf(
-                                                                        Color.Black ,
-                                                                        Color.Black
-                                                                )
-                                                        ) ,
-                                                        shape = RoundedCornerShape(20)
+                                                    width = 1.dp,
+                                                    brush = Brush.linearGradient(
+                                                        listOf(
+                                                            Color.Black,
+                                                            Color.Black
+                                                        )
+                                                    ),
+                                                    shape = RoundedCornerShape(20)
                                                 )
                                                 .padding(4.dp)
                                                 .clickable {
                                                     navController.navigate(
-                                                            "${Screen.ClientRequirementDetails.road}/${data.id!!}"
+                                                        "${Screen.ClientRequirementDetails.road}/${data.id!!}"
                                                     )
                                                 }
                                     ) {
@@ -424,82 +426,133 @@ private fun FetchService(
 fun BottomAppBar(
     actualPage: Int,
     pageSize: Int,
-    updateActualPage: (Int) -> Unit
+    updateActualPage: (Int) -> Unit,
+    navController: NavController
+
 ) {
-    Row(
+    Column(){
+        Row(
             Modifier
                 .fillMaxWidth()
                 .background(primaryColor)
                 .padding(
-                        horizontal = 8.dp ,
-                        vertical = 4.dp
+                    horizontal = 8.dp,
+                    vertical = 4.dp
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
-    ) {
+        ) {
 
-        val canClickPrevious = actualPage != 0
-        val canClickNext = actualPage != pageSize - 1
+            val canClickPrevious = actualPage != 0
+            val canClickNext = actualPage != pageSize - 1
 
-        IconButton(
+            IconButton(
                 onClick = { updateActualPage(0) },
                 modifier = Modifier.weight(1.5f),
                 enabled = canClickPrevious
-        ) {
-            Icon(
+            ) {
+                Icon(
                     Icons.Rounded.SkipPrevious,
                     contentDescription = null,
                     tint = if (canClickPrevious) Color.White else Color.LightGray
-            )
-        }
-        IconButton(
+                )
+            }
+            IconButton(
                 onClick = { updateActualPage(actualPage - 1) },
                 modifier = Modifier.weight(1.5f),
                 enabled = canClickPrevious
-        ) {
-            Icon(
+            ) {
+                Icon(
                     Icons.Rounded.KeyboardArrowLeft,
                     contentDescription = null,
                     tint = if (canClickPrevious) Color.White else Color.LightGray
-            )
-        }
+                )
+            }
 
-        val page = if (actualPage < 9) "0${actualPage + 1}" else "${actualPage + 1}"
-        val size = if (pageSize < 10) "0$pageSize" else "$pageSize"
+            val page = if (actualPage < 9) "0${actualPage + 1}" else "${actualPage + 1}"
+            val size = if (pageSize < 10) "0$pageSize" else "$pageSize"
 
-        Row(
+            Row(
                 modifier = Modifier.weight(4f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-        ){
-            Text(
-                    "page $page sur $size" ,
+            ) {
+                Text(
+                    "page $page sur $size",
                     color = Color.White,
                     style = MaterialTheme.typography.body1
-            )
-        }
+                )
+            }
 
-        IconButton(
+            IconButton(
                 onClick = { updateActualPage(actualPage + 1) },
                 modifier = Modifier.weight(1.5f),
                 enabled = canClickNext
-        ) {
-            Icon(
+            ) {
+                Icon(
                     Icons.Rounded.KeyboardArrowRight,
                     contentDescription = null,
                     tint = if (canClickNext) Color.White else Color.LightGray
-            )
-        }
-        IconButton(
+                )
+            }
+            IconButton(
                 onClick = { updateActualPage(pageSize - 1) },
                 modifier = Modifier.weight(1.5f),
                 enabled = canClickNext
-        ) {
-            Icon(
+            ) {
+                Icon(
                     Icons.Rounded.SkipNext,
                     contentDescription = null,
                     tint = if (canClickNext) Color.White else Color.LightGray
-            )
+                )
+            }
+        }
+        Row() {
+            val selectedIndex = remember { mutableStateOf(0) }
+            BottomNavigation(
+                elevation = 2.dp,
+                backgroundColor = blanc
+            ) {
+
+                BottomNavigationItem(icon = {
+                    Icon(imageVector = Icons.Default.LocalActivity, "", tint = primaryColor)
+                },
+                    label = { Text(text = "Clients") },
+                    selected = (selectedIndex.value == 0),
+                    onClick = {
+                        navController.navigate(Screen.ClientRequirement.road)
+                        selectedIndex.value = 0
+                    })
+                BottomNavigationItem(icon = {
+                    Icon(imageVector = Icons.Default.LocalLaundryService, "")
+                },
+                    label = { Text(text = "Agencies") },
+                    selected = (selectedIndex.value == 1),
+                    onClick = {
+                        navController.navigate(Screen.AgencyList.road)
+                        selectedIndex.value = 1
+                    })
+
+                BottomNavigationItem(icon = {
+                    Icon(imageVector = Icons.Default.Notes, "")
+                },
+                    label = { Text(text = "Needs") },
+                    selected = (selectedIndex.value == 2),
+                    onClick = {
+                        navController.navigate(Screen.ConsulterBesoin.road)
+                        selectedIndex.value = 2
+                    })
+
+                BottomNavigationItem(icon = {
+                    Icon(imageVector = Icons.Default.Person, "")
+                },
+                    label = { Text(text = "Profile") },
+                    selected = (selectedIndex.value == 3),
+                    onClick = {
+                        navController.navigate(Screen.Profile.road)
+                        selectedIndex.value = 3
+                    })
+            }
         }
     }
 }

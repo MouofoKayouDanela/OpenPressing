@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.flowOn
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginnScreen(
+    getConnectedUserId: (Int) -> Unit,
     navController: NavHostController,
     userViewModel: UserViewModel = hiltViewModel(),
     ownerViewModel: OwnerViewModel = hiltViewModel(),
@@ -146,10 +147,10 @@ fun LoginnScreen(
                 val users = remember(key1 = allUserKey) {
                     mutableStateOf<List<User>?>(null)
                 }
-                LaunchedEffect(key1 = allUserKey){
+                LaunchedEffect(key1 = allUserKey) {
                     userViewModel.fineAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             users.value = it
                         }
                 }
@@ -162,7 +163,7 @@ fun LoginnScreen(
                 LaunchedEffect(key1 = allClientKey){
                     clientViewModel.findAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             clients.value = it
                         }
                 }
@@ -172,10 +173,10 @@ fun LoginnScreen(
                 val owners = remember(key1 = allOwnerKey) {
                     mutableStateOf<List<OwnerData>?>(null)
                 }
-                LaunchedEffect(key1 = allOwnerKey){
+                LaunchedEffect(key1 = allOwnerKey) {
                     ownerViewModel.fineAll()
                         .flowOn(Dispatchers.IO)
-                        .collect{
+                        .collect {
                             owners.value = it
                         }
                 }
@@ -183,41 +184,46 @@ fun LoginnScreen(
                 Button(
                     onClick = {
 
-                        val auth=Firebase.auth
-                        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                            task -> showMessage = if(task.isSuccessful){
-                            Log.d(ContentValues.TAG, "signInWithEmail:success")
+                        val auth = Firebase.auth
+                        auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+                                showMessage = if (task.isSuccessful) {
+                                    Log.d(ContentValues.TAG, "signInWithEmail:success")
 
-                            if (users.value != null) {
-                                val user = users.value!!.find {
-                                    it.email == email
-                                }
-                                if(user != null){
-                                    if(
-                                        clients.value != null
-                                        &&
-                                        owners.value != null
-                                    ){
-                                        Log.i("", "${clients.value}")
-                                        Log.i("", "${owners.value}")
-                                        if (clients.value!!.any{ it.attributes.user.data.id == user.id }){
-                                            navController.navigate(Screen.Home.road)
+                                    if (users.value != null) {
+                                        val user = users.value!!.find {
+                                            it.email == email
                                         }
-                                        else if(owners.value!!.any{it.attributes.user.data.id == user.id}){
-                                            navController.navigate(Screen.ClientRequirement.road)
+                                        if (user != null) {
+                                            if (
+                                                clients.value != null
+                                                &&
+                                                owners.value != null
+                                            ) {
+                                                Log.i("", "${clients.value}")
+                                                Log.i("", "${owners.value}")
+                                                if (clients.value!!.any { it.attributes.user.data.id == user.id }) {
+                                                    getConnectedUserId(user.id!!)
+                                                    navController.navigate(Screen.Home.road)
+                                                } else if (owners.value!!.any { it.attributes.user.data.id == user.id }) {
+                                                    getConnectedUserId(user.id!!)
+                                                    navController.navigate(Screen.ClientRequirement.road)
+                                                }
+                                            }
+
                                         }
+
                                     }
-
+                                    false
+                                } else {
+                                    Log.w(
+                                        ContentValues.TAG,
+                                        "signInWithEmail:failure",
+                                        task.exception
+                                    )
+                                    true
                                 }
-
                             }
-                            false
-                            }
-                            else{
-                                Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                                true
-                            }
-                        }
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -228,22 +234,22 @@ fun LoginnScreen(
                         text = "Se connecter", style = MaterialTheme.typography.body1
                     )
                 }
-                if(showMessage){
+                if (showMessage) {
                     AlertDialog(onDismissRequest = { showMessage = false },
-                    title = {Text("Authentification invalide")},
-                    text = {
-                        Text("Email ou mot de passe incorrect")
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = { showMessage=false },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.Blue
-                            )
-                        ) {
-                            Text("OK")
+                        title = { Text("Authentification invalide") },
+                        text = {
+                            Text("Email ou mot de passe incorrect")
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = { showMessage = false },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.Blue
+                                )
+                            ) {
+                                Text("OK")
+                            }
                         }
-                    }
                     )
                 }
                 Row(

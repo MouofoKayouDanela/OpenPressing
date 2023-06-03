@@ -29,10 +29,7 @@ import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.user.User
-import com.android.openpressing.ui.theme.primaryColor
-import com.android.openpressing.ui.theme.secondaryColor
-import com.android.openpressing.ui.theme.secondaryPrimeColor
-import com.android.openpressing.ui.theme.softSecondaryPrimeColor
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
@@ -108,7 +105,7 @@ private fun TopAppBar(
                         )
                 )
                 .fillMaxWidth()
-                .background(primaryColor)
+                .background(Purple500)
                 .padding(
                         horizontal = 8.dp ,
                         vertical = 4.dp
@@ -146,12 +143,12 @@ private fun TopAppBar(
                         onClick = {  },
                         colors = ButtonDefaults.textButtonColors(
                                 contentColor = Color.White,
-                                backgroundColor = primaryColor
+                                backgroundColor = Purple500
                         ),
                         shape = RoundedCornerShape(20),
                         border = BorderStroke(
                                 width = 1.dp,
-                                color = secondaryPrimeColor
+                                color = thirdColor
                         )
                 ) {
                     Text(
@@ -293,7 +290,7 @@ fun RequirementContent(
 
                             Column(
                                     modifier = Modifier
-                                        .background(softSecondaryPrimeColor)
+                                        .background(thirdPrimeColor)
                                         .padding(16.dp)
                                         .fillMaxWidth() ,
                                     verticalArrangement = Arrangement.Center ,
@@ -377,7 +374,7 @@ private fun FetchService(
                             service.value!!.data.attributes.category.data.attributes.name ,
                     style = MaterialTheme.typography.body1.copy(
                             fontWeight = FontWeight.SemiBold ,
-                            color = secondaryColor
+                            color = secondaryPrimeColor
                     )
             )
         }

@@ -8,11 +8,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalLaundryService
+import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Reorder
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -25,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.client_module.presentation.requirement.details.components.DeliveryArea
@@ -50,41 +59,42 @@ fun ProfileScreen(navController: NavHostController) {
                     ListeSoustitre(navController)
                 }
             }
-        }
+        },
+
+        bottomBar = {NavBottomBar(navController)}
     )
 }
 
 
 
 @Composable
-fun BlueSection(navController: NavHostController) {
+fun BlueSection(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .size(height = 80.dp, width = 230.dp) /////taille du box bleue/////
+            .size(height = 60.dp, width = 230.dp) /////taille du box bleue/////
             .clip(
                 shape = RoundedCornerShape(
                     topStart = 0.dp,
                     topEnd = 0.dp,
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
+                    bottomEnd = 10.dp,
+                    bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = Purple500)
-        //shape=RoundedCornerShape(32.dp)
+            .background(color = primaryColor)
     ){
         Column() {
             /////Ligne de l'icone de notification/////
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.Home.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(
@@ -94,27 +104,22 @@ fun BlueSection(navController: NavHostController) {
                     )
                 }
 
-                IconButton(
-                    onClick = { /*TODO*/ }
-                ) {
-                    Icon(
-                        Icons.Rounded.Notifications,
-                        contentDescription = stringResource(R.string.notifications),
-                        tint = Color.White
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier .padding(horizontal = 98.dp),
-                horizontalArrangement = Arrangement.Center,
-            ){
                 Text(
                     text = "Paramètres",
                     fontSize = 20.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
+
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        Icons.Rounded.Notifications,
+                        contentDescription = stringResource(R.string.notifications),
+                        tint = thirdPrimeColor
+                    )
+                }
             }
         }
     }
@@ -163,7 +168,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
 
@@ -179,7 +184,7 @@ fun ListeSoustitre(navController: NavHostController) {
             Icon(
                 Icons.Rounded.List,
                 contentDescription = stringResource(R.string.liste),
-                tint = Purple
+                tint = Purple500
             )
             Spacer(Modifier.width(10.dp))
             Column(
@@ -203,7 +208,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -242,7 +247,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -281,7 +286,7 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
@@ -320,12 +325,106 @@ fun ListeSoustitre(navController: NavHostController) {
                 Icon(
                     Icons.Rounded.NavigateNext,
                     contentDescription = stringResource(R.string.nextPage),
-                    tint = Color.Blue
+                    tint = primaryColor
                 )
             }
         }
     }
 
+}
+
+
+@Composable
+ fun NavBottomBar(navController: NavController) {
+    val selectedIndex = remember { mutableStateOf(0) }
+    BottomNavigation(
+        elevation = 2.dp,
+        backgroundColor = blanc
+    ) {
+
+        BottomNavigationItem(icon = {
+            Icon(
+                imageVector = Icons.Default.LocalLaundryService,
+                "",
+                tint = if(selectedIndex.value == 0) primaryColor
+                else Color.DarkGray
+            )
+        },
+            label = {
+                Text(
+                    text = "Laundry",
+                    color = if(selectedIndex.value == 0) primaryColor
+                    else Color.DarkGray
+                )
+            },
+            selected = (selectedIndex.value == 0),
+            onClick = {
+                navController.navigate(Screen.Home.road)
+                selectedIndex.value = 0
+            })
+        BottomNavigationItem(icon = {
+            Icon(
+                imageVector = Icons.Default.Reorder,
+                "",
+                tint = if(selectedIndex.value == 1) primaryColor
+                else Color.DarkGray
+            )
+        },
+            label = {
+                Text(
+                    text = "Order",
+                    color = if(selectedIndex.value == 1) primaryColor
+                    else Color.DarkGray
+                )
+            },
+            selected = (selectedIndex.value == 1),
+            onClick = {
+                navController.navigate(Screen.ListCommande.road)
+                selectedIndex.value = 1
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(
+                imageVector = Icons.Default.ShoppingBasket,
+                "",
+                tint = if(selectedIndex.value == 2) primaryColor
+                else Color.DarkGray
+            )
+        },
+            label = {
+                Text(
+                    text = "Needs",
+                    color = if(selectedIndex.value == 2) primaryColor
+                    else Color.DarkGray
+                )
+            },
+            selected = (selectedIndex.value == 2),
+            onClick = {
+                navController.navigate(Screen.ConsulterBesoin.road)
+                selectedIndex.value = 2
+            })
+
+        BottomNavigationItem(icon = {
+            Icon(
+                imageVector = Icons.Default.Person,
+                "",
+                tint = if(selectedIndex.value == 3) primaryColor
+                else Color.DarkGray
+            )
+        },
+            label = {
+                Text(
+                    text = "Profile",
+                    color = if(selectedIndex.value == 3) primaryColor
+                    else Color.DarkGray
+                )
+            },
+            selected = (selectedIndex.value == 3),
+            onClick = {
+                navController.navigate(Screen.Profile.road)
+                selectedIndex.value = 3
+            })
+    }
 }
 
 @Preview

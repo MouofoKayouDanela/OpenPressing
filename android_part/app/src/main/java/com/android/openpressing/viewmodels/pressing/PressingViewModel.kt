@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.pressing.Pressing
 import com.android.openpressing.data.models.pressing.PressingData
+import com.android.openpressing.data.models.user.User
 import com.android.openpressing.repositories.pressing.PressingRepository
 import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.PressingState
@@ -46,7 +47,7 @@ class PressingViewModel @Inject constructor(
         emit(pressingRepository.getAll())
     }.flowOn(Dispatchers.IO)
 
-    fun getById(id: Int){
+    fun getByIds(id: Int){
         try {
             viewModelScope.launch (Dispatchers.IO){
                 val pressing = pressingRepository.getById(id)
@@ -56,6 +57,9 @@ class PressingViewModel @Inject constructor(
 
         }
     }
+    fun getById(id: Int) : Flow<Pressing> = flow {
+        emit( pressingRepository.getById(id))
+    }.flowOn(Dispatchers.IO)
 
     fun save(pressing : Pressing){
         try {

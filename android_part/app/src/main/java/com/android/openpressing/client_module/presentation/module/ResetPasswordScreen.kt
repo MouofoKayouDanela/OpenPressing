@@ -85,12 +85,15 @@ fun ResetPasswordScreen(navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
                             contentDescription = "New Password Field",
+                            tint=Color.Black
                         )
                     },
                     trailingIcon = {
                         Icon(painter = if (passwordObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
                             id = R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show New Password", modifier = Modifier.clickable {
+                        ), contentDescription = "Show New Password",
+                            tint=Color.Black,
+                                    modifier = Modifier.clickable {
                             passwordObscure = !passwordObscure
                         })
                     },
@@ -107,18 +110,21 @@ fun ResetPasswordScreen(navController: NavHostController) {
                     onValueChange = {
                         passwordConfirm = it
                     },
-                    hint = "Re-enter New Password",
+                    hint = "Confirm Password",
                     obscure = passwordConfirmObscure,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
-                            contentDescription = " Re-enter New Password Field",
+                            contentDescription = " Confirm Password",
+                            tint=Color.Black,
                         )
                     },
                     trailingIcon = {
                         Icon(painter = if (passwordConfirmObscure) painterResource(id = R.drawable.ic_outline_visibility) else painterResource(
                             id = R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Re-entered New Password", modifier = Modifier.clickable {
+                        ), contentDescription = "Show Re-entered New Password",
+                            tint=Color.Black,
+                            modifier = Modifier.clickable {
                             passwordConfirmObscure = !passwordConfirmObscure
                         })
                     },

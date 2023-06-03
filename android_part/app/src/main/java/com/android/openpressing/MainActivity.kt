@@ -4,7 +4,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,13 +19,16 @@ import com.android.openpressing.client_module.presentation.agence.ServicesNLaund
 import com.android.openpressing.client_module.presentation.besoin.AddRequirementScreen
 import com.android.openpressing.client_module.presentation.besoin.DetailBesoin
 import com.android.openpressing.client_module.presentation.besoin.MyNeed
+import com.android.openpressing.client_module.presentation.client.LesAnnonces
+import com.android.openpressing.client_module.presentation.client.ListPromotion
 import com.android.openpressing.client_module.presentation.client.MySMS
-import com.android.openpressing.client_module.presentation.client.OfferScreen
+import com.android.openpressing.client_module.presentation.client.OffreView
 import com.android.openpressing.client_module.presentation.module.*
+import com.android.openpressing.client_module.presentation.profile.EditionView
 import com.android.openpressing.ui.theme.OpenPressingTheme
-import com.android.openpressing.client_module.presentation.profile.EditerProfil
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
+import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
 import com.android.openpressing.pressing_module.requirement.RequirementDetail
 import com.android.openpressing.utils.Screen
@@ -35,18 +40,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-
-            //val pressingModel : PressingViewModel = viewModel()
+            val pressingData : PressingData
+            var id by remember { mutableStateOf<Int?>(null) }
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.AgencyList.road){
-                    composable(Screen.Login.road){ LoginnScreen(navController) }
+                NavHost(navController = navController, startDestination = Screen.Login.road){
+                    composable(Screen.Login.road){
+                        LoginnScreen(
+                            getConnectedUserId = { id = it } ,
+                            navController = navController
+                        )
+                    }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
                     composable(Screen.Finition.road) { FinitionScreen(navController)}
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
+                    composable(Screen.ListPromo.road){ ListPromotion(navController) }
                     composable(Screen.Home.road){
-                        ScaffoldSample(navController)
+                        ScaffoldSample(
+                            connectedClientId = id!!,
+                            navController = navController
+                        )
 
                         //pressingModel.getAll()
 
@@ -56,7 +70,7 @@ class MainActivity : ComponentActivity() {
 
                     }
                     composable(Screen.Profile.road){ ProfileScreen(navController) }
-                    composable(Screen.EditScreen.road){ EditerProfil(navController) }
+                    composable(Screen.EditScreen.road){ EditionView() }
                     composable(Screen.Splash.road){ IntroScreen(navController) }
                     composable(
                             route = "${Screen.AddService.road}/{agencyId}",
@@ -70,7 +84,7 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ListBesoin.road){ Default(navController) }
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
-                    composable(Screen.ListOffer.road){ OfferScreen(navController) }
+                    composable(Screen.ListOffer.road){ OffreView() }
                     composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
                     composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                     composable(Screen.Parametre .road){ MyScreenPreview(navController) }
@@ -87,6 +101,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.ConsulterBesoin.road){
                         MyNeed(
+                                userID = id!!,
                                 navController = navController
                         )
                     }
@@ -101,7 +116,10 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(Screen.AgencyList.road) {
-                        AgencyList(navController = navController)
+                        AgencyList(
+                            userId = id!!,
+                            navController = navController
+                        )
                     }
 
                     composable(

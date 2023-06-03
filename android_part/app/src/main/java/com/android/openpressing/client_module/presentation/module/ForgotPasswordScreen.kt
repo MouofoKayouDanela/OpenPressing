@@ -83,6 +83,7 @@ fun ForgotPasswordScreen(navController: NavHostController) {
                         Icon(
                             imageVector = Icons.Outlined.Email,
                             contentDescription = "Email Field",
+                            tint=Color.Black
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(

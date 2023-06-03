@@ -45,10 +45,10 @@ fun DetailBesoin(
     LaunchedEffect(key1 = requirementId) {
         requirementViewModel.getById(requirementId)
             .flowOn(Dispatchers.IO)
-            .collect { keptRequirement ->
-                requirement.value = keptRequirement
-            }
+            .collect{ keptRequirement ->
+                requirement.value = keptRequirement }
     }
+
 
     Scaffold(
         topBar ={

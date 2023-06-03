@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.LocalLaundryService
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,25 +36,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.owner.OwnerViewModel
-import com.android.openpressing.viewmodels.user.UserViewModel
 
 var id : Int = 0
 
 @Composable
-fun EditerProfil(navController: NavHostController,
-                 userViewModel: UserViewModel = hiltViewModel()
+fun EditerProfil(navController: NavHostController
+                 //userViewModel: UserViewModel = hiltViewModel()
                  //ownerViewModel: OwnerViewModel = hiltViewModel(),
                 // clientViewModel: ClientViewModel = hiltViewModel()
 ) {
@@ -72,7 +68,7 @@ fun EditerProfil(navController: NavHostController,
             ) {
 
                 item {
-                    ListBox(onImageSelected = {imageUri -> bipmap = imageUri})
+                    ListBox( navController,onImageSelected ={imageUri -> bipmap = imageUri})
                 }
             }
         },
@@ -100,7 +96,7 @@ fun FixBare(navController: NavHostController) {
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = primaryColor)
+            .background(color = primaryPrimeColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -115,7 +111,7 @@ fun FixBare(navController: NavHostController) {
             ){
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.Profile.road)
+                        navController.popBackStack()
                     }
                 ) {
                     Icon(
@@ -131,6 +127,18 @@ fun FixBare(navController: NavHostController) {
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
+
+                IconButton(
+                    onClick = {
+                         navController.navigate(Screen.Login.road)
+                    }
+                ) {
+                    Icon(
+                        Icons.Rounded.Logout,
+                        contentDescription = stringResource(R.string.previewPage),
+                        tint = thirdColor
+                    )
+                }
             }
         }
     }
@@ -138,7 +146,9 @@ fun FixBare(navController: NavHostController) {
 }
 
 @Composable
-fun ListBox(onImageSelected: (Uri) -> Unit) {
+fun ListBox(navController: NavHostController,
+    onImageSelected: (Uri) -> Unit
+) {
     var name by remember {
         mutableStateOf("")
     }
@@ -215,7 +225,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                             .clip(CircleShape)
                             .size(130.dp)
                             .border(1.dp, color = primaryColor, CircleShape),
-                        contentScale = ContentScale.FillHeight
+                        contentScale = ContentScale.Crop
                     )
 
                 ///////////icone de modification de l'image////////////
@@ -281,7 +291,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -383,7 +393,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -508,7 +518,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -607,7 +617,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -676,35 +686,7 @@ fun ListBox(onImageSelected: (Uri) -> Unit) {
         }
     }
 
-    Row (
-        modifier = Modifier
-            .padding(horizontal = 70.dp)
-            .fillMaxHeight(0.8f),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Bottom
-    ){
-        TextButton(
-            onClick = { /*navController.navigate(Screen.Login.road)*/},
-            shape = CircleShape
-        ) {
-            Icon(
-                Icons.Rounded.Logout,
-                contentDescription = stringResource(R.string.nextPage),
-                tint = Color.Red,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    //.background(VioletPal)
-                    .padding(5.dp)
-                //.padding(horizontal = 5.dp)
-            )
-            Text(
-                "Se Deconnecter",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Red,
-            )
-        }
-    }
+
 }
 
 
@@ -719,36 +701,82 @@ fun BottomBar(navController: NavHostController) {
     ) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = primaryColor)
+            Icon(
+                imageVector = Icons.Default.LocalLaundryService,
+                "",
+                tint = if(selectedIndex.value == 0) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Laundry") },
+            label = {
+                Text(
+                    text = "Laundry",
+                    color = if(selectedIndex.value == 0) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 0),
             onClick = {
                 navController.navigate(Screen.Home.road)
                 selectedIndex.value = 0
             })
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Reorder, "")
+            Icon(
+                imageVector = Icons.Default.Reorder,
+                "",
+                tint = if(selectedIndex.value == 1) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Order") },
+            label = {
+                Text(
+                    text = "Order",
+                    color = if(selectedIndex.value == 1) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 1),
             onClick = {
+                navController.navigate(Screen.ListCommande.road)
                 selectedIndex.value = 1
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Chat, "")
+            Icon(
+                imageVector = Icons.Default.ShoppingBasket,
+                "",
+                tint = if(selectedIndex.value == 2) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Chat") },
+            label = {
+                Text(
+                    text = "Needs",
+                    color = if(selectedIndex.value == 2) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 2),
             onClick = {
+                navController.navigate(Screen.ConsulterBesoin.road)
                 selectedIndex.value = 2
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person, "")
+            Icon(
+                imageVector = Icons.Default.Person,
+                "",
+                tint = if(selectedIndex.value == 3) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Profile") },
+            label = {
+                Text(
+                    text = "Profile",
+                    color = if(selectedIndex.value == 3) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 3),
             onClick = {
                 navController.navigate(Screen.Profile.road)
@@ -757,7 +785,7 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
-@Preview
+
 @Composable
 fun EditionView() {
     val navController = rememberNavController()
