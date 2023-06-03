@@ -8,8 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -23,6 +21,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.LocalLaundryService
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,19 +36,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
 import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.owner.OwnerViewModel
-import com.android.openpressing.viewmodels.user.UserViewModel
 
 var id : Int = 0
 
@@ -102,7 +96,7 @@ fun FixBare(navController: NavHostController) {
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = primaryColor)
+            .background(color = primaryPrimeColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -142,7 +136,7 @@ fun FixBare(navController: NavHostController) {
                     Icon(
                         Icons.Rounded.Logout,
                         contentDescription = stringResource(R.string.previewPage),
-                        tint = secondaryPrimeColor
+                        tint = thirdColor
                     )
                 }
             }
@@ -297,7 +291,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryPrimeColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -399,7 +393,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryPrimeColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -524,7 +518,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryPrimeColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -623,7 +617,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryPrimeColor,
+                        tint = thirdColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -707,18 +701,40 @@ fun BottomBar(navController: NavHostController) {
     ) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+            Icon(
+                imageVector = Icons.Default.LocalLaundryService,
+                "",
+                tint = if(selectedIndex.value == 0) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Laundry") },
+            label = {
+                Text(
+                    text = "Laundry",
+                    color = if(selectedIndex.value == 0) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 0),
             onClick = {
                 navController.navigate(Screen.Home.road)
                 selectedIndex.value = 0
             })
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Reorder, "")
+            Icon(
+                imageVector = Icons.Default.Reorder,
+                "",
+                tint = if(selectedIndex.value == 1) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Order") },
+            label = {
+                Text(
+                    text = "Order",
+                    color = if(selectedIndex.value == 1) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 1),
             onClick = {
                 navController.navigate(Screen.ListCommande.road)
@@ -726,19 +742,41 @@ fun BottomBar(navController: NavHostController) {
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Chat, "")
+            Icon(
+                imageVector = Icons.Default.ShoppingBasket,
+                "",
+                tint = if(selectedIndex.value == 2) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Manager") },
+            label = {
+                Text(
+                    text = "Needs",
+                    color = if(selectedIndex.value == 2) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 2),
             onClick = {
-                navController.navigate(Screen.AddBesoin.road)
+                navController.navigate(Screen.ConsulterBesoin.road)
                 selectedIndex.value = 2
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person, "")
+            Icon(
+                imageVector = Icons.Default.Person,
+                "",
+                tint = if(selectedIndex.value == 3) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Profile") },
+            label = {
+                Text(
+                    text = "Profile",
+                    color = if(selectedIndex.value == 3) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 3),
             onClick = {
                 navController.navigate(Screen.Profile.road)

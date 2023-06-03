@@ -21,10 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.data.models.client.Client
-import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.service.Service
@@ -33,11 +31,9 @@ import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
-import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
 import com.android.openpressing.viewmodels.requirement_detail.RequirementDetailViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
-import com.android.openpressing.viewmodels.services.state.LaundryState
 import com.android.openpressing.viewmodels.services.state.RequirementState
 import com.android.openpressing.viewmodels.user.UserViewModel
 import kotlinx.coroutines.Dispatchers
@@ -157,7 +153,7 @@ fun RequirementList(
                             backgroundColor = Color.White ,
                             border = BorderStroke(
                                     1.dp ,
-                                    secondaryPrimeColor
+                                    thirdColor
                             ) ,
                             shape = RoundedCornerShape(if (isExpanded) 10 else 20)
                     ) {

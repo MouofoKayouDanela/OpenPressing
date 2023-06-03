@@ -148,7 +148,7 @@ private fun TopAppBar(
                         shape = RoundedCornerShape(20),
                         border = BorderStroke(
                                 width = 1.dp,
-                                color = secondaryPrimeColor
+                                color = thirdColor
                         )
                 ) {
                     Text(
@@ -290,7 +290,7 @@ fun RequirementContent(
 
                             Column(
                                     modifier = Modifier
-                                        .background(softSecondaryPrimeColor)
+                                        .background(thirdPrimeColor)
                                         .padding(16.dp)
                                         .fillMaxWidth() ,
                                     verticalArrangement = Arrangement.Center ,
@@ -374,7 +374,7 @@ private fun FetchService(
                             service.value!!.data.attributes.category.data.attributes.name ,
                     style = MaterialTheme.typography.body1.copy(
                             fontWeight = FontWeight.SemiBold ,
-                            color = secondaryColor
+                            color = secondaryPrimeColor
                     )
             )
         }

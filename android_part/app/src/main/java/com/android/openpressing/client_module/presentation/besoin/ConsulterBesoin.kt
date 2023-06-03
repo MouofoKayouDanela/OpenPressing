@@ -23,8 +23,12 @@ import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
 import com.android.openpressing.ui.theme.Purple500
+import com.android.openpressing.ui.theme.blanc
+import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.ui.theme.secondaryColor
+import com.android.openpressing.ui.theme.secondaryPrimeColor
+import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
@@ -185,9 +189,9 @@ fun Consult(
                             .clip(CircleShape)
                             .background(
                                     when (messagesLength) {
-                                        MessagesLength.NoMessages -> Color.Red
+                                        MessagesLength.NoMessages -> thirdPrimeColor
                                         MessagesLength.BetweenOneAndFive -> secondaryColor
-                                        else -> Color.Green
+                                        else -> primaryColor
                                     }
                             )
                             .padding(4.dp)
@@ -278,45 +282,89 @@ fun BottomBar(navController: NavController) {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 2.dp,
-        backgroundColor = Color.White
+        backgroundColor = blanc
     ) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.LocalLaundryService, "", tint = Purple500)
+            Icon(
+                imageVector = Icons.Default.LocalLaundryService,
+                "",
+                tint = if(selectedIndex.value == 0) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Laundry") },
+            label = {
+                Text(
+                    text = "Laundry",
+                    color = if(selectedIndex.value == 0) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 0),
             onClick = {
-                navController.navigate(com.android.openpressing.utils.Screen.Home.road)
+                navController.navigate(Screen.Home.road)
                 selectedIndex.value = 0
             })
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Reorder, "")
+            Icon(
+                imageVector = Icons.Default.Reorder,
+                "",
+                tint = if(selectedIndex.value == 1) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Order") },
+            label = {
+                Text(
+                    text = "Order",
+                    color = if(selectedIndex.value == 1) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 1),
             onClick = {
-                navController.navigate(com.android.openpressing.utils.Screen.ListCommande.road)
+                navController.navigate(Screen.ListCommande.road)
                 selectedIndex.value = 1
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Chat, "")
+            Icon(
+                imageVector = Icons.Default.ShoppingBasket,
+                "",
+                tint = if(selectedIndex.value == 2) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Manager") },
+            label = {
+                Text(
+                    text = "Needs",
+                    color = if(selectedIndex.value == 2) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 2),
             onClick = {
-                navController.navigate(com.android.openpressing.utils.Screen.AddBesoin.road)
+                navController.navigate(Screen.ConsulterBesoin.road)
                 selectedIndex.value = 2
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Person, "")
+            Icon(
+                imageVector = Icons.Default.Person,
+                "",
+                tint = if(selectedIndex.value == 3) primaryColor
+                else Color.DarkGray
+            )
         },
-            label = { Text(text = "Profile") },
+            label = {
+                Text(
+                    text = "Profile",
+                    color = if(selectedIndex.value == 3) primaryColor
+                    else Color.DarkGray
+                )
+            },
             selected = (selectedIndex.value == 3),
             onClick = {
-                navController.navigate(com.android.openpressing.utils.Screen.Profile.road)
+                navController.navigate(Screen.Profile.road)
                 selectedIndex.value = 3
             })
     }

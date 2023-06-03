@@ -7,13 +7,11 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,20 +22,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.agence.BodyList
-import com.android.openpressing.client_module.presentation.agence.TopNavBar
-import com.android.openpressing.client_module.presentation.agence.utils.services
 import com.android.openpressing.client_module.presentation.besoin.component.ChooseLaundryScreen
 import com.android.openpressing.client_module.presentation.besoin.component.ChooseServicesScreen
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Data
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Laundry
 import com.android.openpressing.client_module.presentation.besoin.component.uil.Service
 import com.android.openpressing.ui.theme.*
-import com.android.openpressing.ui.theme.blanc
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.platform.LocalContext
@@ -294,7 +286,7 @@ fun ContentCardlist(
                         bottomStart = 10.dp
                     )
                 )
-                .background(color = secondaryPrimeColor)
+                .background(color = thirdColor)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onDoubleTap = {

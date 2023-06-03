@@ -1,10 +1,8 @@
 package com.android.openpressing.client_module.presentation.client
 
-import android.net.Uri
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -13,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.LocalLaundryService
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
@@ -26,25 +23,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberAsyncImagePainter
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.CardContent
-import com.android.openpressing.client_module.presentation.profile.ListBox
 import com.android.openpressing.client_module.presentation.profile.id
-import com.android.openpressing.data.models.annonce.AnnounceAttributes
 import com.android.openpressing.data.models.annonce.AnnounceData
 import com.android.openpressing.data.models.pressing.Pressing
-import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.ui.theme.*
-import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.Annonce.AnnonceViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -181,7 +170,7 @@ fun AppBar(
                 Icon(
                     Icons.Rounded.LocationOn,
                     contentDescription = stringResource(R.string.location),
-                    tint = secondaryColor
+                    tint = secondaryPrimeColor
                 )
                 Text(
                     text = "On " ,                  //announceData.attributes.description

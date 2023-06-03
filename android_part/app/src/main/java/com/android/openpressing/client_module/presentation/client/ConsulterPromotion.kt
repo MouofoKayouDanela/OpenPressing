@@ -2,7 +2,6 @@ package com.android.openpressing.client_module.presentation.client
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,14 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
-import com.android.openpressing.ui.theme.Orange
 import com.android.openpressing.ui.theme.blanc
 import com.android.openpressing.ui.theme.primaryColor
-import com.android.openpressing.ui.theme.secondaryColor
+import com.android.openpressing.ui.theme.secondaryPrimeColor
 import com.android.openpressing.utils.Screen
 
 
@@ -132,7 +129,7 @@ fun OfferCard(
                 ) {
                     Text(
                         text = "Service1" ,                  //announceData.attributes.description
-                        color = secondaryColor,
+                        color = secondaryPrimeColor,
                         style = MaterialTheme.typography.body1.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
@@ -194,7 +191,7 @@ fun OfferCard(
                 ) {
                     Text(
                         text = "Service1" ,                  //announceData.attributes.description
-                        color = secondaryColor,
+                        color = secondaryPrimeColor,
                         style = MaterialTheme.typography.body1.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
