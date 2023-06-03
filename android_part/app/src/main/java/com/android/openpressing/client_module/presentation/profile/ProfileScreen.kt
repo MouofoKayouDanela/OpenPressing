@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.client_module.presentation.requirement.details.components.DeliveryArea
@@ -58,7 +59,7 @@ fun ProfileScreen(navController: NavHostController) {
 
 
 @Composable
-fun BlueSection(navController: NavHostController) {
+fun BlueSection(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

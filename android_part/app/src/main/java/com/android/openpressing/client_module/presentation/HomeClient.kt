@@ -1,8 +1,6 @@
 package com.android.openpressing.client_module.presentation
 
 
-
-
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
@@ -68,8 +66,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-
-
 
 @Composable
 fun ScaffoldSample(
@@ -159,7 +155,7 @@ fun SectionBleue(
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(45.dp)
-                            .border(1.dp, color = Color.White, CircleShape),
+                            .border(1.dp, color = primaryPrimeColor, CircleShape),
 
                         contentScale = ContentScale.Crop
                     )
@@ -168,7 +164,7 @@ fun SectionBleue(
                 //////description du la photo////
 
                 Text(
-                    " Hello, ",
+                    " Hello,   ",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
@@ -194,7 +190,7 @@ fun SectionBleue(
                 Icon(
                     Icons.Rounded.Notifications,
                     contentDescription = stringResource(R.string.notifications),
-                    tint = Color.White
+                    tint = secondaryPrimeColor
                 )
             }
         }
@@ -226,7 +222,7 @@ fun SectionBleue(
             Icon(
                 Icons.Rounded.LocationOn,
                 contentDescription = stringResource(R.string.location),
-                tint = secondaryColor
+                tint = secondaryPrimeColor
             )
             if (user.value != null){
                 Text(

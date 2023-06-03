@@ -69,14 +69,22 @@ fun MyNeed(
             TopAppBar(
                 elevation = 10.dp,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .clip(
+                        shape = RoundedCornerShape(
+                            topStart = 0.dp,
+                            topEnd = 0.dp,
+                            bottomEnd = 20.dp,
+                            bottomStart = 20.dp
+                        )
+                    ),
                 title = {
-                    Text("Mes Besoins")
+                    Text("My Needs")
                 },
                 backgroundColor = MaterialTheme.colors.primarySurface,
                 navigationIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.ArrowBack, null)
+                        Icon(Icons.Filled.KeyboardArrowLeft, null)
 
                     }
                 },
@@ -100,14 +108,6 @@ fun MyNeed(
         bottomBar= {BottomBar(navController)}
     )}
 
-
-
-
-data class Contenu(
-    val Description: String,
-    val prix: String,
-    val date: String,
-)
 
 @Composable
 fun Stock(

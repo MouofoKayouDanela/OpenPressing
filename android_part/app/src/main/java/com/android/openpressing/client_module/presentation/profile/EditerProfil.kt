@@ -133,6 +133,18 @@ fun FixBare(navController: NavHostController) {
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
+
+                IconButton(
+                    onClick = {
+                         navController.navigate(Screen.Login.road)
+                    }
+                ) {
+                    Icon(
+                        Icons.Rounded.Logout,
+                        contentDescription = stringResource(R.string.previewPage),
+                        tint = secondaryPrimeColor
+                    )
+                }
             }
         }
     }
@@ -285,7 +297,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = secondaryPrimeColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -387,7 +399,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = secondaryPrimeColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -512,7 +524,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = secondaryPrimeColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -611,7 +623,7 @@ fun ListBox(navController: NavHostController,
                     Icon(
                         Icons.Rounded.Edit,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = secondaryColor,
+                        tint = secondaryPrimeColor,
                         modifier = Modifier
                             .clip(CircleShape)
                             //.background(VioletPal)
@@ -680,35 +692,7 @@ fun ListBox(navController: NavHostController,
         }
     }
 
-    Row (
-        modifier = Modifier
-            .padding(horizontal = 70.dp)
-            .fillMaxHeight(0.8f),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Bottom
-    ){
-        TextButton(
-            onClick = { navController.navigate(Screen.Login.road)},
-            shape = CircleShape
-        ) {
-            Icon(
-                Icons.Rounded.Logout,
-                contentDescription = stringResource(R.string.nextPage),
-                tint = Color.Red,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    //.background(VioletPal)
-                    .padding(5.dp)
-                //.padding(horizontal = 5.dp)
-            )
-            Text(
-                "Se Deconnecter",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Red,
-            )
-        }
-    }
+
 }
 
 
