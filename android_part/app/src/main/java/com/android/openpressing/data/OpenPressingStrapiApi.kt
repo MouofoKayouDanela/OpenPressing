@@ -55,6 +55,7 @@ import com.android.openpressing.data.models.service_type.ServiceType
 import com.android.openpressing.data.models.service_type.ServiceTypes
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.utils.*
+import retrofit2.Response
 import retrofit2.http.*
 
 sealed interface OpenPressingStrapiApi{
@@ -120,13 +121,13 @@ sealed interface OpenPressingStrapiApi{
         @POST(AGENCY_LAUNDRY_FEATURES)
         suspend fun save(
             @Body agencyLaundry: AgencyLaundryInfo
-        )
+        ) : Response<AgencyLaundryInfo>
 
         @PUT("$AGENCY_LAUNDRY_FEATURES/{id}")
         suspend fun update(
             @Path("id") id: Int,
             @Body agencyLaundry: AgencyLaundryInfo
-        ) : AgencyLaundryInfo
+        ) : Response<AgencyLaundryInfo>
 
 //        @DELETE(AGENCY_LAUNDRY_FEATURES)
 //        suspend fun delete(agencyLaundry: AgencyLaundry)
@@ -143,13 +144,13 @@ sealed interface OpenPressingStrapiApi{
         @POST(AGENCY_SERVICE_FEATURES)
         suspend fun save(
             @Body agencyService: AgencyServiceInfo
-        )
+        ) : Response<AgencyServiceInfo>
 
         @PUT("$AGENCY_SERVICE_FEATURES/{id}")
         suspend fun update(
             @Path("id") id: Int,
             @Body agencyService: AgencyServiceInfo
-        ) : AgencyServiceInfo
+        ) : Response<AgencyServiceInfo>
 
 //        @DELETE(AGENCY_SERVICE_FEATURES)
 //        suspend fun delete(agencyService: AgencyService)
