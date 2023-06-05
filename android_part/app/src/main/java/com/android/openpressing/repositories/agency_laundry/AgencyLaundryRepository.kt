@@ -5,6 +5,7 @@ import com.android.openpressing.data.models.agency_laundry.AgencyLaundry
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundryData
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundryInfo
 import com.android.openpressing.data.models.agency_laundry.AgencyLaundryInfoData
+import retrofit2.Response
 import javax.inject.Inject
 
 class AgencyLaundryRepository @Inject constructor(
@@ -20,9 +21,11 @@ class AgencyLaundryRepository @Inject constructor(
 
     suspend fun update(id : Int, agencyLaundry : AgencyLaundryInfo) = agencyLaundryApi.update(id , agencyLaundry)
 
-    suspend fun delete(id : Int){
+    suspend fun delete(id : Int) : Response<AgencyLaundryInfo> {
+
         val deletingAgencyLaundry=getById(id)
-        update(
+
+        return update(
                 id = id,
                 agencyLaundry = AgencyLaundryInfo(
                         AgencyLaundryInfoData(
