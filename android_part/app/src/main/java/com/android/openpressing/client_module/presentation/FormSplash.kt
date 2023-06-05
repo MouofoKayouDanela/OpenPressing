@@ -8,12 +8,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
+import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -82,18 +85,18 @@ fun IntroScreen(navController: NavHostController) {
                         model = list[currentPage].res,
                         contentDescription = null,
                         modifier = Modifier
-                            .height(380.dp)
+                            .height(330.dp)
                             .width(300.dp)
                     )
 
                     Text(
                         text = list[currentPage].description,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.body2,
                         color = Black,
-                        fontWeight = Bold,
+                        fontWeight = SemiBold,
                         modifier = Modifier
                             .padding(horizontal = 12.dp)
-                            .fillMaxWidth(.6f)
+                            .fillMaxWidth(.5f)
 
                     )
 
@@ -113,12 +116,20 @@ fun IntroScreen(navController: NavHostController) {
                 .fillMaxWidth()
         ) {
             if (isPrevVisible.value) {
-                Button(onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                    }
-                }) {
-                    Text(text = "Prev")
+                Button(
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = primaryColor
+                    ),
+                ) {
+                    Text(
+                        text = "Prev",
+                        color = Color.White,
+                    )
                 }
             }
             if (isPrevVisible.value && isNextVisible.value) {
@@ -126,13 +137,21 @@ fun IntroScreen(navController: NavHostController) {
 
 
                 if (isNextVisible.value) {
-                    Button(onClick = {
+                    Button(
+                        onClick = {
                         navController.navigate(Screen.Login.road)
-                        scope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                        }
-                    }) {
-                        Text(text = "Next")
+                            scope.launch {
+                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = primaryColor
+                        ),
+                    ) {
+                        Text(
+                            text = "Next",
+                            color = Color.White,
+                        )
                     }
                 }
 

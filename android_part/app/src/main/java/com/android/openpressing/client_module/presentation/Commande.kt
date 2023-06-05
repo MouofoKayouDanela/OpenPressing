@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import com.android.openpressing.R
 import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.ui.theme.black
 import com.android.openpressing.ui.theme.blanc
+import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.utils.Screen
 
 
@@ -104,6 +106,9 @@ fun commandeBox( Commande: Commande, navController: NavHostController) {
                         onClick = {
                             navController.navigate(Screen.DetailCommande.road)
                                   },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = primaryColor
+                        ),
                         modifier=Modifier.width(170.dp)
                             .padding(horizontal = 12.dp)
                     ) {
@@ -156,12 +161,16 @@ fun TopBarCmd(modifier: Modifier = Modifier, navController: NavHostController){
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(blanc)
+                .background(primaryColor)
                 .padding(horizontal = 4.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
 
             ) {
-            IconButton(onClick = { navController.navigate(Screen.Home.road) }) {
+            IconButton(onClick =
+                {
+                    navController.popBackStack()
+                }
+            ) {
                 Icon(
                     Icons.Rounded.ArrowBack,
                     contentDescription = null,
@@ -175,9 +184,9 @@ fun TopBarCmd(modifier: Modifier = Modifier, navController: NavHostController){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Mes Commandes",
+                    text = "My oders",
                     style = MaterialTheme.typography.body1.copy(
-                        color = black,
+                        color = White,
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp
                     )

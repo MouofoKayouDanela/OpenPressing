@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.android.openpressing.R
-import com.android.openpressing.client_module.presentation.BottomBar
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 
@@ -73,7 +72,6 @@ fun EditerProfil(navController: NavHostController
             }
         },
 
-        bottomBar = {BottomBar(navController)}
     )
 
 
@@ -96,7 +94,7 @@ fun FixBare(navController: NavHostController) {
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = primaryPrimeColor)
+            .background(color = primaryColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -136,7 +134,7 @@ fun FixBare(navController: NavHostController) {
                     Icon(
                         Icons.Rounded.Logout,
                         contentDescription = stringResource(R.string.previewPage),
-                        tint = thirdColor
+                        tint = primaryPrimeColor
                     )
                 }
             }
@@ -321,7 +319,10 @@ fun ListBox(navController: NavHostController,
                                     defaultname = textename
                                     showDialogName.value = false
                                 },
-                                modifier = Modifier.padding(end = 15.dp)
+                                modifier = Modifier.padding(end = 15.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
 
                             ) {
                                 Text("Validate")
@@ -332,7 +333,10 @@ fun ListBox(navController: NavHostController,
                                 modifier = Modifier.padding(end = 55.dp),
                                 onClick = {
                                     showDialogName.value = false
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
                             ) {
                                 Text("Cancel")
                             }
@@ -427,18 +431,14 @@ fun ListBox(navController: NavHostController,
                         confirmButton = {
                             Button(
                                 onClick = {
-                                    /*val email = "example@email.com"
-                                    val isEmailValid = isEmailValid(email)
 
-                                    if (isEmailValid) {
-                                        Text("Validate", color = Color.Green)
-                                    } else {
-                                        Text("Validate", color = Color.Red)
-                                    }*/
                                     defaultmail = textemail
                                     showDialogMail.value = false
 
                                 },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                ),
                                 modifier = Modifier.padding(end = 15.dp)
 
                             ) {
@@ -450,7 +450,10 @@ fun ListBox(navController: NavHostController,
                                 modifier = Modifier.padding(end = 55.dp),
                                 onClick = {
                                     showDialogMail.value = false
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
                             ) {
                                 Text("Cancel")
                             }
@@ -548,7 +551,10 @@ fun ListBox(navController: NavHostController,
                                     defaultphone = textephone.toInt()
                                     showDialogPhone.value = false
                                 },
-                                modifier = Modifier.padding(end = 15.dp)
+                                modifier = Modifier.padding(end = 15.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
 
                             ) {
                                 Text("Validate")
@@ -559,7 +565,10 @@ fun ListBox(navController: NavHostController,
                                 modifier = Modifier.padding(end = 55.dp),
                                 onClick = {
                                     showDialogLocal.value = false
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
                             ) {
                                 Text("Cancel")
                             }
@@ -650,7 +659,10 @@ fun ListBox(navController: NavHostController,
                                     defaultadress = textelocal
                                     showDialogLocal.value = false
                                 },
-                                modifier = Modifier.padding(end = 15.dp)
+                                modifier = Modifier.padding(end = 15.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
 
                             ) {
                                 Text("Validate")
@@ -661,7 +673,10 @@ fun ListBox(navController: NavHostController,
                                 modifier = Modifier.padding(end = 55.dp),
                                 onClick = {
                                     showDialogLocal.value = false
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = primaryColor
+                                )
                             ) {
                                 Text("Cancel")
                             }
@@ -692,98 +707,7 @@ fun ListBox(navController: NavHostController,
 
 
 
-@Composable
-fun BottomBar(navController: NavHostController) {
-    val selectedIndex = remember { mutableStateOf(0) }
-    BottomNavigation(
-        elevation = 2.dp,
-        backgroundColor = blanc
-    ) {
 
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.LocalLaundryService,
-                "",
-                tint = if(selectedIndex.value == 0) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Laundry",
-                    color = if(selectedIndex.value == 0) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 0),
-            onClick = {
-                navController.navigate(Screen.Home.road)
-                selectedIndex.value = 0
-            })
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.Reorder,
-                "",
-                tint = if(selectedIndex.value == 1) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Order",
-                    color = if(selectedIndex.value == 1) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 1),
-            onClick = {
-                navController.navigate(Screen.ListCommande.road)
-                selectedIndex.value = 1
-            })
-
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.ShoppingBasket,
-                "",
-                tint = if(selectedIndex.value == 2) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Needs",
-                    color = if(selectedIndex.value == 2) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 2),
-            onClick = {
-                navController.navigate(Screen.ConsulterBesoin.road)
-                selectedIndex.value = 2
-            })
-
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.Person,
-                "",
-                tint = if(selectedIndex.value == 3) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Profile",
-                    color = if(selectedIndex.value == 3) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 3),
-            onClick = {
-                navController.navigate(Screen.Profile.road)
-                selectedIndex.value = 3
-            })
-    }
-}
 
 
 @Composable
