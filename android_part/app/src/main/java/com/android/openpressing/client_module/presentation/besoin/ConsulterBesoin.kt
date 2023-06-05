@@ -1,6 +1,7 @@
 package com.android.openpressing.client_module.presentation.besoin
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,10 +10,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,13 +25,7 @@ import com.android.openpressing.client_module.presentation.besoin.component.uil.
 import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.requirement.RequirementData
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
-import com.android.openpressing.ui.theme.Purple500
-import com.android.openpressing.ui.theme.blanc
-import com.android.openpressing.ui.theme.primaryColor
-import com.android.openpressing.ui.theme.primaryPrimeColor
-import com.android.openpressing.ui.theme.secondaryColor
-import com.android.openpressing.ui.theme.secondaryPrimeColor
-import com.android.openpressing.ui.theme.thirdPrimeColor
+import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
@@ -70,34 +67,8 @@ fun MyNeed(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                elevation = 10.dp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        shape = RoundedCornerShape(
-                            topStart = 0.dp,
-                            topEnd = 0.dp,
-                            bottomEnd = 20.dp,
-                            bottomStart = 20.dp
-                        )
-                    ),
-                title = {
-                    Text("My Needs")
-                },
-                backgroundColor = MaterialTheme.colors.primarySurface,
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.KeyboardArrowLeft, null)
-
-                    }
-                },
-                actions = {
-                    Row {
-                        Spacer(modifier = Modifier.width(8.dp))
-                    }
-                }
-            )},
+            TopAppBar(navController)
+            },
         content= { innerPadding ->
 
             if (client.value != null && requirements.value != null){
@@ -110,7 +81,58 @@ fun MyNeed(
 
         },
         bottomBar= {BottomBar(navController)}
-    )}
+    )
+}
+
+@Composable
+private fun TopAppBar( navController: NavController) {
+    Column {
+        Row(
+                Modifier
+                    /*.clip(
+                        RoundedCornerShape(
+                            bottomStart = 10.dp,
+                            bottomEnd = 10.dp
+                        )
+                    )*/
+                    .fillMaxWidth()
+                    .background(primaryColor)
+                    .padding(
+                            horizontal = 16.dp ,
+                            vertical = 8.dp
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                    onClick = {
+                        navController.navigate(Screen.AddService.road)
+                    },
+                    modifier = Modifier.weight(0.1f)
+            ) {
+                Icon(
+                        Icons.Rounded.KeyboardArrowLeft ,
+                        contentDescription = null ,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(48.dp)
+                )
+            }
+
+            Row(
+                    modifier = Modifier.weight(0.9f),
+                    horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                        "My needs"  ,
+                        style = MaterialTheme.typography.h6.copy(
+                                color = Color.White,
+                                fontWeight = FontWeight.Normal
+                        )
+                )
+            }
+        }
+    }
+}
 
 
 @Composable
@@ -162,7 +184,11 @@ fun Consult(
                         horizontal = 16.dp
                 )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+                modifier = Modifier
+                    .background(secondaryPrimeColor)
+                    .padding(16.dp)
+        ) {
 
             Row(
                     modifier = Modifier
@@ -184,8 +210,12 @@ fun Consult(
                                 "$messages answers"
                             }
                         } ,
-                        color = Color.White ,
-                        modifier = Modifier
+                        color = when (messagesLength) {
+                            MessagesLength.NoMessages -> thirdPrimeColor
+                            MessagesLength.BetweenOneAndFive -> secondaryColor
+                            else -> primaryColor
+                        } ,
+                        /*modifier = Modifier
                             .clip(CircleShape)
                             .background(
                                     when (messagesLength) {
@@ -194,7 +224,7 @@ fun Consult(
                                         else -> primaryColor
                                     }
                             )
-                            .padding(4.dp)
+                            .padding(4.dp)*/
 
                 )
             }
@@ -265,7 +295,7 @@ fun Consult(
                         onClick = { navController.navigate("${Screen.DetailBesoin.road}/${affiche.id!!}") },
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(primaryPrimeColor)
+                            .background(fourthColor)
                 ) {
                     Icon(
                             Icons.Default.KeyboardArrowRight,
