@@ -127,18 +127,18 @@ fun SectionBleue(
             ) {
                 if (user.value != null){
                     Image(
-                        rememberAsyncImagePainter(
+                            rememberAsyncImagePainter(
                             model = BASE_URL + user.value!!.profile_picture
                                 .url
-                        ),
+                        ) ,
                         //painter = painterResource(id = R.drawable.homme),
-                        contentDescription = null,
-                        modifier = Modifier
+                            contentDescription = null ,
+                            modifier = Modifier
                             .clip(CircleShape)
                             .size(45.dp)
-                            .border(1.dp, color = primaryPrimeColor, CircleShape),
+                            .border(1.dp , color = fourthColor , CircleShape) ,
 
-                        contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop
                     )
                 }
                 Spacer(Modifier.width(1.dp))

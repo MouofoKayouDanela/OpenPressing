@@ -111,7 +111,7 @@ fun AppBar(
                     bottomStart = 10.dp
                 )
             )//////forme arrondie de la box/////
-            .background(color = primaryPrimeColor)
+            .background(color = fourthColor)
         //shape=RoundedCornerShape(32.dp)
     ){
         Column() {
@@ -289,7 +289,7 @@ fun ContainerBox(
                         contentDescription = stringResource(R.string.nextPage),
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(primaryPrimeColor)
+                            .background(fourthColor)
                             .padding(5.dp),
                         tint = primaryColor
                     )

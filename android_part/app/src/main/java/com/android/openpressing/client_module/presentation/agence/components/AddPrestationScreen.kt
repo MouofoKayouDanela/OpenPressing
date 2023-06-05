@@ -32,6 +32,8 @@ import com.android.openpressing.data.models.laundry.LaundryData
 import com.android.openpressing.data.models.service.ServiceData
 import com.android.openpressing.data.models.utils.IntermediaryData
 import com.android.openpressing.ui.theme.Purple200
+import com.android.openpressing.ui.theme.primaryColor
+import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
@@ -133,7 +135,7 @@ fun AddPrestationScreen(
                                         style = MaterialTheme.typography.h5.copy(
                                                 fontSize = 22.sp
                                         ) ,
-                                        color = Purple200
+                                        color = primaryColor
                                 )
                             }
 
@@ -235,7 +237,7 @@ fun AddPrestationScreen(
                                     Icon(
                                             Icons.Rounded.Check ,
                                             contentDescription = null ,
-                                            tint = Purple200 ,
+                                            tint = thirdPrimeColor ,
                                             modifier = Modifier
                                                 .weight(0.2f)
                                     )
@@ -252,7 +254,7 @@ fun AddPrestationScreen(
                             updateDialogState(false)
                         },
                         colors = ButtonDefaults.textButtonColors(
-                                contentColor = Purple200
+                                contentColor = primaryColor
                         )
                 ) {
                     Text(
@@ -266,7 +268,7 @@ fun AddPrestationScreen(
                             updateDialogState(false)
                         },
                         colors = ButtonDefaults.textButtonColors(
-                                contentColor = Purple200
+                                contentColor = primaryColor
                         )
                 ) {
                     Text(
