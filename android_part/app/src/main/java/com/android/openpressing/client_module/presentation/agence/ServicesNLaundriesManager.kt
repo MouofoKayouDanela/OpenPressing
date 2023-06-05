@@ -39,13 +39,15 @@ import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.agency_laundry.AgencyLaundryViewModel
+import com.android.openpressing.viewmodels.agency_laundry.state.AgencyLaundryState
 import com.android.openpressing.viewmodels.agency_service.AgencyServiceViewModel
+import com.android.openpressing.viewmodels.agency_service.state.AgencyServiceState
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
+import retrofit2.Response
 
 
 @Composable
@@ -59,7 +61,7 @@ fun ServicesNLaundriesManager(
 ) {
 
     var agencyLaundriesData by remember(agencyId) { mutableStateOf<List<IntermediaryData>?>(null) }
-    var fetchLaundriesData by remember { mutableStateOf(false) }
+    var fetchLaundriesData by remember { mutableStateOf(true) }
     if(fetchLaundriesData) {
         LaunchedEffect(key1 = agencyId) {
             var allALs: List<AgencyLaundryData>? = null
@@ -93,13 +95,14 @@ fun ServicesNLaundriesManager(
                         }
                     }
                     agencyLaundriesData = pickedData
+                    fetchLaundriesData = false
                 }
             }
         }
     }
 
     var agencyServicesData by remember(agencyId) { mutableStateOf<List<IntermediaryData>?>(null) }
-    var fetchServicesData by remember { mutableStateOf(false) }
+    var fetchServicesData by remember { mutableStateOf(true) }
     if(fetchServicesData) {
         LaunchedEffect(key1 = agencyId) {
             var allASs: List<AgencyServiceData>? = null
@@ -133,6 +136,7 @@ fun ServicesNLaundriesManager(
                         }
                     }
                     agencyServicesData = pickedData
+                    fetchServicesData = false
                 }
             }
         }
@@ -162,9 +166,12 @@ fun TopNavBar(navController: NavHostController) {
     Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
-                .background(Color.White),
-            verticalAlignment = Alignment.CenterVertically,
+                .background(primaryColor)
+                .padding(
+                        horizontal = 16.dp ,
+                        vertical = 8.dp
+                ) ,
+            verticalAlignment = Alignment.CenterVertically ,
             horizontalArrangement = Arrangement.Center
     ) {
 
@@ -176,7 +183,8 @@ fun TopNavBar(navController: NavHostController) {
                 Icon(
                         Icons.Rounded.KeyboardArrowLeft,
                         contentDescription = null,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp),
+                        tint = Color.White
                 )
         }
 
@@ -189,8 +197,9 @@ fun TopNavBar(navController: NavHostController) {
         ) {
             Text(
                     text = "Services and laundries manager" ,
-                    style = MaterialTheme.typography.h5.copy(
-                            fontSize = 18.sp
+                    style = MaterialTheme.typography.h6.copy(
+                            color = Color.White,
+                            fontWeight = FontWeight.Normal
                     )
             )
         }
@@ -208,14 +217,6 @@ fun BodyList(
     canFetchServicesData: (Boolean) -> Unit
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
-
-    if(selectedIndex == 0) {
-        canFetchServicesData(true)
-        canFetchLaundriesData(false)
-    } else if (selectedIndex == 1) {
-        canFetchServicesData(false)
-        canFetchLaundriesData(true)
-    }
     
     LazyColumn(contentPadding = innerPadding) {
 
@@ -239,7 +240,7 @@ fun BodyList(
                 TabRow(
                         selectedTabIndex = selectedIndex ,
                         backgroundColor = Color.White ,
-                        contentColor = SoftPurple200
+                        contentColor = primaryPrimeColor
                 ) {
 
                     tabTitles.forEachIndexed { index , title ->
@@ -247,7 +248,7 @@ fun BodyList(
                                 text = {
                                     Text(
                                             title ,
-                                            color = if (selectedIndex == index) Purple200 else VerySoftPurple200 ,
+                                            color = if (selectedIndex == index) primaryColor else primaryPrimeColor ,
                                             style = MaterialTheme.typography.body1.copy(
                                                     fontSize = 18.sp
                                             )
@@ -255,7 +256,7 @@ fun BodyList(
                                 } ,
                                 selected = index == selectedIndex ,
                                 onClick = { selectedIndex = index } ,
-                                selectedContentColor = Purple200
+                                selectedContentColor = primaryColor
                         )
                     }
 
@@ -277,7 +278,7 @@ fun BodyList(
                     Icon(
                             Icons.Rounded.Add ,
                             contentDescription = null ,
-                            tint = Purple200 ,
+                            tint = primaryColor ,
                             modifier = Modifier
                                 .size(48.dp)
                                 .weight(0.2f)
@@ -285,7 +286,7 @@ fun BodyList(
 
                     Text(
                             text = "Add new ${if (selectedIndex == 0) "service" else "laundry"}" ,
-                            color = Purple200 ,
+                            color = primaryColor ,
                             style = MaterialTheme.typography.body1.copy(
                                     fontSize = 18.sp
                             ) ,
@@ -369,11 +370,11 @@ fun BodyList(
                             )
                 )
 
-                var isDeleting by remember { mutableStateOf(false) }
+                val isDeleting = remember { mutableStateOf(false) }
 
                 IconButton(
                         onClick = {
-                            isDeleting = true
+                            isDeleting.value = true
                         } ,
                         modifier = Modifier
                             .size(24.dp)
@@ -382,17 +383,17 @@ fun BodyList(
                     Icon(
                             Icons.Rounded.Delete ,
                             contentDescription = null ,
-                            tint = Purple200
+                            tint = thirdPrimeColor
                     )
                 }
-                if(isDeleting) {
+                if(isDeleting.value) {
                     DeleteData(
                             agencyId = agencyId,
                             selectedIndex = selectedIndex ,
                             data = data ,
                             canFetchLaundriesData = { canFetchLaundriesData(it) } ,
                             canFetchServicesData = { canFetchServicesData(it) } ,
-                            updateDeletingState = { isDeleting = it }
+                            updateDeletingState = { isDeleting.value = it }
                     )
                 }
             }
@@ -564,37 +565,52 @@ private fun DeleteData(
     serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel(),
 ) {
 
-    LaunchedEffect(key1 = agencyId){
-        if (selectedIndex == 0) {
+
+    if (selectedIndex == 0) {
+        val serviceAgencyState = serviceAgencyViewModel.agencyServiceState.collectAsState().value
+        LaunchedEffect(key1 = selectedIndex){
             var agencyServices: List<AgencyServiceData>? = null
             serviceAgencyViewModel.findAll()
                 .flowOn(Dispatchers.IO)
                 .collect { agencyServices = it }
-            if(agencyServices != null) {
+            if (agencyServices != null) {
                 val agencyService = agencyServices!!.find {
                     agencyId == it.attributes.agency.data.id &&
                             data.id == it.attributes.service.data.id
                 }
-                if(agencyService != null) {
+                if (agencyService != null) {
+                    var response : Response<AgencyServiceInfo>? = null
                     serviceAgencyViewModel.delete(agencyService.id!!)
-                    canFetchServicesData(true)
-                    updateDeletingState(false)
+                        .flowOn(Dispatchers.IO)
+                        .collect { response = it }
+                    if(response != null && response!!.isSuccessful){
+                        canFetchServicesData(true)
+                        updateDeletingState(false)
+                    }
                 }
             }
-        } else {
+        }
+    } else {
+        val laundryAgencyState = laundryAgencyViewModel.agencyLaundryState.collectAsState().value
+        LaunchedEffect(key1 = selectedIndex){
             var agencyLaundries: List<AgencyLaundryData>? = null
             laundryAgencyViewModel.findAll()
                 .flowOn(Dispatchers.IO)
                 .collect { agencyLaundries = it }
-            if(agencyLaundries != null) {
+            if (agencyLaundries != null) {
                 val agencyLaundry = agencyLaundries!!.find {
                     agencyId == it.attributes.agency.data.id &&
                             data.id == it.attributes.laundry.data.id
                 }
-                if(agencyLaundry != null) {
+                if (agencyLaundry != null) {
+                    var response : Response<AgencyLaundryInfo>? = null
                     laundryAgencyViewModel.delete(agencyLaundry.id!!)
-                    canFetchLaundriesData(true)
-                    updateDeletingState(false)
+                        .flowOn(Dispatchers.IO)
+                        .collect { response = it }
+                    if(response != null && response!!.isSuccessful){
+                        canFetchLaundriesData(true)
+                        updateDeletingState(false)
+                    }
                 }
             }
         }
