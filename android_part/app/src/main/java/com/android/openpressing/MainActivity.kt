@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
             var id by remember { mutableStateOf<Int?>(null) }
 
             OpenPressingTheme{
-                NavHost(navController = navController, startDestination = Screen.Login.road){
+                NavHost(navController = navController, startDestination = Screen.Splash.road){
                     composable(Screen.Login.road){
                         LoginnScreen(
                             getConnectedUserId = { id = it } ,

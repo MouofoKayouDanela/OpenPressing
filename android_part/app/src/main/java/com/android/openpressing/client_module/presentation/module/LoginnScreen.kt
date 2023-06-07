@@ -31,6 +31,7 @@ import com.android.openpressing.data.models.client.ClientData
 import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.user.User
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.client.ClientViewModel
 import com.android.openpressing.viewmodels.owner.OwnerViewModel
@@ -226,25 +227,28 @@ fun LoginnScreen(
                             }
                     },
                     shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = primaryColor
+                    ),
                     modifier = Modifier
                         .height(48.dp)
                         .fillMaxWidth(),
                 ) {
                     Text(
-                        text = "Se connecter", style = MaterialTheme.typography.body1
+                        text = "Log In", style = MaterialTheme.typography.body1
                     )
                 }
                 if (showMessage) {
                     AlertDialog(onDismissRequest = { showMessage = false },
-                        title = { Text("Authentification invalide") },
+                        title = { Text("Invalid Authentification") },
                         text = {
-                            Text("Email ou mot de passe incorrect")
+                            Text("incorrect Email or password")
                         },
                         confirmButton = {
                             Button(
                                 onClick = { showMessage = false },
                                 colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.Blue
+                                    backgroundColor = primaryColor
                                 )
                             ) {
                                 Text("OK")

@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.android.openpressing.client_module.presentation.components.BottomBar
 import com.android.openpressing.client_module.presentation.requirement.details.components.DeliveryArea
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.Screen
@@ -61,7 +62,7 @@ fun ProfileScreen(navController: NavHostController) {
             }
         },
 
-        bottomBar = {NavBottomBar(navController)}
+        bottomBar = { BottomBar(3,navController) }
     )
 }
 
@@ -334,98 +335,6 @@ fun ListeSoustitre(navController: NavHostController) {
 }
 
 
-@Composable
- fun NavBottomBar(navController: NavController) {
-    val selectedIndex = remember { mutableStateOf(0) }
-    BottomNavigation(
-        elevation = 2.dp,
-        backgroundColor = blanc
-    ) {
-
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.LocalLaundryService,
-                "",
-                tint = if(selectedIndex.value == 0) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Laundry",
-                    color = if(selectedIndex.value == 0) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 0),
-            onClick = {
-                navController.navigate(Screen.Home.road)
-                selectedIndex.value = 0
-            })
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.Reorder,
-                "",
-                tint = if(selectedIndex.value == 1) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Order",
-                    color = if(selectedIndex.value == 1) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 1),
-            onClick = {
-                navController.navigate(Screen.ListCommande.road)
-                selectedIndex.value = 1
-            })
-
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.ShoppingBasket,
-                "",
-                tint = if(selectedIndex.value == 2) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Needs",
-                    color = if(selectedIndex.value == 2) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 2),
-            onClick = {
-                navController.navigate(Screen.ConsulterBesoin.road)
-                selectedIndex.value = 2
-            })
-
-        BottomNavigationItem(icon = {
-            Icon(
-                imageVector = Icons.Default.Person,
-                "",
-                tint = if(selectedIndex.value == 3) primaryColor
-                else Color.DarkGray
-            )
-        },
-            label = {
-                Text(
-                    text = "Profile",
-                    color = if(selectedIndex.value == 3) primaryColor
-                    else Color.DarkGray
-                )
-            },
-            selected = (selectedIndex.value == 3),
-            onClick = {
-                navController.navigate(Screen.Profile.road)
-                selectedIndex.value = 3
-            })
-    }
-}
 
 @Preview
 @Composable
