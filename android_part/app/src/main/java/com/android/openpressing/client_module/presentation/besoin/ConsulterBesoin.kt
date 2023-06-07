@@ -73,14 +73,31 @@ fun MyNeed(
 
             if (client.value != null && requirements.value != null){
                 Stock(
-                    contenu = requirements.value!!.filter { it.attributes.client.data.id == client.value!!.id },
+                    contenu = requirements.value!!
+                        .filter { it.attributes.client.data.id == client.value!!.id }
+                        .sortedByDescending { it.attributes.createdAt },
                     innerPadding = innerPadding,
                     navController = navController
                 )
             }
 
         },
-        bottomBar= {BottomBar(navController)}
+        bottomBar= {BottomBar(navController)},
+        floatingActionButton = {
+            FloatingActionButton(
+                    onClick = { navController.navigate(Screen.AddBesoin.road) },
+                    shape = CircleShape,
+                    backgroundColor = primaryColor
+            ) {
+                Icon(
+                        Icons.Default.Add,
+                        "Add",
+                        tint = secondaryPrimeColor,
+                        modifier = Modifier
+                            .size(32.dp)
+                )
+            }
+        }
     )
 }
 
