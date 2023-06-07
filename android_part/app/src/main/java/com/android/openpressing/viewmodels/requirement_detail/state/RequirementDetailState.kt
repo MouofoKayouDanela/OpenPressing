@@ -13,6 +13,8 @@ sealed class RequirementDetailState {
     sealed class Success : RequirementDetailState() {
         data class RdSuccess(val requirementDetail: RequirementDetail) : Success()
         data class RdsSuccess(val requirementDetails: MutableList<RequirementDetailData>) : Success()
+        data class Save(val result: Boolean) : Success()
+        data class Delete(val result: Boolean) : Success()
     }
 
     data class Error(val message: String) : RequirementDetailState()
