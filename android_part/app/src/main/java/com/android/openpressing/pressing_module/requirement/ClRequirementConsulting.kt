@@ -56,10 +56,10 @@ fun ClRequirementConsulting(
             topBar = { TopAppBar( navController) } ,
             content = { innerPadding ->
                 RequirementList(
-                        innerPadding = innerPadding,
-                        actualPage = actualPage,
-                        updatePageSize = { pageSize = it },
-                        state = requirementViewModel.avilablerequirement.collectAsState().value,
+                        innerPadding = innerPadding ,
+                        actualPage = actualPage ,
+                        updatePageSize = { pageSize = it } ,
+                        state = requirementViewModel.requirementState.collectAsState().value ,
                         navController = navController
                 )
             } ,
