@@ -1,9 +1,11 @@
 package com.android.openpressing.data.models.laundry_type
 
-import com.android.openpressing.data.models.laundry.Laundries
+import android.os.Parcelable
+import com.android.openpressing.data.models.laundry_category.laundry.Laundries
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.util.*
-
+@Parcelize
 data class LaundryTypeAttributes(
     @SerializedName("Title") var title: String ,
     var laundries: Laundries? = null ,
@@ -12,4 +14,4 @@ data class LaundryTypeAttributes(
     var publishedAt: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
-)
+):Parcelable

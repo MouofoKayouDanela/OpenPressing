@@ -1,7 +1,9 @@
 package com.android.openpressing.data.models.utils.images
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.*
-
+@Parcelize
 data class ImageInfo(
     val id: Int? = null,
     val name: String ,
@@ -13,11 +15,10 @@ data class ImageInfo(
     val hash: String? = null ,
     val ext: String? = null,
     val mime: String? = null ,
-    val size: Double ,
+    val size: Double? = null ,
     val url: String? = null ,
     val previewUrl: String? = null  ,
     val provider: String? = null ,
-    val provider_metadata: Any? = null  ,
     val createdAt: Date = Date() ,
     val updatedAt: Date = Date()
-)
+):Parcelable

@@ -1,88 +1,178 @@
 package com.android.openpressing.client_module.presentation.module
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
-import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.utils.Screen
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.PhotoCamera
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.android.openpressing.data.models.city.CityData
+import com.android.openpressing.data.models.quarter.QuarterData
+import com.android.openpressing.data.models.quarter.QuarterInfos
+import com.android.openpressing.data.models.utils.UserInfos
+import com.android.openpressing.data.models.utils.images.ImageInfo
+import com.android.openpressing.ui.theme.*
+import com.android.openpressing.viewmodels.city.CityViewModel
+import com.android.openpressing.viewmodels.city.state.CityState
+import com.android.openpressing.viewmodels.quarter.QuarterViewModel
+import com.android.openpressing.viewmodels.quarter.state.QuarterState
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun RegisterScreen(navController: NavHostController) {
+fun RegisterScreen(
+    navController: NavHostController,
+    quarterViewModel : QuarterViewModel = hiltViewModel(),
+    cityViewModel : CityViewModel = hiltViewModel()
+) {
     val focusManager = LocalFocusManager.current
     var nom by remember { mutableStateOf("") }
     var prenom by remember { mutableStateOf("") }
-    var Ville by remember { mutableStateOf("") }
+    var quarter by remember { mutableStateOf<QuarterInfos?>(null) }
+    var image by remember { mutableStateOf<ImageInfo?>(null) }
+    var imgUri by remember { mutableStateOf<Uri?>(null) }
     var showDialogNom by remember { mutableStateOf(false) }
     var showDialogPrenom by remember { mutableStateOf(false) }
     var showDialogDate by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let { selectedUri ->
+                selectedImageUri.value = selectedUri
+            }
+        }
+    )
+
+    cityViewModel.getAll()
+    quarterViewModel.getAll()
+    var quarters by remember {
+        mutableStateOf<List<QuarterData>?>(null)
+    }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-            ) {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Button"
-                    )
-                }
-            }
+            TopAppBar()
         }
     ) {
+        val defaultImage = painterResource(id = R.drawable.person)
         Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier
+                .background(Gris)
+                .padding(horizontal = 24.dp)
         ) {
-            Box(modifier = Modifier.height(24.dp))
-            Image(
-                painter = painterResource(id = R.drawable.registre),
-                contentDescription = "Sign up Illustration",
-                modifier = Modifier
-                    .weight(3f)
-                    .padding(
-                        horizontal = 32.dp,
-                    ),
-                contentScale = ContentScale.Fit,
-            )
+            Box(
+                contentAlignment = Alignment.BottomEnd
+            ){
+                selectedImageUri.value?.let { imageUri ->
+                    val contentResolver: ContentResolver = context.contentResolver
+                    val bitmapImg = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+                    image = ImageInfo(
+                        name = "profile_image" + bitmapImg.generationId + bitmapImg.width,
+                        width = bitmapImg.width,
+                        height = bitmapImg.height
+                    )
+                    imgUri = imageUri
+                    Image(
+                        bitmap = bitmapImg.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(130.dp)
+                            .border(1.dp, color = Violet, CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } ?: Image(
+                    painter = defaultImage,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(130.dp)
+                        .border(1.dp, color = primaryColor, CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+                ///////////icone de modification de l'image////////////
+                IconButton(onClick = {
+                    launcher.launch("image/*")
+                }) {
+                    Icon(
+                        Icons.Rounded.PhotoCamera,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = primaryColor,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(primaryPrimeColor)
+                            .padding(1.dp)
+                            //.padding(horizontal = 5.dp)
+                            .align(Alignment.BottomEnd)
+                    )
+                }
+            }
             Column(
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.weight(7f),
+                modifier = Modifier
+                    .weight(7f)
+                    .padding(horizontal = 24.dp, vertical = 10.dp)
             ) {
                 Text(
                     text = "",
@@ -90,17 +180,25 @@ fun RegisterScreen(navController: NavHostController) {
                         fontWeight = FontWeight.Bold
                     )
                 )
-                AppTextField(
-
+                OutlinedTextField(
+                    value = nom,
+                     colors= TextFieldDefaults.outlinedTextFieldColors(
+                         unfocusedBorderColor = Black,
+                         placeholderColor = LightGray
+                     )   ,
                     onValueChange = {
                         nom = it
                     },
-                    hint = "Nom",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Person,
                             contentDescription = "Nom",
                             tint=Color.Black
+                        )
+                    },
+                    label={
+                        Text(
+                            text="Nom"
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -109,14 +207,17 @@ fun RegisterScreen(navController: NavHostController) {
                     keyboardActions = KeyboardActions(
                         onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = nom,
 
                 )
-                AppTextField(
+                OutlinedTextField(
+                    value = prenom,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Black,
+                        placeholderColor = LightGray
+                    )   ,
                     onValueChange = {
                         prenom = it
                     },
-                    hint = "Prenom",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Person,
@@ -124,34 +225,31 @@ fun RegisterScreen(navController: NavHostController) {
                             tint=Color.Black
                         )
                     },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    value = prenom,
-                )
-                AppTextField(
-                    onValueChange = {
-                       Ville = it
-                    },
-                    hint = "Ville",
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Place,
-                            contentDescription = "ville",
-                            tint=Color.Black
+                    label={
+                        Text(
+                            text="Prenom"
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Next,
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
+                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = Ville,
 
+                    )
+                ListeVille(
+                    state = cityViewModel.availableCities.collectAsState().value,
+                    updatedQuarters = {
+                        quarters = it
+                    }
+                )
+                ListeQuartier(
+                    state= quarterViewModel.availableQuarter.collectAsState().value,
+                    quartiers = quarters,
+                    selectedQuarter = { keptQuarter ->
+                        quarter = keptQuarter
+                    }
                 )
                 //Button(
                 // onClick = {
@@ -170,17 +268,11 @@ fun RegisterScreen(navController: NavHostController) {
                 //  }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
-                        onClick = { navController.navigate(Screen.Login.road) },
-                        enabled = false // Griser le bouton précédent,
+                    IconButton(
 
-                    ) {
-                        Text(text = "Précédent", style = MaterialTheme.typography.body1)
-                    }
-                    Button(
                         onClick = {
                             if(nom.isEmpty()){
                                 showDialogNom=true
@@ -188,15 +280,29 @@ fun RegisterScreen(navController: NavHostController) {
                             else if (prenom.isEmpty()){
                                 showDialogPrenom=true
                             }
-                            else if(Ville.isEmpty()){
-                                showDialogDate=true
-                            }
                             else{
-                                navController.navigate(Screen.Finition.road)
+                                if(quarter != null) {
+                                    val userInfo = UserInfos(
+                                        nom = nom,
+                                        prenom = prenom,
+                                        imageUri = imgUri,
+                                        quarterInfos = quarter!!,
+                                        imageInfo = image
+                                    )
+                                    navController.navigate("${ Screen.Finition.road }/${userInfo}")
+                                }
                             }
-                        /* Gérer l'événement du bouton continuer */ }
+                        /* Gérer l'événement du bouton continuer */ },
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(Purple500)
+                            .size(50.dp)
                     ) {
-                        Text(text = "Continuer", style = MaterialTheme.typography.body1,
+                        Icon(
+                            Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                            modifier = Modifier
+                                    .padding(5.dp)
                         )
                     }
                     if(showDialogNom){
@@ -208,7 +314,8 @@ fun RegisterScreen(navController: NavHostController) {
                             text={Text("Veuillez entrer le nom")},
                             buttons = {
                                 Button(onClick = {showDialogNom=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)) {
                                     Text("ok")
                                 }
@@ -224,7 +331,8 @@ fun RegisterScreen(navController: NavHostController) {
                             text={Text("Veuillez entrer le prenom")},
                             buttons = {
                                 Button(onClick = {showDialogPrenom=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)) {
                                     Text("ok")
                                 }
@@ -240,7 +348,8 @@ fun RegisterScreen(navController: NavHostController) {
                             text={Text("Veuillez entrer la ville")},
                             buttons = {
                                 Button(onClick = {showDialogDate=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)) {
                                     Text("ok")
                                 }
@@ -277,3 +386,163 @@ fun RegisterScreen(navController: NavHostController) {
     }
 }
 
+@Composable
+fun ListeVille(
+    updatedQuarters: (List<QuarterData>?) -> Unit,
+    viewModel : CityViewModel = hiltViewModel(),
+    state: CityState
+){
+
+    var expanded by remember {mutableStateOf(false) }
+   // var selectedIndex by remember { mutableStateOf(false) }
+    var selectedText by remember {mutableStateOf("")}
+    var textfieldSize by  remember { mutableStateOf(Size.Zero) }
+
+    Column (
+        modifier= Modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxWidth()
+            ){
+        OutlinedTextField(value = selectedText,
+            colors= TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Black,
+            ),
+
+            onValueChange =
+        {selectedText=it},
+        modifier= Modifier
+            .padding(horizontal = 4.dp),
+            /*.onGloballyPositioned { coordinates ->
+                textfieldSize = coordinates.size.toSize()
+            },*/
+        label={
+            Text("pays")
+        },
+        enabled = false,
+        trailingIcon = {
+            Icon(
+                if (expanded)
+                    Icons.Default.KeyboardArrowUp
+                else
+                    Icons.Default.KeyboardArrowDown,
+               tint = Black,
+            contentDescription = "",
+                modifier=Modifier.clickable { expanded = !expanded})
+        })
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded=false },
+            modifier= Modifier
+                .fillMaxWidth()
+           /* modifier=Modifier.width(with(LocalDensity.current){
+                textfieldSize.width.toDp()
+            })*/
+      ) {
+            if( state is CityState.Success.CitiesSuccess)
+            {
+                val options = state.data
+
+                options.forEach{label->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedText=label.attributes.name
+                            updatedQuarters(label.attributes.quarters?.data)
+                            expanded=false
+                        }
+                    ) {
+                    Text(text=label.attributes.name)
+                }}
+            }
+
+        }
+    }
+
+
+}
+
+@Composable
+fun ListeQuartier(
+    state : QuarterState,
+    quartiers: List <QuarterData>?,
+    selectedQuarter : (QuarterInfos) -> Unit
+){
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf("") }
+
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 34.dp)
+            .fillMaxWidth()
+    ) {
+        OutlinedTextField(value = selectedText,
+            colors= TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Black
+            ),
+            onValueChange =
+        { selectedText = it },
+            label = {
+                Text("Quartier")
+            },
+            enabled = false,
+            trailingIcon = {
+                Icon(
+                    if (expanded)
+                    Icons.Default.KeyboardArrowUp
+                    else
+                    Icons.Default.KeyboardArrowDown,
+                    tint = Black,
+                    contentDescription = "",
+                   modifier= Modifier.clickable { expanded = !expanded })
+            })
+        DropdownMenu(
+            expanded = expanded, onDismissRequest = { expanded = false }
+
+        ) {
+            if (state is QuarterState.Success.QuartersSuccess) {
+
+                val options = state.data.filter{ oneOfAllQuarter ->
+                    quartiers!!.any { wantedQuarter ->
+                        oneOfAllQuarter.id == wantedQuarter.id
+                    }
+                }
+                options.forEach { label ->
+                    DropdownMenuItem(onClick = {
+                        selectedText = label.attributes.name
+                        selectedQuarter(
+                            QuarterInfos(
+                                id = label.id,
+                                name = label.attributes.name,
+                                createdAt = label.attributes.createdAt,
+                                publishedAt = label.attributes.publishedAt,
+                                updatedAt = label.attributes.updatedAt
+                            )
+                        )
+                        expanded = false
+                    },
+                        modifier= Modifier
+                            .fillMaxWidth()) {
+                        Text(text = label.attributes.name)
+                    }
+                }
+            }
+
+        }
+    }
+}
+@Composable
+fun TopAppBar(){
+        Row(
+            modifier = Modifier
+                .padding(2.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                Text(
+                    text = "Sign Up",
+                    style = MaterialTheme.typography.body1.copy(
+                        color = black,
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp
+                    )
+                )
+        }
+}
