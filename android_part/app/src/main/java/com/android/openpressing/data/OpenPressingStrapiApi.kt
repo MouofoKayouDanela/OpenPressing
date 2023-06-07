@@ -44,8 +44,10 @@ import com.android.openpressing.data.models.promotion.Promotions
 import com.android.openpressing.data.models.quarter.Quarter
 import com.android.openpressing.data.models.quarter.Quarters
 import com.android.openpressing.data.models.requirement.Requirement
+import com.android.openpressing.data.models.requirement.RequirementInfo
 import com.android.openpressing.data.models.requirement.Requirements
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
+import com.android.openpressing.data.models.requirement_detail.RequirementDetailInfo
 import com.android.openpressing.data.models.requirement_detail.RequirementDetails
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.service.Services
@@ -527,14 +529,14 @@ sealed interface OpenPressingStrapiApi{
 
         @POST(REQUIREMENT_FEATURES)
         suspend fun  save(
-            @Body requirement: Requirement
-        )
+            @Body requirement: RequirementInfo
+        ) : Response<RequirementInfo>
 
         @PUT("$REQUIREMENT_FEATURES/{id}")
         suspend fun  update(
             @Path("id") id: Int,
-            @Body requirement: Requirement
-        ) : Requirement
+            @Body requirement: RequirementInfo
+        ) : Response<RequirementInfo>
 
 //        @DELETE(QUARTER_FEATURES)
 //        suspend fun delete(requirement: Requirement)
@@ -550,14 +552,14 @@ sealed interface OpenPressingStrapiApi{
 
         @POST(REQUIREMENT_DETAIL_FEATURES)
         suspend fun  save(
-            @Body requirementDetail: RequirementDetail
-        )
+            @Body requirementDetail: RequirementDetailInfo
+        ) : Response<RequirementDetailInfo>
 
         @PUT("$REQUIREMENT_DETAIL_FEATURES/{id}")
         suspend fun  update(
             @Path("id") id: Int,
-            @Body requirementDetail: RequirementDetail
-        ) : RequirementDetail
+            @Body requirementDetail: RequirementDetailInfo
+        ) : Response<RequirementDetailInfo>
 
 //        @DELETE(REQUIREMENT_DETAIL_FEATURES)
 //        suspend fun delete(requirementDetail: RequirementDetail)
