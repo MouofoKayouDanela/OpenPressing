@@ -1,6 +1,5 @@
 package com.android.openpressing.client_module.presentation.agence.components
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,19 +25,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.android.openpressing.client_module.presentation.agence.utils.laundries
-import com.android.openpressing.client_module.presentation.agence.utils.services
 import com.android.openpressing.data.models.laundry.LaundryData
 import com.android.openpressing.data.models.service.ServiceData
-import com.android.openpressing.data.models.utils.IntermediaryData
-import com.android.openpressing.ui.theme.Purple200
+import com.android.openpressing.data.models.utils.service_n_laundry.IntermediaryData
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -47,8 +42,8 @@ fun AddPrestationScreen(
     selectedIndex: Int ,
     updateDialogState: (Boolean) -> Unit ,
     datas: List<IntermediaryData> ,
-    updateData: (List<IntermediaryData>) -> Unit,
-    laundryViewModel: LaundryViewModel = hiltViewModel(),
+    updateData: (List<IntermediaryData>) -> Unit ,
+    laundryViewModel: LaundryViewModel = hiltViewModel() ,
     serviceViewModel: ServiceViewModel = hiltViewModel()
 ) {
 
@@ -283,8 +278,8 @@ fun AddPrestationScreen(
 }
 
 private fun fetchData(
-    actualPage: Int,
-    datas: List<IntermediaryData>,
+    actualPage: Int ,
+    datas: List<IntermediaryData> ,
     getPageSize : (Int) -> Unit
 ) : List<IntermediaryData> {
 
