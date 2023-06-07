@@ -1,6 +1,5 @@
 package com.android.openpressing.client_module.presentation.agence
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,14 +33,12 @@ import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.data.models.service.ServiceData
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.data.models.utils.IntermediaryData
+import com.android.openpressing.data.models.utils.service_n_laundry.IntermediaryData
 import com.android.openpressing.ui.theme.*
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.agency_laundry.AgencyLaundryViewModel
-import com.android.openpressing.viewmodels.agency_laundry.state.AgencyLaundryState
 import com.android.openpressing.viewmodels.agency_service.AgencyServiceViewModel
-import com.android.openpressing.viewmodels.agency_service.state.AgencyServiceState
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
@@ -209,11 +206,11 @@ fun TopNavBar(navController: NavHostController) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BodyList(
-    agencyId: Int,
-    innerPadding: PaddingValues,
-    agencyLaundriesData: List<IntermediaryData>?,
-    agencyServicesData: List<IntermediaryData>?,
-    canFetchLaundriesData: (Boolean) -> Unit,
+    agencyId: Int ,
+    innerPadding: PaddingValues ,
+    agencyLaundriesData: List<IntermediaryData>? ,
+    agencyServicesData: List<IntermediaryData>? ,
+    canFetchLaundriesData: (Boolean) -> Unit ,
     canFetchServicesData: (Boolean) -> Unit
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
@@ -485,16 +482,16 @@ private fun FetchAgency(
 
 @Composable
 private fun SaveData(
-    agencyId: Int,
-    selectedIndex: Int,
-    datas: List<IntermediaryData>,
-    updateData: (List<IntermediaryData>?) -> Unit,
-    canFetchLaundriesData: (Boolean) -> Unit,
-    canFetchServicesData: (Boolean) -> Unit,
-    agencyViewModel: AgencyViewModel = hiltViewModel(),
-    laundryAgencyViewModel: AgencyLaundryViewModel = hiltViewModel(),
-    laundryViewModel: LaundryViewModel = hiltViewModel(),
-    serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel(),
+    agencyId: Int ,
+    selectedIndex: Int ,
+    datas: List<IntermediaryData> ,
+    updateData: (List<IntermediaryData>?) -> Unit ,
+    canFetchLaundriesData: (Boolean) -> Unit ,
+    canFetchServicesData: (Boolean) -> Unit ,
+    agencyViewModel: AgencyViewModel = hiltViewModel() ,
+    laundryAgencyViewModel: AgencyLaundryViewModel = hiltViewModel() ,
+    laundryViewModel: LaundryViewModel = hiltViewModel() ,
+    serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel() ,
     serviceViewModel: ServiceViewModel = hiltViewModel()
 ) {
     val agency = remember (agencyId) { mutableStateOf<Agency?>(null) }
@@ -555,14 +552,14 @@ private fun SaveData(
 
 @Composable
 private fun DeleteData(
-    agencyId: Int,
-    selectedIndex: Int,
-    data: IntermediaryData,
-    canFetchLaundriesData: (Boolean) -> Unit,
-    canFetchServicesData: (Boolean) -> Unit,
-    updateDeletingState: (Boolean) -> Unit,
-    laundryAgencyViewModel: AgencyLaundryViewModel = hiltViewModel(),
-    serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel(),
+    agencyId: Int ,
+    selectedIndex: Int ,
+    data: IntermediaryData ,
+    canFetchLaundriesData: (Boolean) -> Unit ,
+    canFetchServicesData: (Boolean) -> Unit ,
+    updateDeletingState: (Boolean) -> Unit ,
+    laundryAgencyViewModel: AgencyLaundryViewModel = hiltViewModel() ,
+    serviceAgencyViewModel: AgencyServiceViewModel = hiltViewModel() ,
 ) {
 
 
