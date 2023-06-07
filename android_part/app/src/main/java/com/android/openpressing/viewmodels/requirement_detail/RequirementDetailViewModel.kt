@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
+import com.android.openpressing.data.models.requirement_detail.RequirementDetailInfo
 import com.android.openpressing.repositories.requirement_detail.RequirementDetailRepository
 import com.android.openpressing.viewmodels.requirement_detail.state.RequirementDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,18 @@ class RequirementDetailViewModel @Inject constructor(
 
     fun getAll() : Flow<List<RequirementDetailData>> = flow {
         emit(requirementDetailRepository.getAll())
+    }.flowOn(Dispatchers.IO)
+
+    fun save(requirementDetail: RequirementDetailInfo) {
+        _requirementDetailState.value = RequirementDetailState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = requirementDetailRepository.save(requirementDetail)
+            _requirementDetailState.value = RequirementDetailState.Success.Save(response.isSuccessful)
+        }
+    }
+
+    fun delete(id: Int) = flow {
+        emit(requirementDetailRepository.delete(id))
     }.flowOn(Dispatchers.IO)
 
 //    fun getAll() {

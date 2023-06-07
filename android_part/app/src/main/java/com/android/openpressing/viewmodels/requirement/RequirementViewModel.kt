@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement.RequirementData
-import com.android.openpressing.data.models.service.Service
+import com.android.openpressing.data.models.requirement.RequirementInfo
 import com.android.openpressing.repositories.requirement.RequirementRepository
-import com.android.openpressing.repositories.services.ServiceRepository
 import com.android.openpressing.viewmodels.services.state.RequirementState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,23 +21,23 @@ import javax.inject.Inject
         : ViewModel()
     {
 
-        private  val _availablerequirement = MutableStateFlow<RequirementState>(RequirementState.Empty)
-        var avilablerequirement: StateFlow<RequirementState> = _availablerequirement
+        private  val _requirementState = MutableStateFlow<RequirementState>(RequirementState.Empty)
+        var requirementState: StateFlow<RequirementState> = _requirementState
 
         fun getAll() {
-            _availablerequirement.value = RequirementState.Loading
+            _requirementState.value = RequirementState.Loading
 
             viewModelScope.launch {
                 try {
                     val requirements = requirementRepository.getAll()
-                    _availablerequirement.value= RequirementState.Success.RequirementsSuccess(requirements)
+                    _requirementState.value= RequirementState.Success.RequirementsSuccess(requirements)
 
                 } catch (exception: HttpException) {
-                    _availablerequirement.value= RequirementState.Error("No internet connection")
+                    _requirementState.value= RequirementState.Error("No internet connection")
 
                 }
                 catch (exception: WindowManager.InvalidDisplayException) {
-                    _availablerequirement.value= RequirementState.Error("something went wong")
+                    _requirementState.value= RequirementState.Error("something went wong")
 
                 }
             }
@@ -50,17 +49,17 @@ import javax.inject.Inject
         }.flowOn(Dispatchers.IO)
 
         fun findById(id: Int) {
-            _availablerequirement.value = RequirementState.Loading
+            _requirementState.value = RequirementState.Loading
             viewModelScope.launch {
                 try {
                     val requirement = requirementRepository.getById(id)
-                    _availablerequirement.value = RequirementState.Success.RequirementSuccess(requirement)
+                    _requirementState.value = RequirementState.Success.RequirementSuccess(requirement)
                 } catch (exception: HttpException) {
-                    _availablerequirement.value= RequirementState.Error("No internet connection")
+                    _requirementState.value= RequirementState.Error("No internet connection")
 
                 }
                 catch (exception: WindowManager.InvalidDisplayException) {
-                    _availablerequirement.value= RequirementState.Error("something went wong")
+                    _requirementState.value= RequirementState.Error("something went wong")
 
                 }
             }
@@ -70,11 +69,12 @@ import javax.inject.Inject
             emit(requirementRepository.getById(id))
         }.flowOn(Dispatchers.IO)
 
-        fun save(requirement: Requirement) {
+        fun save(requirement: RequirementInfo) {
             try {
-
+                _requirementState.value = RequirementState.Loading
                 viewModelScope.launch(Dispatchers.IO) {
-                    requirementRepository .save(requirement)
+                    val response = requirementRepository .save(requirement)
+                    _requirementState.value = RequirementState.Success.Save(response.isSuccessful)
                 }
 
             } catch (e: Exception) {
@@ -82,7 +82,7 @@ import javax.inject.Inject
             }
         }
 
-        fun update(id: Int, requirement: Requirement) {
+        fun update(id: Int, requirement: RequirementInfo) {
             try {
 
                 viewModelScope.launch(Dispatchers.IO) {
@@ -96,4 +96,8 @@ import javax.inject.Inject
 
             }
         }
+
+        fun delete(id: Int) = flow {
+            emit(requirementRepository.delete(id))
+        }.flowOn(Dispatchers.IO)
     }

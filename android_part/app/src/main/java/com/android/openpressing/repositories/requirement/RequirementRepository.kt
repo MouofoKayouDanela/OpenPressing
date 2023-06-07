@@ -1,9 +1,8 @@
 package com.android.openpressing.repositories.requirement
 
 import com.android.openpressing.data.OpenPressingStrapiApi
-import com.android.openpressing.data.models.requirement.Requirement
-import com.android.openpressing.data.models.requirement.RequirementData
-import com.android.openpressing.data.models.requirement.Requirements
+import com.android.openpressing.data.models.requirement.*
+import retrofit2.Response
 import javax.inject.Inject
 
 class RequirementRepository @Inject constructor(
@@ -14,16 +13,29 @@ class RequirementRepository @Inject constructor(
 
     suspend fun getById(id: Int) : Requirement = requirementApi.getById(id)
 
-    suspend fun save(requirement: Requirement) = requirementApi.save(requirement)
+    suspend fun save(requirement: RequirementInfo) = requirementApi.save(requirement)
 
-    suspend fun update(id: Int, requirement: Requirement) : Requirement = requirementApi.update(id , requirement)
+    suspend fun update(id: Int, requirement: RequirementInfo) = requirementApi.update(id , requirement)
 
-    suspend fun delete(id: Int) {
+    suspend fun delete(id: Int) : Response<RequirementInfo> {
 
         val deletingRequirement = getById(id)
-        deletingRequirement.data.attributes.confirmed = false
 
-        update(id, deletingRequirement)
+        return update(
+                id,
+                RequirementInfo(
+                        RequirementInfoData(
+                                id = deletingRequirement.data!!.id,
+                                client = deletingRequirement.data!!.attributes.client.data.id!!,
+                                requirement_details = deletingRequirement.data!!
+                                    .attributes
+                                    .requirement_details
+                                    .data
+                                    .map { it.id!! },
+                                confirmed = false
+                        )
+                )
+        )
     }
 
 }
