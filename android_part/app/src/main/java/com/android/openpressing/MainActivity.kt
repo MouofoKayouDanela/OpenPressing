@@ -85,7 +85,12 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.ListCommande.road){ View(navController) }
                     composable(Screen.DetailCommande.road){ RequirementDetailsScreen(navController) }
                     composable(Screen.ListOffer.road){ OffreView() }
-                    composable(Screen.AddBesoin.road){ AddRequirementScreen(navController) }
+                    composable(Screen.AddBesoin.road){
+                        AddRequirementScreen(
+                                connectedUserId = id!!,
+                                navController = navController
+                        )
+                    }
                     composable(Screen.ConsulterMessage.road){ MySMS(navController) }
                     composable(Screen.Parametre .road){ MyScreenPreview(navController) }
                     composable(Screen.ClientRequirement.road) { ClRequirementConsulting( navController) }
