@@ -5,8 +5,10 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,9 +17,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -29,22 +34,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.android.openpressing.data.models.utils.UserInfos
 import com.android.openpressing.ui.component.AppTextField
+import com.android.openpressing.ui.theme.Purple500
 import com.android.openpressing.utils.Screen
+import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun FinitionScreen( navController: NavHostController) {
+fun FinitionScreen(
+    userInfos : UserInfos,
+    navController: NavHostController
+) {
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var ConfirmPassword by remember { mutableStateOf("") }
     var passwordObscure by remember { mutableStateOf(true) }
+    var connectionState by remember { mutableStateOf(false) }
     var showDialogUsername by remember { mutableStateOf(false) }
     var showDialogEmail by remember { mutableStateOf(false) }
     var showDialogPassword by remember { mutableStateOf(false) }
@@ -87,16 +100,25 @@ fun FinitionScreen( navController: NavHostController) {
                 modifier = Modifier.weight(7f),
             ) {
 
-                AppTextField(
+                OutlinedTextField(
+                    value = username,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         username = it
                     },
-                    hint = "Username",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Person,
-                            contentDescription = "Username Field",
+                            contentDescription = "username",
                             tint=Color.Black
+                        )
+                    },
+                    label={
+                        Text(
+                            text="username"
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -105,34 +127,44 @@ fun FinitionScreen( navController: NavHostController) {
                     keyboardActions = KeyboardActions(
                         onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = username,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    value = email,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         email = it
                     },
-                    hint = "Email Address",
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Email,
-                            contentDescription = "Email Field",
+                            contentDescription = "email",
                             tint=Color.Black
                         )
                     },
+                    label={
+                        Text(
+                            text="email"
+                        )
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
+                        imeAction = ImeAction.Next,
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
+                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
                     ),
-                    value = email,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    //value = password,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
                         password = it
                     },
-                    hint = "Password",
-                    obscure = passwordObscure,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
@@ -157,17 +189,20 @@ fun FinitionScreen( navController: NavHostController) {
                     ),
                     value = password,
                 )
-                AppTextField(
+                OutlinedTextField(
+                    //value = password,
+                    colors= TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = Color.Black,
+                        placeholderColor = Color.LightGray
+                    )   ,
                     onValueChange = {
-                        ConfirmPassword= it
+                        ConfirmPassword = it
                     },
-                    hint = "Confirm Password",
-                    obscure = passwordObscure,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
-                            contentDescription = "Password Field",
-                            tint=Color.Black,
+                            contentDescription = "Confirm Password Field",
+                            tint=Color.Black
                         )
                     },
                     trailingIcon = {
@@ -233,9 +268,17 @@ fun FinitionScreen( navController: NavHostController) {
                 ) {
                     Button(
                         onClick = { navController.popBackStack() },
-                        modifier = Modifier.width(130.dp)
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(CircleShape)
+                            .background(Purple500)
                     ) {
-                        Text("Précédent", style = MaterialTheme.typography.body1)
+                        Icon(
+                            Icons.Rounded.KeyboardArrowLeft,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(5.dp)
+                        )
                     }
                     Button(
                         onClick = {
@@ -252,7 +295,14 @@ fun FinitionScreen( navController: NavHostController) {
                                 showDialogPassword=true
                             }
                             else{
-                                createUser(email, password, navController)
+                                createUser(
+                                    email = email ,
+                                    password = password ,
+                                    navController = navController ,
+                                    getConnectionState = {
+                                        connectionState = it
+                                    }
+                                )
                                 navController.navigate(Screen.Login.road)
                             }
                          },
@@ -269,7 +319,8 @@ fun FinitionScreen( navController: NavHostController) {
                             text={Text("Veuillez entrer votre username")},
                             confirmButton = {
                                 Button(onClick = {showDialogUsername=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)) {
                                     Text("ok")
                                 }
@@ -285,7 +336,8 @@ fun FinitionScreen( navController: NavHostController) {
                             text={Text("Veuillez entrer votre email")},
                             buttons = {
                                 Button(onClick = {showDialogEmail=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)) {
                                     Text("ok")
                                 }
@@ -301,7 +353,8 @@ fun FinitionScreen( navController: NavHostController) {
                             text={Text("Le mot de passe et confirm mot de passe doivent etre pareil")},
                             buttons = {
                                 Button(onClick = {showDialogPassword=false },
-                                    modifier=Modifier.width(80.dp)
+                                    modifier= Modifier
+                                        .width(80.dp)
                                         .padding(horizontal = 12.dp)
                                         ) {
                                     Text("ok")
@@ -328,10 +381,12 @@ fun FinitionScreen( navController: NavHostController) {
         }
     }
 }
+
 fun createUser(
     email:String,
     password:String,
-    navController: NavController
+    navController: NavController,
+    getConnectionState: (Boolean) -> Unit
 ){
     println("L'email est $email et le mot de passe est $password")
 
@@ -339,14 +394,14 @@ fun createUser(
     try {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                    task ->if(task.isSuccessful){
-                        Log.d(TAG,"createUserWithEmail:success")
+                task -> if(task.isSuccessful) {
+                    Log.d(TAG,"createUserWithEmail:success")
+                    getConnectionState(true)
                         navController.navigate(Screen.Login.road)
-            }
-                else{
-                Log.w(TAG, "createUserWithEmail:failure", task.exception)
-            }
-        }
+                    } else {
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    }
+                }
     }catch (e: Exception){
         println("Erreur : $e.message")
     }

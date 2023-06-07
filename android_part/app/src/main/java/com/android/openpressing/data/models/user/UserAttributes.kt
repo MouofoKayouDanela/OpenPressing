@@ -1,11 +1,13 @@
 package com.android.openpressing.data.models.user
 
+import android.os.Parcelable
 import com.android.openpressing.data.models.quarter.Quarter
 import com.android.openpressing.data.models.service.Services
 import com.android.openpressing.data.models.utils.images.ImageInfo
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.util.*
-
+@Parcelize
 data class UserAttributes(
     var name: String ,
     var surname: String ,
@@ -19,4 +21,4 @@ data class UserAttributes(
     var updatedDate: Date = Date() ,
     var confirmed: Boolean = true ,
     var blocked: Boolean = false
-)
+):Parcelable

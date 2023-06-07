@@ -14,7 +14,7 @@ class RequirementDetailRepository @Inject constructor(
 
     suspend fun save(requirementDetail : RequirementDetail) = requirementDetailsApi.save(requirementDetail)
 
-    suspend fun update(id: Int,requirementDetail : RequirementDetail) : RequirementDetail = requirementDetailsApi.update(id, requirementDetail)
+    suspend fun update(id: Int,requirementDetail : RequirementDetail) : RequirementDetail = requirementDetailsApi.update(id , requirementDetail)
 
     suspend fun delete(id: Int) {
 

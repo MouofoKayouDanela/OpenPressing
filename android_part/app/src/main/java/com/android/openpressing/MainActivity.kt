@@ -29,6 +29,7 @@ import com.android.openpressing.ui.theme.OpenPressingTheme
 import com.android.openpressing.client_module.presentation.profile.MyScreenPreview
 import com.android.openpressing.client_module.presentation.requirement.details.RequirementDetailsScreen
 import com.android.openpressing.data.models.pressing.PressingData
+import com.android.openpressing.data.models.utils.UserInfos
 import com.android.openpressing.pressing_module.requirement.ClRequirementConsulting
 import com.android.openpressing.pressing_module.requirement.RequirementDetail
 import com.android.openpressing.utils.Screen
@@ -52,7 +53,16 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(Screen.Register.road){ RegisterScreen(navController) }
-                    composable(Screen.Finition.road) { FinitionScreen(navController)}
+                    composable(
+                        route = "${Screen.Finition.road}/{userInfos}",
+                        arguments = listOf(navArgument("userInfos"){ type=NavType.ParcelableType(
+                            UserInfos::class.java) })
+                    ) {
+                        FinitionScreen(
+                            userInfos = it.arguments?.getParcelable("userInfos")!!,
+                            navController = navController
+                        )
+                    }
                     composable(Screen.ForgotPassword.road){ ForgotPasswordScreen(navController) }
                     composable(Screen.ResetPassword.road){ ResetPasswordScreen(navController) }
                     composable(Screen.ListPromo.road){ ListPromotion(navController) }

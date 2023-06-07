@@ -1,5 +1,6 @@
 package com.android.openpressing.client_module.presentation.agence.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +32,8 @@ import com.android.openpressing.data.models.laundry.LaundryData
 import com.android.openpressing.data.models.service.ServiceData
 import com.android.openpressing.data.models.utils.IntermediaryData
 import com.android.openpressing.ui.theme.Purple200
+import com.android.openpressing.ui.theme.primaryColor
+import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.BASE_URL
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.services.ServiceViewModel
@@ -43,13 +46,13 @@ import kotlinx.coroutines.flow.flowOn
 fun AddPrestationScreen(
     selectedIndex: Int ,
     updateDialogState: (Boolean) -> Unit ,
-    datas: List<IntermediaryData>? ,
+    datas: List<IntermediaryData> ,
     updateData: (List<IntermediaryData>) -> Unit,
     laundryViewModel: LaundryViewModel = hiltViewModel(),
     serviceViewModel: ServiceViewModel = hiltViewModel()
 ) {
 
-   val addedDatas = datas!!.toMutableList()
+   val addedDatas = mutableListOf<IntermediaryData>()
 
     val rememberDatas = remember{ mutableStateOf<List<IntermediaryData>?>(null) }
     val allDataKey = "allDatas"
@@ -68,6 +71,9 @@ fun AddPrestationScreen(
                 allServices.value!!.forEach {
                     allDatas.add(
                             IntermediaryData(
+                                    id = it.id!!,
+                                    idType = it.attributes.type.data.id!!,
+                                    idCategory = it.attributes.category.data.id!!,
                                     title = it.attributes.type.data.attributes.title + " " +
                                                 it.attributes.category.data.attributes.name,
                                     imageUrl = it.attributes.serviceImage.data.attributes.url
@@ -86,6 +92,9 @@ fun AddPrestationScreen(
             allLaundries.value!!.forEach {
                 allDatas.add(
                         IntermediaryData(
+                                id = it.id!!,
+                                idType = it.attributes.type.data.id!!,
+                                idCategory = it.attributes.category.data.id!!,
                                 title = it.attributes.type.data.attributes.title + " " +
                                         it.attributes.category.data.attributes.name,
                                 imageUrl = it.attributes.laundryImage.data.attributes.url
@@ -126,7 +135,7 @@ fun AddPrestationScreen(
                                         style = MaterialTheme.typography.h5.copy(
                                                 fontSize = 22.sp
                                         ) ,
-                                        color = Purple200
+                                        color = primaryColor
                                 )
                             }
 
@@ -169,8 +178,8 @@ fun AddPrestationScreen(
                                 getPageSize = { pageSize = it }
                         )) { data ->
 
-                            val isChecked = remember { mutableStateOf(dataTitle.contains(data.title)) }
-                            val enabled by remember { mutableStateOf(!datas.contains(data)) }
+                            var isChecked = dataTitle.contains(data.title)
+                            val enabled = !datas.contains(data)
 
                             Row(
                                     Modifier
@@ -182,17 +191,18 @@ fun AddPrestationScreen(
                                                 enabled = enabled ,
                                                 onClick = {
 
-                                                    if (!isChecked.value) {
-//                                                    addedDatas.add(data)
+                                                    dataTitle = if (!isChecked) {
+                                                        addedDatas.add(data)
                                                         val titleData = dataTitle.toMutableList()
                                                         titleData.add(data.title)
-                                                        dataTitle = titleData.toList()
+                                                        titleData.toList()
                                                     } else {
-//                                                    addedDatas.remove(data)
+                                                        addedDatas.remove(data)
                                                         val titleData = dataTitle.toMutableList()
                                                         titleData.remove(data.title)
-                                                        dataTitle = titleData.toList()
+                                                        titleData.toList()
                                                     }
+                                                    isChecked = !isChecked
                                                 }
                                         ) ,
                                     verticalAlignment = Alignment.CenterVertically ,
@@ -205,11 +215,7 @@ fun AddPrestationScreen(
                                         contentDescription = null ,
                                         modifier = Modifier
                                             .clip(CircleShape)
-                                            .size(56.dp)
-                                            .clickable(
-                                                    enabled = enabled ,
-                                                    onClick = {}
-                                            ) ,
+                                            .size(56.dp),
                                         contentScale = ContentScale.Crop
                                 )
 
@@ -226,12 +232,12 @@ fun AddPrestationScreen(
                                         else Color.LightGray
                                 )
 
-                                if (isChecked.value) {
+                                if (isChecked) {
 
                                     Icon(
                                             Icons.Rounded.Check ,
                                             contentDescription = null ,
-                                            tint = Purple200 ,
+                                            tint = thirdPrimeColor ,
                                             modifier = Modifier
                                                 .weight(0.2f)
                                     )
@@ -244,11 +250,11 @@ fun AddPrestationScreen(
             confirmButton = {
                 TextButton(
                         onClick = {
-//                            updateData(addedDatas.toList())
+                            updateData(addedDatas.toList())
                             updateDialogState(false)
                         },
                         colors = ButtonDefaults.textButtonColors(
-                                contentColor = Purple200
+                                contentColor = primaryColor
                         )
                 ) {
                     Text(
@@ -262,7 +268,7 @@ fun AddPrestationScreen(
                             updateDialogState(false)
                         },
                         colors = ButtonDefaults.textButtonColors(
-                                contentColor = Purple200
+                                contentColor = primaryColor
                         )
                 ) {
                     Text(

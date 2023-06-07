@@ -14,7 +14,7 @@ class PromotionRepository @Inject constructor(
 
     suspend fun save(promotion : Promotion) = promotionApi.save(promotion)
 
-    suspend fun update(id: Int,promotion : Promotion) : Promotion = promotionApi.update(id, promotion)
+    suspend fun update(id: Int,promotion : Promotion) : Promotion = promotionApi.update(id , promotion)
 
     suspend fun delete(id: Int) {
 

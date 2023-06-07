@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -78,17 +79,17 @@ private fun TopAppBar( navController: NavController) {
     Column {
         Row(
             Modifier
-                .clip(
+                /*.clip(
                     RoundedCornerShape(
                         bottomStart = 10.dp,
                         bottomEnd = 10.dp
                     )
-                )
+                )*/
                 .fillMaxWidth()
-                .background(Purple500)
+                .background(primaryColor)
                 .padding(
-                    horizontal = 8.dp,
-                    vertical = 4.dp
+                        horizontal = 16.dp ,
+                        vertical = 8.dp
                 ),
                 verticalAlignment = Alignment.CenterVertically
         ) {
@@ -112,9 +113,11 @@ private fun TopAppBar( navController: NavController) {
                     horizontalArrangement = Arrangement.Center
             ){
                 Text(
-                        "Besoins disponibles" ,
-                        style = MaterialTheme.typography.h5 ,
-                        color = Color.White
+                        "Available needs"  ,
+                        style = MaterialTheme.typography.h6.copy(
+                                color = Color.White,
+                                fontWeight = FontWeight.Normal
+                        )
                 )
             }
         }
@@ -153,7 +156,7 @@ fun RequirementList(
                             backgroundColor = Color.White ,
                             border = BorderStroke(
                                     1.dp ,
-                                    thirdColor
+                                    primaryColor
                             ) ,
                             shape = RoundedCornerShape(if (isExpanded) 10 else 20)
                     ) {
@@ -189,6 +192,7 @@ fun RequirementList(
                                             else
                                                 Icons.Rounded.KeyboardArrowUp ,
                                             contentDescription = null ,
+                                            tint = primaryColor
                                     )
                                 }
 
@@ -228,8 +232,8 @@ fun RequirementList(
                                                     width = 1.dp,
                                                     brush = Brush.linearGradient(
                                                         listOf(
-                                                            Color.Black,
-                                                            Color.Black
+                                                            primaryColor,
+                                                            primaryColor
                                                         )
                                                     ),
                                                     shape = RoundedCornerShape(20)
@@ -242,14 +246,16 @@ fun RequirementList(
                                                 }
                                     ) {
                                         Text(
-                                                "Voir plus" ,
+                                                "See more" ,
                                                 style = MaterialTheme.typography.body1 ,
+                                                color = primaryColor,
                                                 modifier = Modifier
                                                     .weight(0.9f)
                                         )
                                         Icon(
                                                 Icons.Rounded.ArrowRightAlt ,
                                                 contentDescription = null ,
+                                                tint = primaryColor,
                                                 modifier = Modifier.weight(0.1f)
                                         )
                                     }
@@ -341,6 +347,11 @@ private fun FetchUser(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
+                            .border(
+                                    width = 1.dp,
+                                    brush = Brush.linearGradient(listOf(primaryPrimeColor, primaryPrimeColor)),
+                                    shape = CircleShape
+                            )
                             .size(48.dp),
                         contentScale = ContentScale.Crop
 
@@ -415,7 +426,7 @@ private fun FetchService(
                     style = MaterialTheme.typography.body1 ,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(primaryPrimeColor)
+                        .background(fourthColor)
                         .padding(4.dp)
             )
     }
