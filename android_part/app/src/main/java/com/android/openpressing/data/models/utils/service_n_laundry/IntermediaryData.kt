@@ -1,4 +1,4 @@
-package com.android.openpressing.data.models.utils
+package com.android.openpressing.data.models.utils.service_n_laundry
 
 import androidx.compose.ui.graphics.painter.Painter
 
