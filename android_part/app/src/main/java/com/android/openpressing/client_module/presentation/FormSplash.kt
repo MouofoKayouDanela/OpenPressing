@@ -3,13 +3,21 @@ package com.android.openpressing.client_module.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowLeft
+import androidx.compose.material.icons.rounded.ArrowRight
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.NavigateNext
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
@@ -17,6 +25,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.primaryColor
+import com.android.openpressing.ui.theme.thirdColor
+import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -32,10 +42,10 @@ fun getList(): List<HorizontalPagerContent> {
         HorizontalPagerContent(
             R.drawable.logo,
             "",
-            "Verification is an extra or final bit of proof that establishes something is true"
+            ""
         ),
         HorizontalPagerContent(
-            R.drawable.image3,
+            R.drawable.livraison,
             "",
             "We pay attention to all of your payments and find way for saving your money"
         ),
@@ -45,7 +55,7 @@ fun getList(): List<HorizontalPagerContent> {
             "Free Advisory service,mobile banking application,visa"
         ),
         HorizontalPagerContent(
-            R.drawable.images2,
+            R.drawable.image1,
             "",
             "Bank your life,We create something new you have never seen before"
         )
@@ -116,19 +126,22 @@ fun IntroScreen(navController: NavHostController) {
                 .fillMaxWidth()
         ) {
             if (isPrevVisible.value) {
-                Button(
+                IconButton(
                     onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = primaryColor
-                    ),
+
                 ) {
-                    Text(
-                        text = "Prev",
-                        color = Color.White,
+                    Icon(
+                        Icons.Rounded.ArrowLeft,
+                        contentDescription = stringResource(R.string.nextPage),
+                        tint = thirdPrimeColor,
+                        /* modifier = Modifier
+                             .clip(CircleShape)
+                             //.background(VioletPal)
+                             .padding(5.dp)*/
                     )
                 }
             }
@@ -137,20 +150,22 @@ fun IntroScreen(navController: NavHostController) {
 
 
                 if (isNextVisible.value) {
-                    Button(
+                    IconButton(
                         onClick = {
                         navController.navigate(Screen.Login.road)
                             scope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = primaryColor
-                        ),
                     ) {
-                        Text(
-                            text = "Next",
-                            color = Color.White,
+                        Icon(
+                            Icons.Rounded.ArrowRight,
+                            contentDescription = stringResource(R.string.nextPage),
+                            tint = thirdPrimeColor,
+                           /* modifier = Modifier
+                                .clip(CircleShape)
+                                //.background(VioletPal)
+                                .padding(5.dp)*/
                         )
                     }
                 }
