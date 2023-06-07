@@ -63,8 +63,8 @@ fun RequirementDetail(
             topBar = {
                 if (requirement.value != null){
                     TopAppBar(
-                         clientId = requirement.value!!.data.attributes.client.data.id!!,
-                         rdCreatedDate = requirement.value!!.data.attributes.createdAt,
+                         clientId = requirement.value!!.data!!.attributes.client.data.id!!,
+                         rdCreatedDate = requirement.value!!.data!!.attributes.createdAt,
                          navController = navController
                     )
                 }
@@ -75,7 +75,7 @@ fun RequirementDetail(
                 if (requirement.value != null) {
                     RequirementContent(
                             innerPadding = innerPadding ,
-                            requirementDetails = requirement.value!!.data.attributes.requirement_details.data
+                            requirementDetails = requirement.value!!.data!!.attributes.requirement_details.data
                     )
                 }
             } ,

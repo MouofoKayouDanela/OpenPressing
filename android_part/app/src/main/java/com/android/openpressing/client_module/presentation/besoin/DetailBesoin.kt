@@ -61,7 +61,7 @@ fun DetailBesoin(
         content = {
             if(requirement.value != null) {
                 ContentDetail(
-                        requirementDetails = requirement.value!!.data.attributes.requirement_details.data
+                        requirementDetails = requirement.value!!.data!!.attributes.requirement_details.data
                 )
             }
         }
