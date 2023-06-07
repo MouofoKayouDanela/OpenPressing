@@ -1,5 +1,5 @@
 package com.android.openpressing.data.models.requirement
 
 data class Requirement(
-    var data: RequirementData
+    var data: RequirementData?
 )
