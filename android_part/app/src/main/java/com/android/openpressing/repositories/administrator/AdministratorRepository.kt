@@ -14,7 +14,7 @@ class AdministratorRepository @Inject constructor(
 
     suspend fun save(administrator : Administrator) =administratorApi.save(administrator)
 
-    suspend fun update(id : Int, administrator : Administrator) : Administrator =administratorApi.update(id , administrator)
+    suspend fun update(id : Int, administrator : Administrator) : Administrator=administratorApi.update(id, administrator)
 
    /* suspend fun delete(id : Int){
         val deletingAdministrator = getById(id)

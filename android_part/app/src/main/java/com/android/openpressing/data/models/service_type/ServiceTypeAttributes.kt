@@ -1,12 +1,9 @@
 package com.android.openpressing.data.models.service_type
 
-import android.os.Parcelable
 import com.android.openpressing.data.models.service.Service
 import com.android.openpressing.data.models.service.Services
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import java.util.*
-@Parcelize
 
 data class ServiceTypeAttributes(
     @SerializedName("Title") var title: String ,
@@ -16,4 +13,4 @@ data class ServiceTypeAttributes(
     var confirmed: Boolean = true ,
     var blocked: Boolean = false ,
     var services: Services? = null ,
-):Parcelable
+)

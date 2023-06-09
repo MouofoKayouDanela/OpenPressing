@@ -1,6 +1,9 @@
 package com.android.openpressing.pressing_module.requirement
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,13 +11,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionAnswer
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -104,10 +105,10 @@ private fun TopAppBar(
                         )
                 )
                 .fillMaxWidth()
-                .background(primaryColor)
+                .background(Purple500)
                 .padding(
-                        horizontal = 16.dp ,
-                        vertical = 8.dp
+                        horizontal = 8.dp ,
+                        vertical = 4.dp
                 ) ,
             verticalArrangement = Arrangement.Center ,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -138,15 +139,23 @@ private fun TopAppBar(
                         .weight(0.9f),
                     horizontalArrangement = Arrangement.End
             ){
-                IconButton(
+                TextButton(
                         onClick = {  },
+                        colors = ButtonDefaults.textButtonColors(
+                                contentColor = Color.White,
+                                backgroundColor = Purple500
+                        ),
+                        shape = RoundedCornerShape(20),
+                        border = BorderStroke(
+                                width = 1.dp,
+                                color = thirdColor
+                        )
                 ) {
-                    Icon(
-                           Icons.Default.QuestionAnswer,
-                           "",
-                           tint = thirdPrimeColor,
-                           modifier = Modifier
-                               .size(32.dp)
+                    Text(
+                            "Répondre",
+                            style = MaterialTheme.typography.body1.copy(
+                                    fontWeight = FontWeight.Bold
+                            )
                     )
                 }
             }
@@ -194,15 +203,9 @@ private fun TopAppBar(
                       contentScale = ContentScale.Crop,
                       modifier = Modifier
                           .clip(CircleShape)
-                          .size(96.dp)
-                          .border(
-                                  width = 1.dp,
-                                  brush = Brush.linearGradient(
-                                          listOf(fourthColor, thirdPrimeColor)
-                                  ),
-                                  shape = CircleShape
-                          )
-                          .background(Color.White),
+                          .size(86.dp)
+                          .background(Color.White)
+                          .weight(0.35f),
                     )
 
                     Column(
@@ -211,7 +214,7 @@ private fun TopAppBar(
                                 .weight(0.65f) ,
                             verticalArrangement = Arrangement.Center ,
 
-                    ) {
+                            ) {
 
                         Text(
                                 user.value!!.username ,
@@ -242,8 +245,8 @@ private fun TopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RequirementContent(
-    innerPadding: PaddingValues ,
-    requirementDetails: List<RequirementDetailData> ,
+    innerPadding: PaddingValues,
+    requirementDetails: List<RequirementDetailData>,
     viewModel: RequirementDetailViewModel = hiltViewModel()
 ) {
     val allRdKey = "allRd"
@@ -287,7 +290,7 @@ fun RequirementContent(
 
                             Column(
                                     modifier = Modifier
-                                        .background(secondaryPrimeColor)
+                                        .background(thirdPrimeColor)
                                         .padding(16.dp)
                                         .fillMaxWidth() ,
                                     verticalArrangement = Arrangement.Center ,
@@ -371,7 +374,7 @@ private fun FetchService(
                             service.value!!.data.attributes.category.data.attributes.name ,
                     style = MaterialTheme.typography.body1.copy(
                             fontWeight = FontWeight.SemiBold ,
-                            color = primaryColor
+                            color = secondaryPrimeColor
                     )
             )
         }

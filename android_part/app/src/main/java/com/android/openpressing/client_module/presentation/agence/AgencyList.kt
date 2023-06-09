@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -25,11 +26,13 @@ import com.android.openpressing.data.models.agency.AgencyData
 import com.android.openpressing.data.models.owner.OwnerData
 import com.android.openpressing.data.models.pressing.PressingData
 import com.android.openpressing.ui.theme.primaryColor
+import com.android.openpressing.ui.theme.primaryPrimeColor
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.agency.AgencyViewModel
 import com.android.openpressing.viewmodels.owner.OwnerViewModel
 import com.android.openpressing.viewmodels.pressing.PressingViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

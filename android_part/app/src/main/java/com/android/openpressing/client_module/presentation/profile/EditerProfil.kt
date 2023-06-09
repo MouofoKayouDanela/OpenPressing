@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.LocalLaundryService
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Reorder
@@ -235,7 +236,7 @@ fun ListBox(navController: NavHostController,
                         tint = primaryColor,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(fourthColor)
+                            .background(primaryPrimeColor)
                             .padding(5.dp)
                             //.padding(horizontal = 5.dp)
                             .align(Alignment.BottomEnd)

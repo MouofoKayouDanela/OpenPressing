@@ -14,7 +14,7 @@ class AnnonceRepository @Inject constructor(
 
     suspend fun save(announce: Announce) =annonceApi.save(announce)
 
-    suspend fun update(id : Int,announce: Announce) : Announce = annonceApi.update(id , announce)
+    suspend fun update(id : Int,announce: Announce) : Announce = annonceApi.update(id, announce)
 
     suspend fun delete(id : Int){
         val deletingAnnounce = getById(id)

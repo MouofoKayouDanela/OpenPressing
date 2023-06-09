@@ -14,7 +14,7 @@ class MessageRepository @Inject constructor(
 
     suspend fun save(message : Message) = messageApi.save(message)
 
-    suspend fun update(id: Int,message : Message) : Message = messageApi.update(id , message)
+    suspend fun update(id: Int,message : Message ) : Message = messageApi.update(id, message)
 
     suspend fun delete(id: Int) {
 

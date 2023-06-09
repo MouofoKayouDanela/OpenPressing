@@ -11,11 +11,11 @@ class QuarterRepository @Inject constructor(
 ) {
     suspend fun getAll() : MutableList<QuarterData> = quarterApi.getAll().data
 
-    suspend fun getById(id: Int) : Quarter = quarterApi.getById(id)
+    suspend fun getById(id: Int) : Quarter= quarterApi.getById(id)
 
     suspend fun save(quarter : Quarter) = quarterApi.save(quarter)
 
-    suspend fun update(id: Int,quarter : Quarter) : Quarter = quarterApi.update(id , quarter)
+    suspend fun update(id: Int,quarter : Quarter) : Quarter = quarterApi.update(id, quarter)
 
     suspend fun delete(id: Int) {
 

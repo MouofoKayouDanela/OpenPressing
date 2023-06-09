@@ -12,9 +12,9 @@ class AgentRepository @Inject constructor(
 
     suspend fun getById(id:Int) : Agent = agentApi.getById(id)
 
-    suspend fun save(agent : Agent) = agentApi.save(agent)
+    suspend fun save(agent : Agent ) = agentApi.save(agent)
 
-    suspend fun update(id : Int,agent : Agent) : Agent = agentApi.update(id , agent)
+    suspend fun update(id : Int,agent : Agent) : Agent = agentApi.update(id, agent)
 
     suspend fun delete(id : Int){
         val deletingAgent = getById(id)

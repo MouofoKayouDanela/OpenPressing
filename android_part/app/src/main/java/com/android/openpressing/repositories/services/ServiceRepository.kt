@@ -15,7 +15,7 @@ class ServiceRepository @Inject constructor(
 
     suspend fun save(service: Service) = serviceApi.save(service)
 
-    suspend fun update(id: Int, service: Service) : Service = serviceApi.update(id , service)
+    suspend fun update(id: Int, service: Service) : Service = serviceApi.update(id, service)
 
     suspend fun delete(id: Int) {
 

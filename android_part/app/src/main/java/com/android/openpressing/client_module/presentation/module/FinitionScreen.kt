@@ -5,78 +5,64 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.ArrowLeft
+import androidx.compose.material.icons.rounded.SwipeRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.android.openpressing.data.models.utils.UserInfos
+import com.android.openpressing.R
 import com.android.openpressing.ui.component.AppTextField
-import com.android.openpressing.ui.theme.Purple500
+import com.android.openpressing.ui.theme.primaryColor
+import com.android.openpressing.ui.theme.secondaryColor
 import com.android.openpressing.utils.Screen
-import com.android.openpressing.viewmodels.user.UserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun FinitionScreen(
-    userInfos : UserInfos,
-    navController: NavHostController
-) {
+fun FinitionScreen( navController: NavHostController) {
     val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var ConfirmPassword by remember { mutableStateOf("") }
-    var passwordObscure by remember { mutableStateOf(true) }
-    var connectionState by remember { mutableStateOf(false) }
+    var passwordObscure by remember { mutableStateOf(false) }
     var showDialogUsername by remember { mutableStateOf(false) }
     var showDialogEmail by remember { mutableStateOf(false) }
     var showDialogPassword by remember { mutableStateOf(false) }
     var showDialogConfirmPassword by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                backgroundColor = Color.Transparent,
-                elevation = 0.dp,
-            ) {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Button"
-                    )
-                }
-            }
-        }
+
     ){
         Column(
             verticalArrangement = Arrangement.Top,
@@ -102,126 +88,129 @@ fun FinitionScreen(
 
                 OutlinedTextField(
                     value = username,
-                    colors= TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = Color.Black,
-                        placeholderColor = Color.LightGray
-                    )   ,
-                    onValueChange = {
-                        username = it
-                    },
+                    onValueChange = { username = it },
+                    label = {Text("Username")},
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Person,
-                            contentDescription = "username",
+                            contentDescription = "Username Field",
                             tint=Color.Black
                         )
                     },
-                    label={
-                        Text(
-                            text="username"
-                        )
-                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = primaryColor,
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = Color.Black,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedLabelColor = primaryColor
+                    ),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
+                        imeAction = ImeAction.Done,
                     ),
                     keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                        onDone = { focusManager.clearFocus() }
                     ),
                 )
+
                 OutlinedTextField(
                     value = email,
-                    colors= TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = Color.Black,
-                        placeholderColor = Color.LightGray
-                    )   ,
-                    onValueChange = {
-                        email = it
-                    },
+                    onValueChange = { email = it },
+                    label = {Text("Email address")},
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Email,
-                            contentDescription = "email",
+                            contentDescription = "Email Field",
                             tint=Color.Black
                         )
                     },
-                    label={
-                        Text(
-                            text="email"
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Next,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = primaryColor,
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = Color.Black,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedLabelColor = primaryColor
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email
                     ),
                     keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Next) }
+                        onDone = { focusManager.clearFocus() }
                     ),
                 )
+
                 OutlinedTextField(
-                    //value = password,
-                    colors= TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = Color.Black,
-                        placeholderColor = Color.LightGray
-                    )   ,
-                    onValueChange = {
-                        password = it
-                    },
+                    value = password,
+                    onValueChange = { password = it },
+                    label = {Text("Password")},
+                    visualTransformation  = if (passwordObscure) VisualTransformation.None
+                                            else PasswordVisualTransformation(),
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
                             contentDescription = "Password Field",
-                            tint=Color.Black
+                            tint=Color.Black,
                         )
                     },
                     trailingIcon = {
-                        Icon(painter = if (passwordObscure) painterResource(id = com.android.openpressing.R.drawable.ic_outline_visibility) else painterResource(
-                            id = com.android.openpressing.R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Password",
-                            tint=Color.Black,
-                                    modifier = Modifier.clickable {
-                            passwordObscure = !passwordObscure
-                        })
+                        IconButton(onClick = { passwordObscure = !passwordObscure  }) {
+                            Icon(imageVector = if(!passwordObscure) Icons.Filled.VisibilityOff
+                                else Icons.Filled.Visibility,
+                                contentDescription = "",
+                                tint=Color.Black)
+                        }
                     },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = primaryColor,
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = Color.Black,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedLabelColor = primaryColor
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = { focusManager.clearFocus() }
                     ),
-                    value = password,
                 )
+
                 OutlinedTextField(
-                    //value = password,
-                    colors= TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = Color.Black,
-                        placeholderColor = Color.LightGray
-                    )   ,
-                    onValueChange = {
-                        ConfirmPassword = it
-                    },
+                    value = ConfirmPassword,
+                    onValueChange = { ConfirmPassword = it },
+                    label = {Text("Confirm password")},
+                    visualTransformation  = if (passwordObscure) VisualTransformation.None
+                                            else PasswordVisualTransformation(),
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.Lock,
-                            contentDescription = "Confirm Password Field",
-                            tint=Color.Black
+                            contentDescription = "Password Field",
+                            tint=Color.Black,
                         )
                     },
                     trailingIcon = {
-                        Icon(painter = if (passwordObscure) painterResource(id = com.android.openpressing.R.drawable.ic_outline_visibility) else painterResource(
-                            id = com.android.openpressing.R.drawable.ic_outline_visibility_off
-                        ), contentDescription = "Show Password",
-                            tint=Color.Black,
-                            modifier = Modifier.clickable {
-                            passwordObscure = !passwordObscure
-                        })
+                            IconButton(onClick = { passwordObscure = !passwordObscure  }) {
+                                Icon(imageVector = if(!passwordObscure) Icons.Filled.VisibilityOff
+                                else Icons.Filled.Visibility,
+                                    contentDescription = "",
+                                    tint=Color.Black)
+                            }
                     },
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done,
+
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = primaryColor,
+                        focusedBorderColor = primaryColor,
+                        unfocusedBorderColor = Color.Black,
+                        unfocusedLabelColor = Color.Gray,
+                        focusedLabelColor = primaryColor
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = { focusManager.clearFocus() }
                     ),
-                    value = ConfirmPassword,
                 )
+
 
                 Text(
                     text = buildAnnotatedString {
@@ -236,48 +225,20 @@ fun FinitionScreen(
                     },
                     style = MaterialTheme.typography.caption
                 )
-                // Row(verticalAlignment = Alignment.CenterVertically) {
-                //   Checkbox(
-                //     checked = checked,
-                //   onCheckedChange = onCheckedChange
-                //)
-                //Spacer(modifier = Modifier.width(8.dp))
-                //Text(text = "text")
-                //}
 
-
-                //Button(
-                //    onClick = {
-                //    },
-                //    shape = RoundedCornerShape(16.dp),
-                //    modifier = Modifier
-                //        .height(48.dp)
-                //        .fillMaxWidth(),
-                // ) {
-                //    Text(
-                //       text = "S'inscrire", style = MaterialTheme.typography.body1,
-                //        modifier = Modifier.clickable {
-                //            navController.navigate(FINITION_ROUTE)
-                //        }
-                //    )
-                // }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
+                    IconButton(
                         onClick = { navController.popBackStack() },
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(CircleShape)
-                            .background(Purple500)
+                        modifier = Modifier.width(130.dp)
                     ) {
                         Icon(
-                            Icons.Rounded.KeyboardArrowLeft,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(5.dp)
+                            Icons.Rounded.ArrowLeft,
+                            contentDescription = stringResource(R.string.nextPage),
+                            tint = primaryColor,
                         )
                     }
                     Button(
@@ -295,20 +256,13 @@ fun FinitionScreen(
                                 showDialogPassword=true
                             }
                             else{
-                                createUser(
-                                    email = email ,
-                                    password = password ,
-                                    navController = navController ,
-                                    getConnectionState = {
-                                        connectionState = it
-                                    }
-                                )
+                                createUser(email, password, navController)
                                 navController.navigate(Screen.Login.road)
                             }
                          },
                         modifier = Modifier.width(150.dp)
                     ) {
-                        Text("S'inscrire", style = MaterialTheme.typography.body1)
+                        Text("Sign up", style = MaterialTheme.typography.body1)
                     }
                     if(showDialogUsername){
                         BackHandler {
@@ -316,7 +270,7 @@ fun FinitionScreen(
                         }
                         AlertDialog(onDismissRequest = { showDialogUsername=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez entrer votre username")},
+                            text={Text("Enter your username")},
                             confirmButton = {
                                 Button(onClick = {showDialogUsername=false },
                                     modifier= Modifier
@@ -333,7 +287,7 @@ fun FinitionScreen(
                         }
                         AlertDialog(onDismissRequest = { showDialogEmail=false},
                             title = {Text("Champ vide")},
-                            text={Text("Veuillez entrer votre email")},
+                            text={Text("Enter your mail")},
                             buttons = {
                                 Button(onClick = {showDialogEmail=false },
                                     modifier= Modifier
@@ -350,7 +304,7 @@ fun FinitionScreen(
                         }
                         AlertDialog(onDismissRequest = { showDialogPassword=false},
                             title = {Text("Erreur")},
-                            text={Text("Le mot de passe et confirm mot de passe doivent etre pareil")},
+                            text={Text("Password and confirm password must be same")},
                             buttons = {
                                 Button(onClick = {showDialogPassword=false },
                                     modifier= Modifier
@@ -381,12 +335,10 @@ fun FinitionScreen(
         }
     }
 }
-
 fun createUser(
     email:String,
     password:String,
-    navController: NavController,
-    getConnectionState: (Boolean) -> Unit
+    navController: NavController
 ){
     println("L'email est $email et le mot de passe est $password")
 
@@ -394,14 +346,14 @@ fun createUser(
     try {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                task -> if(task.isSuccessful) {
-                    Log.d(TAG,"createUserWithEmail:success")
-                    getConnectionState(true)
+                    task ->if(task.isSuccessful){
+                        Log.d(TAG,"createUserWithEmail:success")
                         navController.navigate(Screen.Login.road)
-                    } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    }
-                }
+            }
+                else{
+                Log.w(TAG, "createUserWithEmail:failure", task.exception)
+            }
+        }
     }catch (e: Exception){
         println("Erreur : $e.message")
     }

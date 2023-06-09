@@ -15,7 +15,7 @@ class OrderRepository @Inject constructor(
 
     suspend fun save(order : Order) = orderApi.save(order)
 
-    suspend fun update(id: Int,order : Order) : Order = orderApi.update(id , order)
+    suspend fun update(id: Int,order : Order) : Order = orderApi.update(id, order)
 
     suspend fun delete(id: Int) {
 

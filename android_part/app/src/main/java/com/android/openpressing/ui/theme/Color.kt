@@ -35,10 +35,9 @@ val Orang= Color(0xFFFF5722)
 
 
 val primaryColor = Color(0xFF049797)
-val primaryPrimeColor = Color(0xFF92C5C5)
+val primaryPrimeColor = Color(0xFFCBFEFE)
 val secondaryColor = Color(0xFF76EC9F)
 val secondaryPrimeColor = Color(0xFFCCFECB)
 val thirdColor = Color(0xFFFF5722)
 val thirdPrimeColor = Color(0xFFF78C6B)
-val fourthColor = Color(0xFFCBFEFE)
 

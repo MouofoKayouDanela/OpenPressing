@@ -24,6 +24,9 @@
       "target": "api::service.service",
       "inversedBy": "agency_services"
     },
+    "AddingDate": {
+      "type": "date"
+    },
     "RetireDate": {
       "type": "date"
     },

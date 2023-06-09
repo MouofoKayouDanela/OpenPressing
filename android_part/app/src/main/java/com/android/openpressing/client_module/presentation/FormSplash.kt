@@ -2,6 +2,7 @@ package com.android.openpressing.client_module.presentation
 
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -9,7 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowLeft
 import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.ForkLeft
+import androidx.compose.material.icons.rounded.JoinLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.NavigateBefore
 import androidx.compose.material.icons.rounded.NavigateNext
+import androidx.compose.material.icons.rounded.SwipeLeft
+import androidx.compose.material.icons.rounded.SwipeRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -17,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
@@ -26,7 +35,6 @@ import coil.compose.AsyncImage
 import com.android.openpressing.R
 import com.android.openpressing.ui.theme.primaryColor
 import com.android.openpressing.ui.theme.thirdColor
-import com.android.openpressing.ui.theme.thirdPrimeColor
 import com.android.openpressing.utils.Screen
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -45,19 +53,19 @@ fun getList(): List<HorizontalPagerContent> {
             ""
         ),
         HorizontalPagerContent(
+            R.drawable.pressing1,
+            "",
+            "Best staff, Best service, Best result"
+        ),
+        HorizontalPagerContent(
+            R.drawable.pressing2,
+            "",
+            "Hard work only for your satisfaction"
+        ),
+        HorizontalPagerContent(
             R.drawable.livraison,
             "",
-            "We pay attention to all of your payments and find way for saving your money"
-        ),
-        HorizontalPagerContent(
-            R.drawable.images2,
-            "",
-            "Free Advisory service,mobile banking application,visa"
-        ),
-        HorizontalPagerContent(
-            R.drawable.image1,
-            "",
-            "Bank your life,We create something new you have never seen before"
+            "Delivery or you are !"
         )
     )
 }
@@ -74,7 +82,8 @@ fun IntroScreen(navController: NavHostController) {
 
     Column(
         horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.background(White)
     ) {
         Box(
             modifier = Modifier
@@ -132,16 +141,11 @@ fun IntroScreen(navController: NavHostController) {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         }
                     },
-
                 ) {
                     Icon(
-                        Icons.Rounded.ArrowLeft,
+                        Icons.Rounded.NavigateBefore,
                         contentDescription = stringResource(R.string.nextPage),
-                        tint = thirdPrimeColor,
-                        /* modifier = Modifier
-                             .clip(CircleShape)
-                             //.background(VioletPal)
-                             .padding(5.dp)*/
+                        tint = primaryColor,
                     )
                 }
             }
@@ -159,13 +163,9 @@ fun IntroScreen(navController: NavHostController) {
                         },
                     ) {
                         Icon(
-                            Icons.Rounded.ArrowRight,
+                            Icons.Rounded.SwipeRight,
                             contentDescription = stringResource(R.string.nextPage),
-                            tint = thirdPrimeColor,
-                           /* modifier = Modifier
-                                .clip(CircleShape)
-                                //.background(VioletPal)
-                                .padding(5.dp)*/
+                            tint = primaryColor,
                         )
                     }
                 }

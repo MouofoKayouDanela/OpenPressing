@@ -17,7 +17,7 @@ class ClientRepository @Inject constructor(
     suspend fun save(client : Client) = clientApi.save(client)
 
 
-    suspend fun update(id : Int,client : Client) : Client = clientApi.update(id , client)
+    suspend fun update(id : Int,client : Client) : Client = clientApi.update(id, client)
 
     /*suspend fun delete(id : Int){
         val deletingClient = getById(id)

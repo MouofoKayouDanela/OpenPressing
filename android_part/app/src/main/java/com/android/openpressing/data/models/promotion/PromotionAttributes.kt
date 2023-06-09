@@ -1,11 +1,8 @@
 package com.android.openpressing.data.models.promotion
 
-import android.os.Parcelable
 import com.android.openpressing.data.models.offer.Offer
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import java.util.Date
-@Parcelize
 
 data class PromotionAttributes (
     @SerializedName("MinQuantity") var minimal_quantity: Int,
@@ -18,4 +15,4 @@ data class PromotionAttributes (
     var publishedAt: Date = Date(),
     var confirmed: Boolean = true,
     var blocked: Boolean = false
-):Parcelable
+)

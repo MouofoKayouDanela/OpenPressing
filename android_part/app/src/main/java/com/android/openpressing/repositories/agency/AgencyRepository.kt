@@ -10,11 +10,11 @@ class AgencyRepository @Inject constructor(
 ){
     suspend fun getAll() : MutableList<AgencyData> = agencyApi.getAll().data
 
-    suspend fun getById(id: Int) : Agency =agencyApi.getById(id)
+    suspend fun getById(id: Int) : Agency=agencyApi.getById(id)
 
     suspend fun save(agency : Agency) = agencyApi.save(agency)
 
-    suspend fun update(id : Int,agency : Agency) : Agency = agencyApi.update(id , agency)
+    suspend fun update(id : Int,agency : Agency) : Agency= agencyApi.update(id, agency)
 
     suspend fun delete(id : Int){
         val deletingAgency = getById(id)

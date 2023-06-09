@@ -15,7 +15,7 @@ class PrivilegeRepository @Inject constructor(
 
     suspend fun save(privilege : Privilege) = privilegeApi.save(privilege)
 
-    suspend fun update(id: Int,privilege : Privilege) : Privilege = privilegeApi.update(id , privilege)
+    suspend fun update(id: Int,privilege : Privilege) : Privilege= privilegeApi.update(id, privilege)
 
     suspend fun delete(id: Int) {
 

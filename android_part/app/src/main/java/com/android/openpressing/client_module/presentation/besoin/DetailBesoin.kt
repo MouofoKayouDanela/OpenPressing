@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.android.openpressing.data.models.laundry.Laundry
 import com.android.openpressing.data.models.requirement.Requirement
 import com.android.openpressing.data.models.requirement_detail.RequirementDetail
 import com.android.openpressing.data.models.requirement_detail.RequirementDetailData
 import com.android.openpressing.data.models.service.Service
-import com.android.openpressing.ui.theme.primaryColor
-import com.android.openpressing.ui.theme.secondaryPrimeColor
 import com.android.openpressing.utils.Screen
 import com.android.openpressing.viewmodels.laundries.LaundryViewModel
 import com.android.openpressing.viewmodels.requirement.RequirementViewModel
@@ -42,7 +38,7 @@ import kotlinx.coroutines.flow.flowOn
 @Composable
 fun DetailBesoin(
     requirementId: Int ,
-    navController: NavHostController,
+    navController: NavController,
     requirementViewModel: RequirementViewModel = hiltViewModel()
 ){
     val requirement = remember(requirementId) { mutableStateOf<Requirement?>(null) }
@@ -56,8 +52,22 @@ fun DetailBesoin(
 
     Scaffold(
         topBar ={
-            TopNavBar(navController)
-        },
+            TopAppBar(
+                elevation = 10.dp,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                title = {
+                    Text("Detail Besoin")
+                },
+                backgroundColor = MaterialTheme.colors.primarySurface,
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigate(Screen.ConsulterBesoin.road) }) {
+                        Icon(Icons.Filled.ArrowBack, null)
+                    }
+                },
+
+
+                )},
         content = {
             if(requirement.value != null) {
                 ContentDetail(
@@ -68,57 +78,12 @@ fun DetailBesoin(
     )
 }
 
-@Composable
-fun TopNavBar(navController: NavHostController) {
-
-    Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(primaryColor)
-                .padding(
-                        horizontal = 16.dp ,
-                        vertical = 8.dp
-                ) ,
-            verticalAlignment = Alignment.CenterVertically ,
-            horizontalArrangement = Arrangement.Center
-    ) {
-
-        IconButton(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier
-                    .weight(0.2f)
-        ) {
-            Icon(
-                    Icons.Rounded.KeyboardArrowLeft,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = Color.White
-            )
-        }
-
-        Row (
-                modifier = Modifier
-                    .weight(1.8f)
-                    .size(32.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                    text = "Need detail" ,
-                    style = MaterialTheme.typography.h6.copy(
-                            color = Color.White,
-                            fontWeight = FontWeight.Normal
-                    )
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ContentDetail(
     requirementDetails: MutableList<RequirementDetailData> ,
     rdViewModel: RequirementDetailViewModel = hiltViewModel() ,
+    LaundryViewModel: LaundryViewModel = hiltViewModel()
 ) {
     val allRdsKey = "ARK"
     val wantedRds = remember(allRdsKey) { mutableStateOf<List<RequirementDetailData>?>(null)}
@@ -190,8 +155,7 @@ private fun FetchLaundry(
                 laundry.value!!.data.attributes.type.data.attributes.title + " " +
                         laundry.value!!.data.attributes.category.data.attributes.name,
                 style = MaterialTheme.typography.h6.copy(
-                        fontWeight = FontWeight.Normal,
-                        color = primaryColor
+                        fontWeight = FontWeight.Normal
                 )
             )
         }
@@ -226,7 +190,6 @@ private fun FetchRequirementDetail(
         ){
             Row(
                     modifier = Modifier
-                        .background(secondaryPrimeColor)
                         .fillMaxWidth()
                         .padding(
                                 vertical = 8.dp ,

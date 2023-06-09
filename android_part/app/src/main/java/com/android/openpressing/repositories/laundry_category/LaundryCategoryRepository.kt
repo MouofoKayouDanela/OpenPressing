@@ -14,7 +14,7 @@ class LaundryCategoryRepository @Inject constructor(
 
     suspend fun save(laundryCategory : LaundryCategory) = laundryCategoryApi.save(laundryCategory)
 
-    suspend fun update(id : Int,laundryCategory : LaundryCategory) : LaundryCategory = laundryCategoryApi.update(id , laundryCategory)
+    suspend fun update(id : Int,laundryCategory : LaundryCategory) : LaundryCategory = laundryCategoryApi.update(id, laundryCategory)
 
     suspend fun delete(id : Int){
         val deletingLaundryCategory = getById(id)

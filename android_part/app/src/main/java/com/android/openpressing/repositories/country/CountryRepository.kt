@@ -14,7 +14,7 @@ class CountryRepository @Inject constructor(
 
     suspend fun save(country : Country) = countryApi.save(country)
 
-    suspend fun update(id : Int,country : Country) : Country = countryApi.update(id , country)
+    suspend fun update(id : Int,country : Country) : Country = countryApi.update(id, country)
 
     suspend fun delete(id : Int){
         val deletingCountry = getById(id)

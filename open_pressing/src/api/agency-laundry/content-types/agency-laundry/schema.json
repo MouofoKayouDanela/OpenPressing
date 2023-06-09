@@ -24,6 +24,9 @@
       "target": "api::agency.agency",
       "inversedBy": "agency_laundries"
     },
+    "AddingDate": {
+      "type": "date"
+    },
     "RetireDate": {
       "type": "date"
     },
