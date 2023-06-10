@@ -278,15 +278,15 @@ private fun fetchRequirement(
     requirements: List<RequirementData>
 ) : List<RequirementData> {
 
-    updatePageSize((requirements.size + 6) / 7)
+    updatePageSize((requirements.size + 5) / 6)
 
     return requirements.subList(
-            actualPage * 7,
+            actualPage * 6,
             minOf(
-                    (actualPage + 1) * 7,
+                    (actualPage + 1) * 6,
                     requirements.size
             )
-    )
+    ).sortedByDescending { it.attributes.createdAt }
 
 }
 

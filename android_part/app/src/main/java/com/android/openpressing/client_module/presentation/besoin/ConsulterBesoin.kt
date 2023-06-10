@@ -83,7 +83,7 @@ fun MyNeed(
             }
 
         },
-        bottomBar= {BottomBar(navController)},
+        bottomBar= {BottomBar(2,navController)},
         floatingActionButton = {
             FloatingActionButton(
                     onClick = { navController.navigate(Screen.AddBesoin.road) },
